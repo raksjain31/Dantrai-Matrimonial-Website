@@ -90,14 +90,17 @@ export const login = async (req, res) => {
     try {
         const user = await db.User.findUnique({
             where: {
+
                 email
+                //IsApproved: true,
+
             }
         })
 
         if (!user) {
 
             return res.status(401).json({
-                message: "User not found"
+                message: "User Not found"
             })
 
         }
@@ -133,7 +136,8 @@ export const login = async (req, res) => {
                 email: user.email,
                 role: user.role,
                 phone: user.phone,
-                Father: user.Father
+                Father: user.Father,
+                IsApproved: user.IsApproved
                 // image: user.image
             }
         })

@@ -5,6 +5,7 @@ import session from "express-session";
 
 
 import authRoutes from "./routes/auth.routes.js";
+import profileRoutes from "./routes/profile.routes.js";
 
 dotenv.config()
 const app = express();
@@ -32,6 +33,9 @@ app.get("/", (req, res) => {
 })
 
 app.use("/api/v1/auth", authRoutes);
+
+app.use("/api/v1/profile", profileRoutes);
+
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on Port ${process.env.PORT}`);

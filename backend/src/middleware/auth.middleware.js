@@ -28,6 +28,7 @@ export const authMiddleware = async (req, res, next) => {
         const user = await db.User.findUnique({
             where: {
                 id: decoded.id
+
             },
             select: {
                 id: true,
@@ -36,7 +37,8 @@ export const authMiddleware = async (req, res, next) => {
                 phone: true,
                 village: true,
                 Father: true,
-                role: true
+                role: true,
+                IsApproved: true
                 //image:true
             }
         })
@@ -55,6 +57,75 @@ export const authMiddleware = async (req, res, next) => {
     } catch (error) {
         console.error("Error authenticating user:", error);
         res.status(500).json({ error: "Error authenticating user" });
+
+    }
+
+
+}
+
+
+
+export const checkAdmin = async (req, res, next) => {
+    try {
+        const userId = req.user.id;
+        const user = await db.user.findUnique({
+            where: {
+                id: userId
+            },
+            select: {
+                role: true
+            }
+
+        })
+
+
+        if (!user || user.role !== "ADMIN") {
+            return res.status(403).json({
+                message: "Access Denied- Admin only"
+            })
+        }
+
+        next();
+
+    } catch (error) {
+        console.error("Error checking admin role:", error);
+        res.status(500).json({
+            error: "Error checking admin role"
+        })
+
+
+    }
+
+}
+export const checkUserApproved = async (req, res, next) => {
+    try {
+        const userId = req.user.id;
+        const user = await db.user.findUnique({
+            where: {
+                id: userId
+            },
+            select: {
+                role: true,
+                IsApproved: true
+            }
+
+        })
+
+
+        if (!user || user.IsApproved == false) {
+            return res.status(403).json({
+                message: "Access Denied- Approved Users only"
+            })
+        }
+
+        next();
+
+    } catch (error) {
+        console.error("Error checking User IsApproved:", error);
+        res.status(500).json({
+            error: "Error checking IsApproved"
+        })
+
 
     }
 

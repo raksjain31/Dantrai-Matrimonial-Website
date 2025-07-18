@@ -51,6 +51,10 @@ model User {
   verificationToken String?
   passwordResetToken String?
   passwordResetExpiry String?
+  IsApproved Boolean @default(false)
+  ApprovedbyUserId String?
+  ApprovedDate DateTime?
+  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -66,7 +70,8 @@ gender Gender
 dateOfBirth DateTime @db.Date
 height String
 currentLiveCity String
-annualIncome String
+phone String?
+//annualIncome String
 userId String
 image String?
 aboutme String?//about my self 250 words
@@ -80,9 +85,10 @@ organisation String?//company or firm name
 aboutmycareer String?// few words about my Career
 //familydata
 father String?
-fatheroccupation String?
-fatherincome String?
-motheroccupation String?
+//fatheroccupation String?
+//fatherincome String?
+mother String?
+//motheroccupation String?
 noOfBrothers Int
 noOfMarriedBrothers Int
 noOfsisters Int
