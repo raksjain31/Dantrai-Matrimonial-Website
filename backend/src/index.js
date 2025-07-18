@@ -6,6 +6,7 @@ import session from "express-session";
 
 import authRoutes from "./routes/auth.routes.js";
 import profileRoutes from "./routes/profile.routes.js";
+import adminRoutes from "./routes/admin.routes.js";
 
 dotenv.config()
 const app = express();
@@ -35,6 +36,8 @@ app.get("/", (req, res) => {
 app.use("/api/v1/auth", authRoutes);
 
 app.use("/api/v1/profile", profileRoutes);
+
+app.use("/api/v1/admin", adminRoutes);
 
 
 app.listen(process.env.PORT, () => {
