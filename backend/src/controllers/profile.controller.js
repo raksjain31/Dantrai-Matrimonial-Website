@@ -1,35 +1,101 @@
 import { db } from "../libs/db.js";
+import cloudinary from "../Utils/cloudinary.js";
+import dotenv from "dotenv";
 
 
+
+dotenv.config();
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    secure: true
+});
 export const createProfile = async (req, res) => {
     try {
 
-        const { fullname, gender, dateOfBirth, height, currentLiveCity, phone, image,
+        console.log("File from multer:", req.file);
+
+        const { fullname, gender, dateOfBirth, height, currentLiveCity, phone,
             aboutme, education, college, aboutmyeducation, employedIn, occupation, organisation,
             aboutmycareer, father, mother, noOfBrothers, noOfsisters, noOfMarriedBrothers,
             noOfMarriedSisters, aboutmyfamily, hobbies } = req.body;
+        //image,
 
-        if (req.user.isApproved == false) {
-            return res.status(403).json({
-                message: "Access Denied- Approved Users only"
-            })
+        const file = req.file;
+
+
+        // console.log('Received fields:', req.body);
+        // console.log('Received file:', req.file);
+
+        if (!file) {
+            return res.status(400).json({ error: 'Image is required file empty' });
         }
 
 
+        const result = await cloudinary.uploader.upload(req.file.path, (error, result) => {
+            folder: 'user_profiles'
+            if (error) {
+                console.log(error);
+                return res.status(500).json({
+                    success: false,
+                    message: "Error uploading image",
+                })
+            }
+            else {
+                console.log('Image uploaded successfully!');
+
+                //console.log('Image URL:', result.secure_url);
+            }
+
+
+
+        })
         const newprofile = await db.Profile.create({
             data: {
-                fullname, gender, dateOfBirth, height, currentLiveCity, phone, image,
+                fullname, gender, dateOfBirth, height, currentLiveCity, phone, image: result.secure_url,
                 aboutme, education, college, aboutmyeducation, employedIn, occupation, organisation,
-                aboutmycareer, father, mother, noOfBrothers, noOfsisters, noOfMarriedBrothers,
-                noOfMarriedSisters, aboutmyfamily, hobbies, userId: req.user.id
+                aboutmycareer, father, mother,
+                noOfBrothers: parseInt(noOfBrothers),
+                noOfsisters: parseInt(noOfsisters),
+                noOfMarriedBrothers: parseInt(noOfMarriedBrothers),
+                noOfMarriedSisters: parseInt(noOfMarriedSisters),
+                aboutmyfamily, hobbies, userId: req.user.id
             }
 
 
         });
 
+        // const streamUpload = () => {
+        //     return new Promise((resolve, reject) => {
+        //         const stream = cloudinary.uploader.upload_stream(
+        //             { folder: 'profiles' },
+        //             (error, result) => {
+        //                 if (result) {
+        //                     resolve(result);
+        //                 } else {
+        //                     reject(error);
+        //                 }
+        //             }
+        //         );
+        //         streamifier.createReadStream(req.file.buffer).pipe(stream);
+        //     });
+        // };
+
+        // const result = await streamUpload();
+
+        // Save to DB
+
+
+
         return res.status(201).json(newprofile);
 
-    } catch (error) {
+    }
+
+
+
+    catch (error) {
         console.log(error);
         return res.status(500).json({
             error: "Error creating Profile",
@@ -40,6 +106,10 @@ export const createProfile = async (req, res) => {
 
 
 }
+
+
+
+
 
 export const getAllProfile = async (req, res) => {
 

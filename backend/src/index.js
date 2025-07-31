@@ -2,17 +2,29 @@ import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import session from "express-session";
+import cors from "cors";
 
 
 import authRoutes from "./routes/auth.routes.js";
 import profileRoutes from "./routes/profile.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 
+
 dotenv.config()
 const app = express();
 
+app.use(
+    cors({
+        origin: process.env.BASE_URL,
+        credentials: true,
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        allowedHeaders: ["Content-Type", "Authorization"]
+    })
+)
 app.use(express.json());
 app.use(cookieParser());
+
+// app.use(setCorsHeaders);
 
 app.use(session(
     {
@@ -26,6 +38,7 @@ app.use(session(
     }
 
 ))
+
 
 
 app.get("/", (req, res) => {
