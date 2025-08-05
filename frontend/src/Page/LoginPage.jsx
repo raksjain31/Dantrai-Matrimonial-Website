@@ -11,7 +11,8 @@ const phoneValidation = new RegExp(
     /^(?:(?:\+|00)?(55)\s?)?(?:\(?([1-9][0-9])\)?\s?)?(?:((?:9\d|[2-9])\d{3})\-?(\d{4}))$/
 );
 const LoginSchema = z.object({
-    email: z.string().email("Enter a valid email"),
+    //email: z.string().email("Enter a valid email"),
+    phone: z.string().min(10, 'Enter a valid Mobile no.').refine(value => /^\d{10}$/.test(value), 'Invalid Number!'),
     password: z.string().min(8, "Password must be at least 8 characters long"),
 
 })
@@ -66,7 +67,7 @@ const LoginPage = () => {
 
 
                         {/* Email */}
-                        <div className="form-control">
+                        {/* <div className="form-control">
                             <label className="label">
                                 <span className="label-text font-medium">Email</span>
                             </label>
@@ -85,8 +86,29 @@ const LoginPage = () => {
                             {errors.email && (
                                 <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
                             )}
-                        </div>
+                        </div> */}
 
+                        {/* Phone Number */}
+                        <div className="form-control">
+                            <label className="label">
+                                <span className="label-text font-medium">Phone</span>
+                            </label>
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <PhoneCall className="h-5 w-5 text-base-content/40" />
+                                </div>
+                                <input
+                                    type="phone"
+                                    {...register("phone")}
+                                    className={`input input-bordered w-full pl-10 ${errors.phone ? "input-error" : ""
+                                        }`}
+                                    placeholder="1234567890"
+                                />
+                            </div>
+                            {errors.phone && (
+                                <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>
+                            )}
+                        </div>
 
 
                         {/* Password */}
@@ -150,6 +172,7 @@ const LoginPage = () => {
                                 Sign in
                             </Link>
                         </p>
+                        <p className="text-base-content/60">Developed and Design by Rakshit Rathod <br /> @Darpan Software Solution</p>
                     </div>
                 </div>
             </div >

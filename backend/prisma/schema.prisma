@@ -68,6 +68,7 @@ id String @id @default(uuid())
 fullname String
 gender Gender 
 dateOfBirth DateTime @db.Date
+age Int?
 height String
 currentLiveCity String
 phone String?

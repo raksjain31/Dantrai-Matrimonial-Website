@@ -1,7 +1,7 @@
 import express from "express"
 import { authMiddleware, checkAdmin } from "../middleware/auth.middleware.js";
 import {
-    approvedUserById, getAllApprovedUserCount, getAllfemaleProfileCount,
+    approvedUserById, getAllApprovedUserCount, getAllApprovePendingUserCount, getAllApprovePendingUsers, getAllCounts, getAllfemaleProfileCount,
     getAllMaleProfileCount, getAllProfilesCount, getAllUserCount, getAllUserDetails,
     getUserProfilebyId,
     getUserProfilesListbyUserId
@@ -16,9 +16,15 @@ adminRoutes.get("/get-alluser-details", authMiddleware, checkAdmin, getAllUserDe
 
 adminRoutes.put("/approved-user-by-id/:id", authMiddleware, checkAdmin, approvedUserById);
 
+adminRoutes.get("/get-Allcounts", authMiddleware, checkAdmin, getAllCounts);
+
 adminRoutes.get("/get-alluser-count", authMiddleware, checkAdmin, getAllUserCount);
 
+adminRoutes.get("/get-users-pendingapproval", authMiddleware, checkAdmin, getAllApprovePendingUsers);
+
 adminRoutes.get("/get-alluser-approved-count", authMiddleware, checkAdmin, getAllApprovedUserCount);
+
+adminRoutes.get("/get-alluser-approve-pending-count", authMiddleware, checkAdmin, getAllApprovePendingUserCount);
 
 adminRoutes.get("/get-all-male-profile-count", authMiddleware, checkAdmin, getAllMaleProfileCount);
 

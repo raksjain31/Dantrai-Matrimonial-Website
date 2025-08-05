@@ -1,0 +1,206 @@
+import React, { useState, useMemo } from 'react'
+import { useAuthStore } from '../store/useAuthStore'
+import { Link } from "react-router-dom";
+import { Bookmark, PencilIcon, Trash, TrashIcon, Plus } from "lucide-react";
+import useAction from '../store/useAction'
+import { useNavigate } from "react-router-dom";
+
+const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
+    const { authUser } = useAuthStore();
+    const [search, setSearch] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const { isDeletingProfile, onDeleteProfile } = useAction();
+    const [gender, setGender] = useState("ALL");
+
+    const navigation = useNavigate();
+    const handleClick = () => {
+        navigation('/add-profile');
+    };
+    // Filter problems based on search, gender, and tags
+    const filteredAllProfilesSearch = useMemo(() => {
+        return (AllprofilesSearch || [])
+            .filter((profile) =>
+                profile.fullname.toLowerCase().includes(search.toLowerCase())
+            )
+            .filter((profile) =>
+                gender === "ALL" ? true : problem.gender === gender
+            )
+
+    }, [AllprofilesSearch, search, gender]);
+    function calculateAge(dateOfBirth) {
+        const dob = new Date(dateOfBirth);
+        const today = new Date();
+
+        let age = today.getFullYear() - dob.getFullYear();
+        const m = today.getMonth() - dob.getMonth();
+
+        if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+            age--;
+        }
+
+        return age;
+    }
+    const itemsPerPage = 5;
+    const totalPages = Math.ceil(filteredAllProfilesSearch.length / itemsPerPage);
+    const paginatedProfiles = useMemo(() => {
+        return filteredAllProfilesSearch.slice(
+            (currentPage - 1) * itemsPerPage,//0*5 =0
+            currentPage * itemsPerPage)//0*1 =
+    }, [filteredAllProfilesSearch, currentPage])
+
+
+    const genders = ["MALE", "FEMALE"];
+
+    const handleDelete = (id) => {
+        const isConfirmed = confirm("Are you sure you want to delete this Profile ?")
+        if (isConfirmed) {
+            onDeleteProfile(id);
+        }
+
+
+    };
+
+    return (
+        <div className="w-full max-w-6xl mx-auto mt-10">
+            {/* Header with Create Playlist Button */}
+            <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold">Search For Profiles</h2>
+
+            </div>
+            <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
+                <input
+                    type="text"
+                    placeholder="Search by Name"
+                    className="input input-bordered w-full md:w-1/3 bg-base-200"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                />
+                <select
+                    className="select select-bordered bg-base-200"
+                    value={gender}
+                    onChange={(e) => setGender(e.target.value)}
+                >
+                    <option value="ALL">All Gender</option>
+                    {genders.map((diff) => (
+                        <option key={diff} value={diff}>
+                            {diff.charAt(0).toUpperCase() + diff.slice(1).toLowerCase()}
+                        </option>
+                    ))}
+                </select>
+                {/* <select
+                    className="select select-bordered bg-base-200"
+                    value={difficulty}
+                    onChange={(e) => setDifficulty(e.target.value)}
+                >
+                    <option value="ALL">All Difficulties</option>
+                    {difficulties.map((diff) => (
+                        <option key={diff} value={diff}>
+                            {diff.charAt(0).toUpperCase() + diff.slice(1).toLowerCase()}
+                        </option>
+                    ))}
+                </select>
+                <select
+                    className="select select-bordered bg-base-200"
+                    value={selectedTag}
+                    onChange={(e) => setSelectedTag(e.target.value)}
+                >
+                    <option value="ALL">All Tags</option>
+                    {allTags.map((tag) => (
+                        <option key={tag} value={tag}>
+                            {tag}
+                        </option>
+                    ))}
+                </select> */}
+            </div>
+            <div className="overflow-x-auto rounded-xl shadow-md">
+                <table className="table table-zebra table-lg bg-base-200 text-base-content">
+                    <thead className="bg-base-300">
+                        <tr>
+                            <th>SrNo</th>
+                            <th>NAME</th>
+                            <th>GENDER</th>
+                            <th>DOB</th>
+                            <th>AGE</th>
+                            <th>Education</th>
+                            {authUser?.role === "USER" && (<th>Actions</th>)}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            paginatedProfiles.length > 0 ? (
+                                paginatedProfiles.map((profile, index) => {
+
+                                    return (
+                                        <tr key={profile.id}>
+                                            <td>
+
+                                                {index + 1}
+                                            </td>
+                                            <td>
+                                                <Link to={`/profile/${profile.id}`} className="font-semibold hover:underline">
+                                                    {profile.fullname}
+                                                </Link>
+                                            </td>
+                                            <td>
+                                                {profile.gender}
+                                            </td>
+                                            <td>
+
+                                                {profile?.dateOfBirth && !isNaN(new Date(profile.dateOfBirth))
+                                                    ? new Date(profile.dateOfBirth).toISOString().split("T")[0]
+                                                    : "N/A"}
+                                            </td>
+                                            <td>
+                                                {calculateAge(profile.dateOfBirth)}
+
+                                            </td>
+                                            <td>
+
+                                                {profile.education}
+
+                                            </td>
+                                            <td>
+                                                <div className="flex flex-col md:flex-row gap-2 items-start md:items-center">
+                                                    {authUser?.role === "USER" && (
+                                                        <div className="flex gap-2">
+                                                            <button
+                                                                onClick={() => handleDelete(profile.id)}
+                                                                className="btn btn-sm btn-error"
+                                                            >
+
+                                                                {
+                                                                    isDeletingProfile ? (
+                                                                        <span className="loading loading-spinner text-white"></span>
+                                                                    ) : (
+                                                                        <TrashIcon className="w-4 h-4 text-white" />
+                                                                    )
+                                                                }
+
+                                                            </button>
+                                                            <button disabled className="btn btn-sm btn-warning">
+                                                                <PencilIcon className="w-4 h-4 text-white" />
+                                                            </button>
+                                                        </div>
+                                                    )}
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    );
+                                })
+                            ) : (
+                                <tr>
+                                    <td colSpan={5} className="text-center py-6 text-gray-500">
+                                        No problems found.
+                                    </td>
+                                </tr>
+                            )}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    )
+}
+
+export default AllProfilesTableSearch

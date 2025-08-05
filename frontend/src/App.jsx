@@ -9,6 +9,10 @@ import { Loader } from 'lucide-react';
 import Layout from "./layout/Layout";
 import AdminRoute from "./components/AdminRoute";
 import AddProfile from "./Page/AddProfile";
+import DashBoardPage from "./Page/DashBoardPage";
+import ProfileViewPage from "./Page/ProfileViewPage";
+import AllProfilesSearchPage from "./Page/AllProfilesSearchPage";
+
 
 
 
@@ -59,7 +63,28 @@ const App = () => {
         <Route path="/add-profile"
           element={authUser ? <AddProfile /> : <Navigate to={"/"} />} />
 
+
+        {/* <Route path="/profile/:id"
+          element={authUser ? <ProfileViewPage /> : <Navigate to={"/"} />} /> */}
         {/* </Route> */}
+
+        <Route path="/search-profiles"
+          element={authUser ? <AllProfilesSearchPage /> : <Navigate to={"/"} />} />
+
+
+
+        <Route element={<AdminRoute />}>
+          <Route path="/dashboard"
+            element={authUser ? <DashBoardPage /> : <Navigate to={"/"} />} />
+
+        </Route>
+
+        <Route path="/profile/get-user-profiles-byUserId/:id"
+          element={authUser ? <ProfileViewPage /> : <Navigate to={"/dashboard"} />}
+        >
+
+        </Route>
+
 
       </Routes >
 

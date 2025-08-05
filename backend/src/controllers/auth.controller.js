@@ -86,12 +86,13 @@ export const register = async (req, res) => {
     }
 }
 export const login = async (req, res) => {
-    const { email, password } = req.body;
+    const { phone, password } = req.body;//email,
     try {
         const user = await db.User.findUnique({
             where: {
 
-                email
+                // email
+                phone
                 //IsApproved: true,
 
             }
@@ -197,3 +198,5 @@ export const check = async (req, res) => {
 
     }
 }
+
+

@@ -5,6 +5,9 @@ import { Loader } from 'lucide-react'
 const AdminRoute = () => {
 
     const { authUser, isCheckingAuth } = useAuthStore()
+
+
+    console.log("ischeckingauthtrue:", isCheckingAuth);
     if (isCheckingAuth) {
 
         return (

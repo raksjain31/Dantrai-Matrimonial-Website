@@ -246,6 +246,7 @@ const SignUpPage = () => {
                                 Sign in
                             </Link>
                         </p>
+                        <p className="text-base-content/60">Developed and Design by Rakshit Rathod <br />@Darpan Software Solution </p>
                     </div>
                 </div>
             </div >

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { date, z } from "zod";
 import DatePicker from 'react-datepicker';
 import {
     Plus,
@@ -25,7 +25,13 @@ import 'react-datepicker/dist/react-datepicker.css';
 const eighteenYearsAgo = new Date();
 eighteenYearsAgo.setFullYear(eighteenYearsAgo.getFullYear() - 21);
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
+
+function toUTCDateOnly(date) {
+    return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+}
+
+
 
 
 const profileSchema = z.object({
@@ -42,22 +48,30 @@ const profileSchema = z.object({
         }).refine((date) => date <= eighteenYearsAgo, {
             message: "Member must be at least 21 years old."
         }),
+    age: z.coerce.number().min(21, { message: "Age must be at least 21." })
+        .positive("Age must be a positive number"),
     height: z.string(),
     currentLiveCity: z.string(),
     phone: z.string().min(10, 'Phone number is required.').refine(value => /^\d{10}$/.test(value), 'Invalid Number!'),
     image: z
-        .any()
 
+
+        // .refine(
+        //     (file) => !file || file.size !== 0 || file.size <= MAX_UPLOAD_SIZE,
+        //     `Max 5MB allowed`
+        // )
+        // .refine(
+        //     (file) =>
+        //         !file || file.type === "" || ACCEPTED_IMAGE_TYPES.includes(file.type),
+        //     "Only .jpg, .jpeg, and .png formats are supported"
+        // ),
+        .any()
 
         .transform((file) => file.length > 0 && file.item(0), "Image is Required")
         .refine((files) => !files[0]?.size <= 5 * 1024 * 1024, {
             message: "Image must be less than or equal to 5MB",
         }),
-    // .refine((files) => files?.length === 1, "Image is required")
-    // .refine(
-    //     (File) => File.size <= MAX_FILE_SIZE,
-    //     'File size Cannot be greater than 5MB'
-    // )
+
     // .refine(
     //     (File) => ACCEPTED_IMAGE_TYPES.includes(File?.[0]?.type),
     //     'Only JPG,JPEG, PNG, WEBP formats are supported'
@@ -74,16 +88,16 @@ const profileSchema = z.object({
     aboutmycareer: z.string().max(250, "About My Career at most 250 characters").transform((str) => str.toUpperCase()),
     father: z.string().min(3, "Father Name must be atleast 3 characters").transform((str) => str.toUpperCase()),
     mother: z.string().min(3, "Mother Name must be atleast 3 characters").transform((str) => str.toUpperCase()),
-    noOfBrothers: z.coerce.number().int("No of Brothers must be an integer")
-        .positive("Number of Brothers must be a positive number"),
-    noOfMarriedBrothers: z.coerce.number().int("No of Brothers must be an integer")
-        .positive("Number of Brothers must be a positive number"),
-    noOfsisters: z.coerce.number().int("No of Sisters must be an integer")
-        .positive("Number of Sisters must be a positive number"),
-    noOfMarriedSisters: z.coerce.number().int("No of Sisters must be an integer")
-        .positive("Number of Sisters must be a positive number"),
+    noOfBrothers: z.coerce.number().int("No of Brothers must be an integer"),
+    // .positive("Number of Brothers must be a positive number"),
+    noOfMarriedBrothers: z.coerce.number().int("No of Brothers must be an integer"),
+    //.positive("Number of Brothers must be a positive number")
+    noOfsisters: z.coerce.number().int("No of Sisters must be an integer"),
+    //.positive("Number of Sisters must be a positive number")
+    noOfMarriedSisters: z.coerce.number().int("No of Sisters must be an integer"),
+    //.positive("Number of Sisters must be a positive number")
     aboutmyfamily: z.string().max(250, "About My Family at most 250 characters").transform((str) => str.toUpperCase()),
-    hobbies: z.string().min(3, "Hobbies Name must be atleast 3 characters").transform((str) => str.toUpperCase())
+    hobbies: z.string()//.min(3, "Hobbies Name must be atleast 3 characters").transform((str) => str.toUpperCase())
 
 
 });
@@ -105,8 +119,28 @@ const CreateProfileForm = () => {
 
     const [preview, setPreview] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [age, setAge] = useState(null);
+    const [dob, setDob] = useState(null);
+    const handleDateChange = (date) => {
+        setDob(date);
+        if (date) {
+            const calculatedAge = calculateAge(date);
+            setAge(calculatedAge);
+        }
+    };
+    const calculateAge = (dateOfBirth) => {
+        const dob = new Date(dateOfBirth);
+        const today = new Date();
 
+        let age = today.getFullYear() - dob.getFullYear();
+        const m = today.getMonth() - dob.getMonth();
 
+        if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+            age--;
+        }
+
+        return age;
+    }
 
     React.useEffect(() => {
         if (imageFile && imageFile[0]) {
@@ -126,18 +160,26 @@ const CreateProfileForm = () => {
             setIsLoading(true)
 
 
+            const cleanDate = toUTCDateOnly(data.dateOfBirth);
+
+
 
             const formData = new FormData();
-            const dobDate = new Date(data.dateOfBirth);
+
 
 
             formData.append('fullname', data.fullname);
             formData.append('gender', data.gender);
-            formData.append('dateOfBirth', dobDate.toISOString());
+
+            formData.append("dateOfBirth", cleanDate.toISOString());
+            formData.append('age', parseInt({ age }));
             formData.append('height', data.height);
             formData.append('currentLiveCity', data.currentLiveCity);
             formData.append('phone', data.phone);
             formData.append('imageFile', data.image);
+
+
+
 
             formData.append('aboutme', data.aboutme);
             formData.append('education', data.education);
@@ -180,12 +222,25 @@ const CreateProfileForm = () => {
         } catch (error) {
             console.log(error);
             toast.error("Error creating profile")
+
         }
         finally {
             setIsLoading(false);
         }
     }
 
+
+
+
+    // Watch the date of birth field
+    const selectedDate = watch('dateofBirth'); // Watch the date of birth field
+    React.useEffect(() => {
+        if (selectedDate) {
+            setAge(calculateAge(selectedDate));
+        } else {
+            setAge(null);
+        }
+    }, [selectedDate]);
 
 
     return (
@@ -210,9 +265,6 @@ const CreateProfileForm = () => {
                             </h3>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-
-
                                 <div className="form-control md:col-span-3">
                                     <label className="label">
                                         <span className="label-text text-base md:text-lg font-semibold">
@@ -233,197 +285,229 @@ const CreateProfileForm = () => {
                                         </label>
                                     )}
                                 </div>
+                            </div>
 
-                                <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-6 ">
-                                    <div className="form-control">
+                            <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-6">
+                                <div className="form-control md:col-span-2"> </div>
+                                <div className="form-control">
+                                    <label className="label" >
+                                        <span className="label-text text-base md:text-lg font-semibold ">
+                                            Gender
+                                        </span>
+                                    </label>
+                                    <select
+                                        className=" select select-bordered max-w-full text-base md:text-lg "
+                                        {...register("gender")}
+                                    >
+                                        <option value="MALE">Male</option>
+                                        <option value="FEMALE">Female</option>
+                                    </select>
+                                    {errors.gender && (
                                         <label className="label">
-                                            <span className="label-text text-base md:text-lg font-semibold">
-                                                Gender
+                                            <span className="label-text-alt text-error">
+                                                {errors.gender.message}
                                             </span>
                                         </label>
-                                        <select
-                                            className=" select select-bordered max-w-full text-base md:text-lg"
-                                            {...register("gender")}
-                                        >
-                                            <option value="MALE">Male</option>
-                                            <option value="FEMALE">Female</option>
-                                        </select>
-                                        {errors.gender && (
-                                            <label className="label">
-                                                <span className="label-text-alt text-error">
-                                                    {errors.gender.message}
-                                                </span>
-                                            </label>
-                                        )}
-                                    </div>
-                                    <div className="form-control">
-                                        <label className="label">
-                                            <span className="label-text text-base md:text-lg font-semibold">
-                                                Date Of Birth                                        </span>
-                                        </label>
-
-
-                                        <Controller
-                                            control={control}
-                                            name="dateOfBirth"
-                                            render={({ field }) => (
-
-                                                <DatePicker width="100%"
-                                                    className="select select-bordered text-base md:text-lg birthdate border-2  placeholder-gray-500 rounded-1xl w-full width-full    outline-none"
-                                                    name="dateOfBirth"
-                                                    placeholderText="1999-01-25"
-                                                    selected={field.value}
-                                                    dateFormat="yyyy-MM-dd"
-                                                    onChange={field.onChange}
-
-                                                    showMonthDropdown
-                                                    showYearDropdown
-                                                    dropdownMode="select"
-                                                    closeOnScroll={true}
-                                                    disabledKeyboardNavigation
-                                                />
-                                            )}
-                                        />
-                                        {errors.dateOfBirth && (
-                                            <p className="text-red-600 text-sm cursor-default">
-                                                {errors.dateOfBirth.message}
-                                            </p>
-                                        )}
-                                    </div>
-
-                                    <div className="form-control">
-                                        <label className="label">
-                                            <span className="label-text text-base md:text-lg font-semibold">
-                                                Height
-                                            </span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className="input input-bordered w-full text-base md:text-lg"
-                                            {...register("height")}
-                                            placeholder="Ex - 5.0'"
-                                        />
-                                        {errors.height && (
-                                            <label className="label">
-                                                <span className="label-text-alt text-error">
-                                                    {errors.height.message}
-                                                </span>
-                                            </label>
-                                        )}
-                                    </div>
-                                    <div className="form-control">
-                                        <label className="label">
-                                            <span className="label-text text-base md:text-lg font-semibold">
-                                                Current City Live In
-                                            </span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className="input input-bordered w-full text-base md:text-lg"
-                                            {...register("currentLiveCity")}
-                                            placeholder="Ex - Mumbai"
-                                        />
-                                        {errors.currentLiveCity && (
-                                            <label className="label">
-                                                <span className="label-text-alt text-error">
-                                                    {errors.currentLiveCity.message}
-                                                </span>
-                                            </label>
-                                        )}
-                                    </div>
-
-
-
-                                    <div className="form-control">
-                                        <label className="label">
-                                            <span className="label-text text-base md:text-lg font-semibold">
-                                                Phone Number
-                                            </span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className="input input-bordered w-full text-base md:text-lg"
-                                            {...register("phone")}
-                                            placeholder="10-Digit Mobile No"
-                                        />
-                                        {errors.phone && (
-                                            <label className="label">
-                                                <span className="label-text-alt text-error">
-                                                    {errors.phone.message}
-                                                </span>
-                                            </label>
-                                        )}
-                                    </div>
-
-
-
-                                    <div className="form-control">
-                                        <label className="label">
-                                            <span className="label-text text-base md:text-lg font-semibold">
-                                                Hobbies
-                                            </span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className="input input-bordered w-full text-base md:text-lg"
-                                            {...register("hobbies")}
-                                            placeholder="Hobbies"
-                                        />
-                                        {errors.hobbies && (
-                                            <label className="label">
-                                                <span className="label-text-alt text-error">
-                                                    {errors.hobbies.message}
-                                                </span>
-                                            </label>
-                                        )}
-                                    </div>
-                                    <div className="form-control md:col-span-2">
-                                        <label className="label">
-                                            <span className="label-text text-base md:text-lg font-semibold">
-                                                About YourSelf
-                                            </span>
-                                        </label>
-                                        <textarea
-                                            className="textarea textarea-bordered min-h-32 w-full text-base md:text-lg p-4 resize-y"
-                                            {...register("aboutme")}
-                                            placeholder="Tell About Yourself..."
-                                        />
-
-                                        {errors.aboutme && (
-                                            <label className="label">
-                                                <span className="label-text-alt text-error">
-                                                    {errors.aboutme.message}
-                                                </span>
-                                            </label>
-                                        )}
-                                    </div>
-
-
+                                    )}
                                 </div>
 
 
-                                {/* <div className="form-control md:col-span-3">
+                                <div className="form-control">
                                     <label className="label">
                                         <span className="label-text text-base md:text-lg font-semibold">
-                                            Image
+                                            Date Of Birth
+                                        </span>
+                                    </label>
+
+
+                                    <Controller
+                                        control={control}
+                                        name="dateOfBirth"
+                                        render={({ field }) => (
+
+                                            <DatePicker width="100%"
+                                                className="select select-bordered text-base md:text-lg birthdate border-2  placeholder-gray-500 rounded-1xl w-full width-full    outline-none"
+                                                name="dateOfBirth"
+                                                placeholderText="1999-01-25"
+                                                selected={dob}
+
+                                                dateFormat="yyyy-MM-dd"
+                                                onChange={(date) => {
+                                                    field.onChange(date);
+                                                    setValue("age", calculateAge(date));
+                                                    handleDateChange(date);
+                                                }}
+                                                showMonthDropdown
+                                                showYearDropdown
+                                                dropdownMode="select"
+                                                closeOnScroll={true}
+                                                disabledKeyboardNavigation
+                                            />
+                                        )}
+                                    />
+
+                                    {/* <DatePicker
+                                        className="select select-bordered text-base md:text-lg birthdate border-2  placeholder-gray-500 rounded-1xl w-full width-full    outline-none"
+
+                                        selected={dob}
+
+                                        name="dateOfBirth"
+                                        onChange={handleDateChange}
+                                        dateFormat="yyyy-MM-dd"
+                                        placeholderText="Select DOB"
+                                        showMonthDropdown
+                                        showYearDropdown
+                                        dropdownMode="select"
+                                        closeOnScroll={true}
+                                        disabledKeyboardNavigation
+                                    //className="input input-bordered w-full"
+                                    /> */}
+
+                                    {errors.dateOfBirth && (
+                                        <p className="text-red-600 text-sm cursor-default">
+                                            {errors.dateOfBirth.message}
+                                        </p>
+                                    )}
+                                </div>
+                                <div className="form-control">
+                                    <label className="label">
+                                        <span className="label-text text-base md:text-lg font-semibold">
+                                            Age (Age will Display Auto)
+                                        </span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={age}
+                                        className="input input-bordered w-full text-base md:text-lg"
+
+                                        {...control.register('age')} // Register the age input
+                                        placeholder="Age"
+
+                                    />
+                                    {errors.age && (
+                                        <label className="label">
+                                            <span className="label-text-alt text-error">
+                                                {errors.age.message}
+                                            </span>
+                                        </label>
+                                    )}
+                                </div>
+                                <div className="form-control">
+                                    <label className="label">
+                                        <span className="label-text text-base md:text-lg font-semibold">
+                                            Height
                                         </span>
                                     </label>
                                     <input
                                         type="text"
                                         className="input input-bordered w-full text-base md:text-lg"
-                                        {...register("image")}
-                                        placeholder="Image"
+                                        {...register("height")}
+                                        placeholder="Ex - 5.0'"
                                     />
-                                    {errors.image && (
+                                    {errors.height && (
                                         <label className="label">
                                             <span className="label-text-alt text-error">
-                                                {errors.image.message}
+                                                {errors.height.message}
                                             </span>
                                         </label>
                                     )}
-                                </div> */}
+                                </div>
+
+                                <div className="form-control">
+                                    <label className="label">
+                                        <span className="label-text text-base md:text-lg font-semibold">
+                                            Current City Live In
+                                        </span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="input input-bordered w-full text-base md:text-lg"
+                                        {...register("currentLiveCity")}
+                                        placeholder="Ex - Mumbai"
+                                    />
+                                    {errors.currentLiveCity && (
+                                        <label className="label">
+                                            <span className="label-text-alt text-error">
+                                                {errors.currentLiveCity.message}
+                                            </span>
+                                        </label>
+                                    )}
+                                </div>
+
+
+
+                                <div className="form-control">
+                                    <label className="label">
+                                        <span className="label-text text-base md:text-lg font-semibold">
+                                            Phone Number
+                                        </span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="input input-bordered w-full text-base md:text-lg"
+                                        {...register("phone")}
+                                        placeholder="10-Digit Mobile No"
+                                    />
+                                    {errors.phone && (
+                                        <label className="label">
+                                            <span className="label-text-alt text-error">
+                                                {errors.phone.message}
+                                            </span>
+                                        </label>
+                                    )}
+                                </div>
+
+
+
+                                <div className="form-control">
+                                    <label className="label">
+                                        <span className="label-text text-base md:text-lg font-semibold">
+                                            Hobbies(Optional)
+                                        </span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="input input-bordered w-full text-base md:text-lg"
+                                        {...register("hobbies")}
+                                        placeholder="Hobbies"
+                                    />
+                                    {errors.hobbies && (
+                                        <label className="label">
+                                            <span className="label-text-alt text-error">
+                                                {errors.hobbies.message}
+                                            </span>
+                                        </label>
+                                    )}
+                                </div>
+
+
+
 
                             </div>
+
+
+
+                            <div className="form-control md:col-span-2">
+                                <label className="label">
+                                    <span className="label-text text-base md:text-lg font-semibold">
+                                        About YourSelf(Optional)
+                                    </span>
+                                </label>
+                                <textarea
+                                    className="textarea textarea-bordered min-h-32 w-full text-base md:text-lg p-4 resize-y"
+                                    {...register("aboutme")}
+                                    placeholder="Tell About Yourself..."
+                                />
+
+                                {errors.aboutme && (
+                                    <label className="label">
+                                        <span className="label-text-alt text-error">
+                                            {errors.aboutme.message}
+                                        </span>
+                                    </label>
+                                )}
+                            </div>
+
                         </div>
 
 
@@ -569,28 +653,29 @@ const CreateProfileForm = () => {
                                         </label>
                                     )}
                                 </div>
-                                <div className="form-control">
+
+
+
+
+                            </div>
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text text-base md:text-lg font-semibold">
+                                        About My Education(Optional)
+                                    </span>
+                                </label>
+                                <textarea
+                                    className="textarea textarea-bordered min-h-32 w-full text-base md:text-lg p-4 resize-y"
+                                    {...register("aboutmyeducation")}
+                                    placeholder="Tell About Your Education in 250 words..."
+                                />
+                                {errors.aboutmyeducation && (
                                     <label className="label">
-                                        <span className="label-text text-base md:text-lg font-semibold">
-                                            About My Education(Optional)
+                                        <span className="label-text-alt text-error">
+                                            {errors.aboutmyeducation.message}
                                         </span>
                                     </label>
-                                    <textarea
-                                        className="textarea textarea-bordered min-h-32 w-full text-base md:text-lg p-4 resize-y"
-                                        {...register("aboutmyeducation")}
-                                        placeholder="Tell About Your Education in 250 words..."
-                                    />
-                                    {errors.aboutmyeducation && (
-                                        <label className="label">
-                                            <span className="label-text-alt text-error">
-                                                {errors.aboutmyeducation.message}
-                                            </span>
-                                        </label>
-                                    )}
-                                </div>
-
-
-
+                                )}
                             </div>
                         </div>
 
@@ -818,28 +903,29 @@ const CreateProfileForm = () => {
                                         </label>
                                     )}
                                 </div>
-                                <div className="form-control">
+
+
+
+
+                            </div>
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text text-base md:text-lg font-semibold">
+                                        About My Family(Optional)
+                                    </span>
+                                </label>
+                                <textarea
+                                    className="textarea textarea-bordered min-h-32 w-full text-base md:text-lg p-4 resize-y"
+                                    {...register("aboutmyfamily")}
+                                    placeholder="Tell About Your Family in 250 words..."
+                                />
+                                {errors.aboutmyfamily && (
                                     <label className="label">
-                                        <span className="label-text text-base md:text-lg font-semibold">
-                                            About My Family(Optional)
+                                        <span className="label-text-alt text-error">
+                                            {errors.aboutmyfamily.message}
                                         </span>
                                     </label>
-                                    <textarea
-                                        className="textarea textarea-bordered min-h-32 w-full text-base md:text-lg p-4 resize-y"
-                                        {...register("aboutmyfamily")}
-                                        placeholder="Tell About Your Family in 250 words..."
-                                    />
-                                    {errors.aboutmyfamily && (
-                                        <label className="label">
-                                            <span className="label-text-alt text-error">
-                                                {errors.aboutmyfamily.message}
-                                            </span>
-                                        </label>
-                                    )}
-                                </div>
-
-
-
+                                )}
                             </div>
                         </div>
 

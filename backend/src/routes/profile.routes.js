@@ -20,7 +20,7 @@ profileRoutes.put("/update-profile/:id", authMiddleware, checkUserApproved, upda
 profileRoutes.delete("/delete-profile/:id", authMiddleware, checkUserApproved, deleteProfileById);
 
 
-profileRoutes.get("/get-profiles-by-user/", authMiddleware, checkUserApproved, getProfilesByUserId);
+profileRoutes.get("/get-profiles-by-user/", authMiddleware, getProfilesByUserId);
 
 
 

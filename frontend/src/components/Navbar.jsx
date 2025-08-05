@@ -1,9 +1,10 @@
 import React from "react"
-import { User, Code, LogOut } from "lucide-react";
+import { User, Code, LogOut, Search } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
 
 import { Link } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
+import ThemeSwitcher from "./ThemeSwitcher";
 
 const Navbar = () => {
 
@@ -28,8 +29,15 @@ const Navbar = () => {
                     </div>
                 )}
 
+
+
+
                 {/* User Profile and Dropdown */}
                 <div className="flex items-center gap-8">
+                    {/* THEME TOGGLE icon */}
+                    <div className="flex items-center gap-x-1">
+                        <ThemeSwitcher />
+                    </div>
                     <div className="dropdown dropdown-end">
                         <label tabIndex={0} className="btn btn-ghost btn-circle avatar flex flex-row ">
                             <div className="w-10 rounded-full ">
@@ -78,6 +86,17 @@ const Navbar = () => {
                                     Add Profile
                                 </Link>
                             </li>
+                            {authUser?.IsApproved === true && (
+                                <li>
+                                    <Link
+                                        to="/search-profiles"
+                                        className="hover:bg-primary hover:text-white text-base font-semibold"
+                                    >
+                                        <Search className="w-4 h-4 mr-1" />
+                                        Search Profiles
+                                    </Link>
+                                </li>
+                            )}
                             {authUser?.role === "ADMIN" && (
                                 <li>
                                     <Link

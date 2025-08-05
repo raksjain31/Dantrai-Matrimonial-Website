@@ -38,7 +38,7 @@ export const getAllUserDetails = async (req, res) => {
 export const approvedUserById = async (req, res) => {
     try {
         const { id } = req.params;
-        const { IsApproved, ApprovedbyUserId, ApprovedDate } = req.body;
+        // const { IsApproved, ApprovedbyUserId, ApprovedDate } = req.body;
         const UpdateUserApproved = await db.User.update({
             where: {
                 id: id
@@ -52,7 +52,7 @@ export const approvedUserById = async (req, res) => {
 
         });
         console.log('Profile Approved Successfully');
-        //return Updateprofile;
+        //return Updateprofile; 
         return res.status(201).json(UpdateUserApproved);
 
     } catch (error) {
@@ -63,6 +63,39 @@ export const approvedUserById = async (req, res) => {
 
     }
 
+
+}
+
+
+
+export const getAllCounts = async (req, res) => {
+
+    try {
+
+        const totaluserCount = await db.user.count();
+        const totalProfiles = await db.profile.count();
+        const totalApprovedUsers = await db.user.count({ where: { IsApproved: true } });
+        const totalApprovalPendingUsers = await db.user.count({ where: { IsApproved: false } });
+        const totalMaleProfiles = await db.profile.count({ where: { gender: "MALE" } });
+        const totalFemaleProfiles = await db.profile.count({ where: { gender: "FEMALE" } });
+
+
+        res.json({
+            totaluserCount,
+            totalProfiles,
+            totalApprovedUsers,
+            totalApprovalPendingUsers,
+            totalMaleProfiles,
+            totalFemaleProfiles
+        });
+
+
+
+    } catch (error) {
+        console.error('Error fetching Counts:', error);
+        res.status(500).json({ error: 'Failed to fetch Counts' });
+
+    }
 
 }
 
@@ -104,6 +137,65 @@ export const getAllApprovedUserCount = async (req, res) => {
 
     }
 }
+
+export const getAllApprovePendingUserCount = async (req, res) => {
+
+    try {
+
+        const userApprovePendingCount = await db.user.count({
+            where: {
+                IsApproved: false,
+            },
+        });
+        res.json({ ApprovePendingUsercount: userApprovePendingCount });
+
+
+
+    } catch (error) {
+        console.error('Error fetching Approval Pending user count:', error);
+        res.status(500).json({ error: 'Failed to fetch Approval Pending user count' });
+
+    }
+}
+
+export const getAllApprovePendingUsers = async (req, res) => {
+
+    try {
+
+        const users = await db.user.findMany({
+            where: {
+                IsApproved: false,
+                profiles: {
+                    some: {
+
+                    }
+
+                }
+            },
+        });
+
+        if (!users) {
+            return res.status(404).json({
+                message: "No Approval Pending Users Found"
+            })
+        }
+
+        res.status(200).json({
+            sucess: true,
+            message: "Approval Pending Users Fetched Successfully",
+            users
+        });
+
+
+
+
+    } catch (error) {
+        console.error('Error fetching Approval Pending Users:', error);
+        res.status(500).json({ error: 'Failed to fetch Approval Pending Users' });
+
+    }
+}
+
 
 export const getAllMaleProfileCount = async (req, res) => {
     try {

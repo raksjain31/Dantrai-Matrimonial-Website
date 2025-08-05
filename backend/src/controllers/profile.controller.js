@@ -1,9 +1,9 @@
 import { db } from "../libs/db.js";
-import cloudinary from "../Utils/cloudinary.js";
+
 import dotenv from "dotenv";
 
 
-
+import cloudinary from "../Utils/cloudinary.js";
 dotenv.config();
 
 cloudinary.config({
@@ -16,24 +16,24 @@ export const createProfile = async (req, res) => {
     try {
 
         console.log("File from multer:", req.file);
-
-        const { fullname, gender, dateOfBirth, height, currentLiveCity, phone,
+        console.log("File Path from multer:", req.file.path);
+        const { fullname, gender, dateOfBirth, age, height, currentLiveCity, phone, image,
             aboutme, education, college, aboutmyeducation, employedIn, occupation, organisation,
             aboutmycareer, father, mother, noOfBrothers, noOfsisters, noOfMarriedBrothers,
             noOfMarriedSisters, aboutmyfamily, hobbies } = req.body;
-        //image,
+
 
         const file = req.file;
 
 
-        // console.log('Received fields:', req.body);
-        // console.log('Received file:', req.file);
+        console.log('Received fields:', req.body);
+        console.log('Received file:', req.file);
 
         if (!file) {
             return res.status(400).json({ error: 'Image is required file empty' });
         }
 
-
+        //Working for cloudinary save File
         const result = await cloudinary.uploader.upload(req.file.path, (error, result) => {
             folder: 'user_profiles'
             if (error) {
@@ -46,15 +46,17 @@ export const createProfile = async (req, res) => {
             else {
                 console.log('Image uploaded successfully!');
 
-                //console.log('Image URL:', result.secure_url);
+                // console.log('Image URL:', result.secure_url);
             }
 
 
 
         })
+
+
         const newprofile = await db.Profile.create({
             data: {
-                fullname, gender, dateOfBirth, height, currentLiveCity, phone, image: result.secure_url,
+                fullname, gender, dateOfBirth, height, age: parseInt(age), currentLiveCity, phone, image: result.secure_url,
                 aboutme, education, college, aboutmyeducation, employedIn, occupation, organisation,
                 aboutmycareer, father, mother,
                 noOfBrothers: parseInt(noOfBrothers),
@@ -67,25 +69,7 @@ export const createProfile = async (req, res) => {
 
         });
 
-        // const streamUpload = () => {
-        //     return new Promise((resolve, reject) => {
-        //         const stream = cloudinary.uploader.upload_stream(
-        //             { folder: 'profiles' },
-        //             (error, result) => {
-        //                 if (result) {
-        //                     resolve(result);
-        //                 } else {
-        //                     reject(error);
-        //                 }
-        //             }
-        //         );
-        //         streamifier.createReadStream(req.file.buffer).pipe(stream);
-        //     });
-        // };
 
-        // const result = await streamUpload();
-
-        // Save to DB
 
 
 
@@ -241,13 +225,14 @@ export const deleteProfileById = async (req, res) => {
             }
         });
 
+        console.log(" Findprofile:", Findprofile)
         if (!Findprofile) {
             return res.status(404).json({
                 error: "Profile Not Found!"
             })
         }
 
-        await db.profile.delete({
+        const Deleteprofile = await db.profile.delete({
             where: {
                 id: id,
                 userId: req.user.id
@@ -258,6 +243,34 @@ export const deleteProfileById = async (req, res) => {
             sucess: true,
             message: "Profile Deleted Successfully",
         });
+
+        console.log(" Message isdeletedprofile:", Deleteprofile)
+        if (Deleteprofile) {
+
+            const profiles = await db.Profile.findMany({
+                where: {
+                    userId: req.user.id
+                }
+            });
+            console.log(" Profiles after delete:", profiles)
+
+            if (profiles.length == 0) {
+
+                //if no profiles found then isApproved is set to false
+                await db.User.update({
+                    where: {
+                        id: req.user.id
+                    },
+                    data: {
+                        IsApproved: false
+                    }
+                });
+
+
+
+            }
+        }
+
 
 
     } catch (error) {

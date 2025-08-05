@@ -1,0 +1,79 @@
+import { create } from "zustand";
+import { axiosInstance } from "../lib/axios";
+import { toast } from "react-hot-toast";
+
+
+
+
+export const useProfileStore = create((set) => ({
+    profiles: [],
+    profile: null,
+    profilesByUser: [],
+    isProfilesLoading: false,
+    isProfileLoading: false,
+
+    getAllProfile: async () => {
+
+        try {
+
+            set({ isProfilesLoading: true })
+
+            const res = await axiosInstance.get("/profile/get-all-profiles");
+
+            set({ profiles: res.data.profiles });
+        } catch (error) {
+            console.log("Error getting all Profiles", error);
+            toast.error("Error in Getting All Profiles")
+
+        }
+
+        finally {
+            set({ isProfilesLoading: false })
+        }
+
+    },
+
+    getProfileDataById: async (id) => {
+        try {
+
+            set({ isProfileLoading: true })
+            const res = await axiosInstance.get("/profile/get-profile/${id}");
+            set({ profile: res.data.profile });
+            toast.success(res.data.message);
+        } catch (error) {
+            console.log("Error getting profile by id", error);
+            toast.error("Error in Getting Profile");
+
+        }
+        finally {
+            set({ isProfileLoading: false })
+        }
+
+    },
+
+    getProfileByUser: async () => {
+
+        try {
+
+            set({ isProfileLoading: true })
+            const res = await axiosInstance("/profile/get-profiles-by-user");
+
+
+            console.log("Profile Fetched for User Sucessfully", res.data.profiles);
+            toast.dismiss();
+            toast.success("Profile Fetched for User Sucessfully");
+            set({ profilesByUser: res.data.profiles });
+
+        } catch (error) {
+            console.log("Error getting profiles by Users", error);
+            toast.dismiss();
+            toast.error("Error in Getting Profile by Users");
+
+        }
+        finally {
+            set({ isProfileLoading: false })
+        }
+
+    },
+
+})); 
