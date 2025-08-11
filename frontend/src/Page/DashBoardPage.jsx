@@ -37,7 +37,8 @@ const DashBoardPage = () => {
     });
 
 
-    const { getAllPendingApproval, userApprovedPending, isUsersApprovalPendingLoading } = useAdminStore();
+    const { getAllPendingApproval, userApprovedPending, 
+        isUsersApprovalPendingLoading } = useAdminStore();
 
     console.log("approval data:", userApprovedPending);
 

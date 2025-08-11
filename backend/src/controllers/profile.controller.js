@@ -23,11 +23,13 @@ export const createProfile = async (req, res) => {
             noOfMarriedSisters, aboutmyfamily, hobbies } = req.body;
 
 
-        const file = req.file;
+        const file = req.file.path;
 
 
         console.log('Received fields:', req.body);
         console.log('Received file:', req.file);
+        console.log('Received file Paths:', req.file.path);
+
 
         if (!file) {
             return res.status(400).json({ error: 'Image is required file empty' });
@@ -100,7 +102,32 @@ export const getAllProfile = async (req, res) => {
     try {
 
 
-        const profiles = await db.profile.findMany();
+        const profiles = await db.profile.findMany({
+
+
+            select: {
+                id: true,
+                fullname: true,
+                gender: true,
+                dateOfBirth: true,
+                age: true,
+                height: true,
+                currentLiveCity: true,
+                phone: true,
+                education: true,
+                currentLiveCity: true,
+                father: true,
+                mother: true,
+                user: {
+                    select: {
+                        village: true,
+                        Father: true
+                    }
+                }
+            }
+
+
+        });
 
         if (!profiles) {
 
@@ -134,6 +161,8 @@ export const getAllProfile = async (req, res) => {
 
 export const getProfileById = async (req, res) => {
     const { id } = req.params;
+
+    console.log(`Profile by Id :${id}`)
     try {
         const profile = await db.profile.findUnique(
             {
@@ -141,6 +170,7 @@ export const getProfileById = async (req, res) => {
                     id
                 }
             });
+
 
         if (!profile) {
             return res.status(404).json({

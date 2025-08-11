@@ -256,12 +256,30 @@ export const getUserProfilesListbyUserId = async (req, res) => {
     try {
 
         const { id } = req.params;
-        const userProfilesList = await db.profile.findMany({
+
+        const userProfilesList = await db.Profile.findMany({
             where: {
                 userId: id,
             },
         });
-        res.json({ userProfilesList: userProfilesList });
+
+        if (!userProfilesList) {
+            return res.status(400).json({
+                error: "Problem not found."
+            })
+
+        }
+        console.log(`Received ID from req.params: ${id}`);
+        console.log("userProfilesList :", userProfilesList)
+
+
+        res.status(200).json({
+            sucess: true,
+            message: "User Profiles List By UserID Fetched Successfully",
+            userProfilesList
+        });
+
+
 
 
 

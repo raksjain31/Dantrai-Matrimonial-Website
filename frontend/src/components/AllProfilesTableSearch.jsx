@@ -8,6 +8,11 @@ import { useNavigate } from "react-router-dom";
 const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
     const { authUser } = useAuthStore();
     const [search, setSearch] = useState("");
+    const [searchvillage, setVillageSearch] = useState("");
+
+    const [searchcurrentLiveCity, setCurrentLiveCitySearch] = useState(""); // Add state for searchcurrentLiveCity
+    const [minAge, setMinAge] = useState("");
+    const [maxAge, setMaxAge] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const { isDeletingProfile, onDeleteProfile } = useAction();
     const [gender, setGender] = useState("ALL");
@@ -16,17 +21,33 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
     const handleClick = () => {
         navigation('/add-profile');
     };
-    // Filter problems based on search, gender, and tags
+
+
+    // Filter problems based on search,villagesearch, gender, and minage,maxage
     const filteredAllProfilesSearch = useMemo(() => {
         return (AllprofilesSearch || [])
             .filter((profile) =>
                 profile.fullname.toLowerCase().includes(search.toLowerCase())
             )
             .filter((profile) =>
-                gender === "ALL" ? true : problem.gender === gender
+                gender === "ALL" ? true : profile.gender === gender
             )
+            .filter((profile) =>
+                profile.user.village.toLowerCase().includes(searchvillage.toLowerCase())
+            )
+            .filter((profile) =>
+                profile.currentLiveCity.toLowerCase().includes(searchcurrentLiveCity.toLowerCase())
+            )
+            .filter((profile) => {
+                if (!minAge && !maxAge) return true; // No filter if both are empty
+                const age = calculateAge(profile.dateOfBirth);
+                if (minAge && age < Number(minAge)) return false;
+                if (maxAge && age > Number(maxAge)) return false;
+                return true;
+            });
+    }, [AllprofilesSearch, search, , searchvillage, gender, minAge, maxAge, searchcurrentLiveCity]);
 
-    }, [AllprofilesSearch, search, gender]);
+
     function calculateAge(dateOfBirth) {
         const dob = new Date(dateOfBirth);
         const today = new Date();
@@ -75,6 +96,13 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                 />
+                <input
+                    type="text"
+                    placeholder="Search by Village"
+                    className="input input-bordered w-full md:w-1/3 bg-base-200"
+                    value={searchvillage}
+                    onChange={(e) => setVillageSearch(e.target.value)}
+                />
                 <select
                     className="select select-bordered bg-base-200"
                     value={gender}
@@ -87,6 +115,29 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
                         </option>
                     ))}
                 </select>
+                <input
+                    type="number"
+                    placeholder="Min Age"
+                    value={minAge}
+                    onChange={(e) => setMinAge(e.target.value)}
+                    className="border p-2"
+
+
+                />
+                <input
+                    type="text"
+                    placeholder="Search by City of Residence"
+                    className="input input-bordered w-full md:w-1/3 bg-base-200"
+                    value={searchcurrentLiveCity}
+                    onChange={(e) => setCurrentLiveCitySearch(e.target.value)}
+                />
+                <input
+                    type="number"
+                    placeholder="Max Age"
+                    value={maxAge}
+                    onChange={(e) => setMaxAge(e.target.value)}
+                    className="border p-2 ml-2"
+                />
                 {/* <select
                     className="select select-bordered bg-base-200"
                     value={difficulty}
@@ -118,10 +169,14 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
                         <tr>
                             <th>SrNo</th>
                             <th>NAME</th>
+                            <th>Father</th>
                             <th>GENDER</th>
                             <th>DOB</th>
                             <th>AGE</th>
-                            <th>Education</th>
+                            <th>HEIGHT</th>
+                            <th>EDUCATION</th>
+                            <th>VILLAGE</th>
+                            <th>CITY</th>
                             {authUser?.role === "USER" && (<th>Actions</th>)}
                         </tr>
                     </thead>
@@ -137,9 +192,14 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
                                                 {index + 1}
                                             </td>
                                             <td>
-                                                <Link to={`/profile/${profile.id}`} className="font-semibold hover:underline">
+                                                <Link to={`/profile/get-profile/${profile.id}`} className="font-semibold hover:underline">
                                                     {profile.fullname}
                                                 </Link>
+                                            </td>
+                                            <td>
+
+                                                {profile.father}
+
                                             </td>
                                             <td>
                                                 {profile.gender}
@@ -156,9 +216,25 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
                                             </td>
                                             <td>
 
+                                                {profile.height}
+
+                                            </td>
+                                            <td>
+
                                                 {profile.education}
 
                                             </td>
+                                            <td>
+
+                                                {profile.user.village}
+
+                                            </td>
+                                            <td>
+
+                                                {profile.currentLiveCity}
+
+                                            </td>
+
                                             <td>
                                                 <div className="flex flex-col md:flex-row gap-2 items-start md:items-center">
                                                     {authUser?.role === "USER" && (
@@ -198,6 +274,23 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
                     </tbody>
                 </table>
             </div>
+            {
+                <div className="flex justify-center ">
+                    <button className="btn btn-sm" disabled={currentPage === 1}
+                        onClick={() => setCurrentPage((prev) => prev - 1)}>
+                        Prev
+                    </button>
+                    <span className="btn btn-ghost btn-sm">
+                        {currentPage} /{totalPages}
+
+                    </span>
+                    <button className="btn btn-sm"
+                        disabled={currentPage === totalPages}
+                        onClick={() => setCurrentPage((prev) => prev + 1)}>
+                        Next
+                    </button>
+                </div>
+            }
 
         </div>
     )

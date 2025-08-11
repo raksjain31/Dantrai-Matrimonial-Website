@@ -125,7 +125,7 @@ const AdminUsersTable = ({ approvedPending }) => {
                                                 }
                                             </td>
                                             < td >
-                                                <Link to={`/profile/get-user-profiles-byUserId/${user.id}`} className="font-semibold hover:underline" >
+                                                <Link to={`/admin/get-user-profiles-byUserId/${user.id}`} className="font-semibold hover:underline" >
                                                     {user.name}
                                                 </Link>
                                             </td>

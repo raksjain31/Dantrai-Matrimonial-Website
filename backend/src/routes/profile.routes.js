@@ -13,7 +13,7 @@ profileRoutes.post("/create-profile", authMiddleware, upload.single('imageFile')
 profileRoutes.get("/get-all-profiles", authMiddleware, checkUserApproved, getAllProfile);
 
 
-profileRoutes.get("/get-profile/:id", authMiddleware, checkUserApproved, getProfileById);
+profileRoutes.get("/get-profile/:id", authMiddleware, getProfileById);//checkUserApproved,
 
 profileRoutes.put("/update-profile/:id", authMiddleware, checkUserApproved, updateProfilebyId);
 

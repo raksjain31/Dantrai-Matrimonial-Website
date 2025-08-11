@@ -12,6 +12,7 @@ import AddProfile from "./Page/AddProfile";
 import DashBoardPage from "./Page/DashBoardPage";
 import ProfileViewPage from "./Page/ProfileViewPage";
 import AllProfilesSearchPage from "./Page/AllProfilesSearchPage";
+import UserFamilyProfileView from "./components/UserFamilyProfileView";
 
 
 
@@ -64,9 +65,9 @@ const App = () => {
           element={authUser ? <AddProfile /> : <Navigate to={"/"} />} />
 
 
-        {/* <Route path="/profile/:id"
-          element={authUser ? <ProfileViewPage /> : <Navigate to={"/"} />} /> */}
-        {/* </Route> */}
+        <Route path="/profile/get-profile/:id"
+          element={authUser ? <UserFamilyProfileView /> : <Navigate to={"/"} />} />
+
 
         <Route path="/search-profiles"
           element={authUser ? <AllProfilesSearchPage /> : <Navigate to={"/"} />} />
@@ -79,7 +80,7 @@ const App = () => {
 
         </Route>
 
-        <Route path="/profile/get-user-profiles-byUserId/:id"
+        <Route path="/admin/get-user-profiles-byUserId/:id"
           element={authUser ? <ProfileViewPage /> : <Navigate to={"/dashboard"} />}
         >
 

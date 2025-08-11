@@ -1,22 +1,36 @@
 // ProfileListView.jsx
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../lib/axios';
+import { useParams } from 'react-router-dom';
+import { useProfileStore } from '../store/useProfileStore';
 
 export default function ProfileView() {
+    const { id } = useParams();
+    const { getProfilesByUserId, profilesByUserId, isProfileLoading } = useProfileStore();
+
+    console.log(`ID in profileview: ${id}`);
     const [profiles, setProfiles] = useState([]);
 
     useEffect(() => {
-        const fetchProfiles = async () => {
-            try {
-                const response = await axiosInstance.get('/profile/get-profiles-by-user');
-                setProfiles(response.data.profiles);
+        // const fetchProfiles = async () => {
+        //     try {
 
-            } catch (error) {
-                console.error('Error fetching profiles:', error);
-            }
-        };
-        fetchProfiles();
-    }, []);
+        //         const response = await axiosInstance.get(`/profile/get-user-profiles-byUserId/${id}`);
+        //         setProfiles(response.data.profiles);
+
+        //     } catch (error) {
+        //         console.error('Error fetching profiles:', error);
+        //     }
+        // };
+        // fetchProfiles();
+        getProfilesByUserId(id);
+
+    }, [id]);
+
+    useEffect(() => {
+
+        setProfiles(profilesByUserId)
+    }, [profilesByUserId]);
 
     const calculateAge = (dob) => {
         const birthDate = new Date(dob);
@@ -24,6 +38,8 @@ export default function ProfileView() {
         return Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
     };
 
+    console.log("length in table view", profiles.length);
+    console.log("length in table view", profiles);
     if (profiles.length <= 0)
         return <div className="text-center py-10">Loading...</div>;
 
@@ -33,7 +49,7 @@ export default function ProfileView() {
                 <div key={id} className=" card bg-base-100 w-150 shadow-sm" >
                     <div className="flex flex-col items-center p-6">
                         <figure className="px-10 pt-10">
-                            <img border="4" border-black
+                            <img border="4"
                                 width={300}
                                 height={300}
                                 src={profile.image}

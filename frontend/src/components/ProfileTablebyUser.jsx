@@ -92,7 +92,7 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
                                                 {index + 1}
                                             </td>
                                             <td>
-                                                <Link to={`/profile/${profile.id}`} className="font-semibold hover:underline">
+                                                <Link to={`/profile/get-profile/${profile.id}`} className="font-semibold hover:underline">
                                                     {profile.fullname}
                                                 </Link>
                                             </td>
