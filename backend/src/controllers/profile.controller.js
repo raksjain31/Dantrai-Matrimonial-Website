@@ -13,6 +13,8 @@ cloudinary.config({
     secure: true
 });
 export const createProfile = async (req, res) => {
+
+    let result = null;
     try {
 
         console.log("File from multer:", req.file);
@@ -36,7 +38,7 @@ export const createProfile = async (req, res) => {
         }
 
         //Working for cloudinary save File
-        const result = await cloudinary.uploader.upload(req.file.path, (error, result) => {
+        result = await cloudinary.uploader.upload(req.file.path, (error, result) => {
             folder: 'user_profiles'
             if (error) {
                 console.log(error);
@@ -55,10 +57,11 @@ export const createProfile = async (req, res) => {
 
         })
 
-
+        console.log("Backend Image Public ID:", result.public_id);
         const newprofile = await db.Profile.create({
             data: {
-                fullname, gender, dateOfBirth, height, age: parseInt(age), currentLiveCity, phone, image: result.secure_url,
+                fullname, gender, dateOfBirth, age: parseInt(age), height, currentLiveCity, phone,
+                image: result.secure_url, imagePublicID: result.public_id,
                 aboutme, education, college, aboutmyeducation, employedIn, occupation, organisation,
                 aboutmycareer, father, mother,
                 noOfBrothers: parseInt(noOfBrothers),
@@ -82,6 +85,16 @@ export const createProfile = async (req, res) => {
 
 
     catch (error) {
+
+        if (result?.public_id) {
+            try {
+                await cloudinary.uploader.destroy(result.public_id);
+                console.log("Rolled back image:", result.public_id);
+            } catch (delErr) {
+                console.error("Error deleting image from Cloudinary:", delErr);
+            }
+        }
+
         console.log(error);
         return res.status(500).json({
             error: "Error creating Profile",
@@ -199,21 +212,48 @@ export const getProfileById = async (req, res) => {
 }
 
 export const updateProfilebyId = async (req, res) => {
-
+    let result = null;
     try {
         const { id } = req.params;
+        const file = req.file.path;
 
-        const { fullname, gender, dateOfBirth, height, currentLiveCity, phone, image,
+        const { fullname, gender, dateOfBirth, age, height, currentLiveCity, phone, image,
             aboutme, education, college, aboutmyeducation, employedIn, occupation, organisation,
             aboutmycareer, father, mother, noOfBrothers, noOfsisters, noOfMarriedBrothers,
             noOfMarriedSisters, aboutmyfamily, hobbies } = req.body;
 
-        if (req.user.isApproved == false) {
-            return res.status(403).json({
-                message: "Access Denied- Approved Users only"
-            })
+        // if (req.user.isApproved == false) {
+        //     return res.status(403).json({
+        //         message: "Access Denied- Approved Users only"
+        //     })
+        // }
+
+        if (!file) {
+            return res.status(400).json({ error: 'Image is required file empty' });
         }
 
+        //Working for cloudinary save File
+        result = await cloudinary.uploader.upload(req.file.path, (error, result) => {
+            folder: 'user_profiles'
+            if (error) {
+                console.log(error);
+                return res.status(500).json({
+                    success: false,
+                    message: "Error uploading image",
+                })
+            }
+            else {
+                console.log('Image uploaded successfully!');
+
+                // console.log('Image URL:', result.secure_url);
+            }
+
+        })
+
+        console.log("Backend ID:", id);
+        console.log("Backend UserID:", req.user.id);
+
+        console.log("Backend Image Public ID:", result.public_id);
 
         const Updateprofile = await db.profile.update({
             where: {
@@ -221,10 +261,14 @@ export const updateProfilebyId = async (req, res) => {
                 userId: req.user.id
             },
             data: {
-                fullname, gender, dateOfBirth, height, currentLiveCity, phone, image,
+                fullname, gender, dateOfBirth, age: parseInt(age), height, currentLiveCity, phone, image: result.secure_url, imagePublicID: result.public_id,
                 aboutme, education, college, aboutmyeducation, employedIn, occupation, organisation,
-                aboutmycareer, father, mother, noOfBrothers, noOfsisters, noOfMarriedBrothers,
-                noOfMarriedSisters, aboutmyfamily, hobbies
+                aboutmycareer, father, mother,
+                noOfBrothers: parseInt(noOfBrothers),
+                noOfsisters: parseInt(noOfsisters),
+                noOfMarriedBrothers: parseInt(noOfMarriedBrothers),
+                noOfMarriedSisters: parseInt(noOfMarriedSisters),
+                aboutmyfamily, hobbies
             },
 
 
@@ -235,6 +279,15 @@ export const updateProfilebyId = async (req, res) => {
 
     } catch (error) {
         console.log(error);
+        console.log("Rolled back image:", result.public_id);
+        if (result?.public_id) {
+            try {
+                await cloudinary.uploader.destroy(result.public_id);
+                console.log("Rolled back image:", result.public_id);
+            } catch (delErr) {
+                console.error("Error deleting image from Cloudinary:", delErr);
+            }
+        }
         return res.status(500).json({
             error: "Error Updating Profile",
         });
@@ -346,6 +399,46 @@ export const getProfilesByUserId = async (req, res) => {
 
     }
 
+
+
+}
+
+
+export const getUserProfileByUserId = async (req, res) => {
+    const { id } = req.params;
+
+    console.log(`User Id :${id}`)
+    try {
+        const User = await db.user.findUnique(
+            {
+                where: {
+                    id
+                }
+            });
+
+
+        if (!User) {
+            return res.status(404).json({
+                error: "User Not Found!"
+            })
+        }
+
+        res.status(200).json({
+            sucess: true,
+            message: "User Fetched Successfully",
+            User
+        });
+
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            error: "Error while Fetching User Data  ",
+        });
+
+
+
+    }
 
 
 }

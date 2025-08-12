@@ -4,17 +4,22 @@ import { Link } from "react-router-dom";
 import { Bookmark, PencilIcon, Trash, TrashIcon, Plus } from "lucide-react";
 import useAction from '../store/useAction'
 import { useNavigate } from "react-router-dom";
+import ThemeSwitcher from './ThemeSwitcher';
 
 const ProfileTablebyUser = ({ profilesByUser }) => {
     const { authUser } = useAuthStore();
     const [search, setSearch] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const { isDeletingProfile, onDeleteProfile } = useAction();
-
+    const { isEditingProfile, onEditProfile } = useAction();
+    const [isDarkMode, setIsDarkMode] = useState(false);
     const navigation = useNavigate();
     const handleClick = () => {
         navigation('/add-profile');
     };
+
+    const watermarkText = `"${authUser.email}  ${authUser.phone}"`;
+
     // Filter problems based on search, difficulty, and tags
     const filteredProblems = useMemo(() => {
         return (profilesByUser || [])
@@ -54,7 +59,8 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
     };
 
     return (
-        <div className="w-full max-w-6xl mx-auto mt-10">
+        <div className="w-full max-w-6xl mx-auto mt-10 ">
+
             {/* Header with Create Playlist Button */}
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold">Profiles of your family</h2>
@@ -67,8 +73,11 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
                 </button>
             </div>
 
-            <div className="overflow-x-auto rounded-xl shadow-md">
-                <table className="table table-zebra table-lg bg-base-200 text-base-content">
+            <div className="overflow-x-auto rounded-xl shadow-md ">
+
+                <table className="table table-watermark table-zebra table-lg bg-base-200 text-base-content"
+                    style={{ "--watermark-text": watermarkText }}
+                >
                     <thead className="bg-base-300">
                         <tr>
                             <th>SrNo</th>
@@ -77,6 +86,8 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
                             <th>DOB</th>
                             <th>AGE</th>
                             <th>Education</th>
+                            <th>Delete/Edit</th>
+
                             {authUser?.role === "USER" && (<th>Actions</th>)}
                         </tr>
                     </thead>
@@ -91,12 +102,15 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
 
                                                 {index + 1}
                                             </td>
-                                            <td>
+                                            <td className='watemark'>
                                                 <Link to={`/profile/get-profile/${profile.id}`} className="font-semibold hover:underline">
                                                     {profile.fullname}
+                                                    <div className='text-xs text-color:gray-500'>
+                                                        {authUser.email}{authUser.phone}
+                                                    </div>
                                                 </Link>
                                             </td>
-                                            <td>
+                                            <td >
                                                 {profile.gender}
                                             </td>
                                             <td>
@@ -132,8 +146,15 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
                                                             }
 
                                                         </button>
-                                                        <button disabled className="btn btn-sm btn-warning">
-                                                            <PencilIcon className="w-4 h-4 text-white" />
+                                                        <button onClick={() => navigation(`/update-profile/${profile.id}`)} className="btn btn-sm btn-warning">
+                                                            {
+                                                                isEditingProfile ? (
+                                                                    <span className="loading loading-spinner text-white"></span>
+                                                                ) : (
+                                                                    <PencilIcon className="w-4 h-4 text-white" />
+                                                                )
+                                                            }
+
                                                         </button>
                                                     </div>
                                                     {/* )} */}

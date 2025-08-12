@@ -14,13 +14,16 @@ import {
     Briefcase,
     GraduationCap, House
 } from "lucide-react";
+import { useAuthStore } from '../store/useAuthStore';
 
 export default function UserFamilyProfileView() {
 
+    const isDarkMode =
+        document.documentElement.getAttribute("data-theme") === "dark";
 
     const { id } = useParams();
     const { getProfileDataById, profile, isProfileLoading } = useProfileStore();
-
+    const { authUser } = useAuthStore();
     console.log(`ID in profileview: ${id}`);
     const [profiles, setProfile] = useState(null);
 
@@ -63,13 +66,26 @@ export default function UserFamilyProfileView() {
     return (
         <div className="max-w-4xl mx-auto p-4 space-y-6">
 
-
-            <div className="text-2xl font-bold text-center ">{profile.fullname} Profile</div>
+            <div className="watermark">
+                {Array.from({ length: 50 }).map((_, i) => (
+                    <div
+                        key={i}
+                        className="watermark-text"
+                        style={{
+                            top: `${(i % 10) * 100}px`,
+                            left: `${Math.floor(i / 10) * 300}px`,
+                        }}
+                    >
+                        {authUser.email} | {authUser.phone}
+                    </div>
+                ))}
+            </div>
+            <div className="text-2xl font-bold text-center ">{profile.fullname}'s Profile</div>
 
 
             {/* Basic Information */}
             <div className="flex items-center justify-center bg-base-100">
-                <div className="flex bg-base-200 rounded-lg overflow-hidden select-none "
+                <div className="flex  bg-base-200 rounded-lg overflow-hidden select-none "
                     onCopy={(e) => e.preventDefault()}
                     onCut={(e) => e.preventDefault()}
                     onContextMenu={(e) => e.preventDefault()}
@@ -84,10 +100,11 @@ export default function UserFamilyProfileView() {
                         justifyContent: "center"
                     }}
                 >
+
                     <img
                         src={profile.image}
                         alt="Preview"
-                        className="w-48 h-48 object-cover object-center rounded-lg items-center"
+                        className=" w-48 h-48 object-cover object-center rounded-lg items-center"
 
                         style={{
                             width: "100%",
@@ -98,6 +115,8 @@ export default function UserFamilyProfileView() {
                             //objectFit: "contain"
                         }}
                     />
+                    {/* Watermark Overlay */}
+
                 </div>
             </div>
 
@@ -109,7 +128,10 @@ export default function UserFamilyProfileView() {
                 <div className="card-body ">
                     <h2 className="card-title text-lg text-primary">
                         <User className="w-5 h-5 text-warning" />
-                        Basic Information</h2>
+                        Basic Information
+                        <div className='text-xs text-color:gray-300'>
+                            {authUser.email}{authUser.phone}
+                        </div></h2>
                     <div className="grid grid-cols-2 gap-4 mt-2">
                         <div className='no-select'><strong>Name:</strong> {profile.fullname}</div>
 
@@ -133,7 +155,11 @@ export default function UserFamilyProfileView() {
                 <div className="card-body">
                     <h2 className="card-title text-lg text-primary">
                         <BookOpen className="w-5 h-5 text-warning" />
-                        Education</h2>
+                        Education
+                        <div className='text-xs text-color:gray-300'>
+                            {authUser.email}{authUser.phone}
+                        </div>
+                    </h2>
                     <div className="grid grid-cols-2 gap-4 mt-2">
                         <div><strong>Highest Qualification:</strong> {profile.education}</div>
                         <div><strong>University/College:</strong> {profile.college}</div>
@@ -150,7 +176,11 @@ export default function UserFamilyProfileView() {
                 <div className="card-body">
                     <h2 className="card-title text-lg text-primary">
                         <Briefcase className="w-5 h-5 text-warning" />
-                        Occupation</h2>
+                        Occupation
+                        <div className='text-xs text-color:gray-300'>
+                            {authUser.email}{authUser.phone}
+                        </div>
+                    </h2>
                     <div className="grid grid-cols-2 gap-4 mt-2">
                         <div><strong>Employed In:</strong> {profile.employedIn}</div>
                         <div><strong>Occupation:</strong> {profile.occupation}</div>
@@ -167,7 +197,11 @@ export default function UserFamilyProfileView() {
                 <div className="card-body">
                     <h2 className="card-title text-lg text-primary">
                         <House className="w-5 h-5 text-warning" />
-                        Family Background</h2>
+                        Family Background
+                        <div className='text-xs text-color:gray-300'>
+                            {authUser.email}{authUser.phone}
+                        </div>
+                    </h2>
                     <div className="grid grid-cols-2 gap-4 mt-2">
                         <div><strong>Father's Name:</strong> {profile.father}</div>
                         <div><strong>Mother's Name:</strong> {profile.mother}</div>

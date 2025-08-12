@@ -7,7 +7,7 @@ import { useProfileStore } from '../store/useProfileStore';
 export default function ProfileView() {
     const { id } = useParams();
     const { getProfilesByUserId, profilesByUserId, isProfileLoading } = useProfileStore();
-
+    const { authUser } = useAuthStore();
     console.log(`ID in profileview: ${id}`);
     const [profiles, setProfiles] = useState([]);
 
@@ -45,16 +45,35 @@ export default function ProfileView() {
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+
+            <div className="watermark">
+                {Array.from({ length: 50 }).map((_, i) => (
+                    <div
+                        key={i}
+                        className="watermark-text"
+                        style={{
+                            top: `${(i % 10) * 100}px`,
+                            left: `${Math.floor(i / 10) * 300}px`,
+                        }}
+                    >
+                        {authUser.email} | {authUser.phone}
+                    </div>
+                ))}
+            </div>
+
             {profiles.map((profile, id) => (
                 <div key={id} className=" card bg-base-100 w-150 shadow-sm" >
                     <div className="flex flex-col items-center p-6">
+
                         <figure className="px-10 pt-10">
+
                             <img border="4"
                                 width={300}
                                 height={300}
                                 src={profile.image}
                                 alt="profile"
                                 className="rounded-xl" />
+
                         </figure>
 
                         <div className="card-body items-center text-center border border-white rounded-2xl select-none">

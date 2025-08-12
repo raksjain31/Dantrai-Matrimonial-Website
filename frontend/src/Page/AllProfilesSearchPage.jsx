@@ -5,13 +5,14 @@ import { Loader } from "lucide-react";
 import ProfileTablebyUser from '../components/ProfileTablebyUser';
 import { useAuthStore } from '../store/useAuthStore';
 import AllProfilesTableSearch from '../components/AllProfilesTableSearch';
+import { useNavigate } from 'react-router-dom';
 
 const AllProfilesSearchPage = () => {
     const { authuser } = useAuthStore();
 
     const { getAllProfile, profiles, isProfileLoading } = useProfileStore();
 
-
+    const navigation = useNavigate();
     useEffect(() => {
         getAllProfile()
 

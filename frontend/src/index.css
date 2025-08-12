@@ -3,3 +3,58 @@
 @plugin "daisyui" {
     themes: light --default, dark --prefersdark, cupcake;
 }
+
+.watermark {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    /* So it doesn't block clicks */
+    z-index: -1;
+    /* Stay behind everything */
+    background-image: repeating-linear-gradient(transparent,
+            transparent 80px,
+            rgba(0, 0, 0, 0.05) 80px);
+}
+
+.watermark-text {
+    position: absolute;
+    font-size: 17px;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.08);
+    /* Light faded text */
+    /* transform: rotate(-10deg); */
+    white-space: nowrap;
+}
+
+.table-watermark {
+    position: relative;
+    overflow: hidden;
+
+    /* Hide watermark overflow */
+}
+
+.table-watermark::before {
+    content: var(--watermark-text);
+    /* your watermark text */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-50deg);
+    font-size: 1rem;
+    background-repeat: repeat;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.08);
+    /* Light and transparent */
+    white-space: nowrap;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Ensure table content is above watermark */
+.table-watermark * {
+    position: relative;
+    z-index: 1;
+}

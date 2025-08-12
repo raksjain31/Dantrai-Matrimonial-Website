@@ -38,6 +38,9 @@ const Navbar = () => {
                     <div className="flex items-center gap-x-1">
                         <ThemeSwitcher />
                     </div>
+                    <div>
+                        {authUser?.name}
+                    </div>
                     <div className="dropdown dropdown-end">
                         <label tabIndex={0} className="btn btn-ghost btn-circle avatar flex flex-row ">
                             <div className="w-10 rounded-full ">
@@ -70,7 +73,7 @@ const Navbar = () => {
                             </li>
                             <li>
                                 <Link
-                                    to="/profile"
+                                    to={`/profile/user`}//get-user-by-UserId/${authUser.id}
                                     className="hover:bg-primary hover:text-white text-base font-semibold"
                                 >
                                     <User className="w-4 h-4 mr-2" />

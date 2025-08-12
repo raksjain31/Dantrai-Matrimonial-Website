@@ -75,6 +75,7 @@ phone String?
 //annualIncome String
 userId String
 image String?
+imagePublicID String?
 aboutme String?//about my self 250 words
 education String?// Highest Degree
 college String? //College or Institute

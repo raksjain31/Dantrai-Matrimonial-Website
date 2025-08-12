@@ -2318,6 +2318,7 @@ export namespace Prisma {
     phone: string | null
     userId: string | null
     image: string | null
+    imagePublicID: string | null
     aboutme: string | null
     education: string | null
     college: string | null
@@ -2349,6 +2350,7 @@ export namespace Prisma {
     phone: string | null
     userId: string | null
     image: string | null
+    imagePublicID: string | null
     aboutme: string | null
     education: string | null
     college: string | null
@@ -2380,6 +2382,7 @@ export namespace Prisma {
     phone: number
     userId: number
     image: number
+    imagePublicID: number
     aboutme: number
     education: number
     college: number
@@ -2429,6 +2432,7 @@ export namespace Prisma {
     phone?: true
     userId?: true
     image?: true
+    imagePublicID?: true
     aboutme?: true
     education?: true
     college?: true
@@ -2460,6 +2464,7 @@ export namespace Prisma {
     phone?: true
     userId?: true
     image?: true
+    imagePublicID?: true
     aboutme?: true
     education?: true
     college?: true
@@ -2491,6 +2496,7 @@ export namespace Prisma {
     phone?: true
     userId?: true
     image?: true
+    imagePublicID?: true
     aboutme?: true
     education?: true
     college?: true
@@ -2609,6 +2615,7 @@ export namespace Prisma {
     phone: string | null
     userId: string
     image: string | null
+    imagePublicID: string | null
     aboutme: string | null
     education: string | null
     college: string | null
@@ -2659,6 +2666,7 @@ export namespace Prisma {
     phone?: boolean
     userId?: boolean
     image?: boolean
+    imagePublicID?: boolean
     aboutme?: boolean
     education?: boolean
     college?: boolean
@@ -2691,6 +2699,7 @@ export namespace Prisma {
     phone?: boolean
     userId?: boolean
     image?: boolean
+    imagePublicID?: boolean
     aboutme?: boolean
     education?: boolean
     college?: boolean
@@ -2723,6 +2732,7 @@ export namespace Prisma {
     phone?: boolean
     userId?: boolean
     image?: boolean
+    imagePublicID?: boolean
     aboutme?: boolean
     education?: boolean
     college?: boolean
@@ -2755,6 +2765,7 @@ export namespace Prisma {
     phone?: boolean
     userId?: boolean
     image?: boolean
+    imagePublicID?: boolean
     aboutme?: boolean
     education?: boolean
     college?: boolean
@@ -2775,7 +2786,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type ProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fullname" | "gender" | "dateOfBirth" | "age" | "height" | "currentLiveCity" | "phone" | "userId" | "image" | "aboutme" | "education" | "college" | "aboutmyeducation" | "employedIn" | "occupation" | "organisation" | "aboutmycareer" | "father" | "mother" | "noOfBrothers" | "noOfMarriedBrothers" | "noOfsisters" | "noOfMarriedSisters" | "aboutmyfamily" | "hobbies" | "createdAt" | "updatedAt", ExtArgs["result"]["profile"]>
+  export type ProfileOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fullname" | "gender" | "dateOfBirth" | "age" | "height" | "currentLiveCity" | "phone" | "userId" | "image" | "imagePublicID" | "aboutme" | "education" | "college" | "aboutmyeducation" | "employedIn" | "occupation" | "organisation" | "aboutmycareer" | "father" | "mother" | "noOfBrothers" | "noOfMarriedBrothers" | "noOfsisters" | "noOfMarriedSisters" | "aboutmyfamily" | "hobbies" | "createdAt" | "updatedAt", ExtArgs["result"]["profile"]>
   export type ProfileInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -2802,6 +2813,7 @@ export namespace Prisma {
       phone: string | null
       userId: string
       image: string | null
+      imagePublicID: string | null
       aboutme: string | null
       education: string | null
       college: string | null
@@ -3254,6 +3266,7 @@ export namespace Prisma {
     readonly phone: FieldRef<"Profile", 'String'>
     readonly userId: FieldRef<"Profile", 'String'>
     readonly image: FieldRef<"Profile", 'String'>
+    readonly imagePublicID: FieldRef<"Profile", 'String'>
     readonly aboutme: FieldRef<"Profile", 'String'>
     readonly education: FieldRef<"Profile", 'String'>
     readonly college: FieldRef<"Profile", 'String'>
@@ -3735,6 +3748,7 @@ export namespace Prisma {
     phone: 'phone',
     userId: 'userId',
     image: 'image',
+    imagePublicID: 'imagePublicID',
     aboutme: 'aboutme',
     education: 'education',
     college: 'college',
@@ -4029,6 +4043,7 @@ export namespace Prisma {
     phone?: StringNullableFilter<"Profile"> | string | null
     userId?: StringFilter<"Profile"> | string
     image?: StringNullableFilter<"Profile"> | string | null
+    imagePublicID?: StringNullableFilter<"Profile"> | string | null
     aboutme?: StringNullableFilter<"Profile"> | string | null
     education?: StringNullableFilter<"Profile"> | string | null
     college?: StringNullableFilter<"Profile"> | string | null
@@ -4061,6 +4076,7 @@ export namespace Prisma {
     phone?: SortOrderInput | SortOrder
     userId?: SortOrder
     image?: SortOrderInput | SortOrder
+    imagePublicID?: SortOrderInput | SortOrder
     aboutme?: SortOrderInput | SortOrder
     education?: SortOrderInput | SortOrder
     college?: SortOrderInput | SortOrder
@@ -4096,6 +4112,7 @@ export namespace Prisma {
     phone?: StringNullableFilter<"Profile"> | string | null
     userId?: StringFilter<"Profile"> | string
     image?: StringNullableFilter<"Profile"> | string | null
+    imagePublicID?: StringNullableFilter<"Profile"> | string | null
     aboutme?: StringNullableFilter<"Profile"> | string | null
     education?: StringNullableFilter<"Profile"> | string | null
     college?: StringNullableFilter<"Profile"> | string | null
@@ -4128,6 +4145,7 @@ export namespace Prisma {
     phone?: SortOrderInput | SortOrder
     userId?: SortOrder
     image?: SortOrderInput | SortOrder
+    imagePublicID?: SortOrderInput | SortOrder
     aboutme?: SortOrderInput | SortOrder
     education?: SortOrderInput | SortOrder
     college?: SortOrderInput | SortOrder
@@ -4167,6 +4185,7 @@ export namespace Prisma {
     phone?: StringNullableWithAggregatesFilter<"Profile"> | string | null
     userId?: StringWithAggregatesFilter<"Profile"> | string
     image?: StringNullableWithAggregatesFilter<"Profile"> | string | null
+    imagePublicID?: StringNullableWithAggregatesFilter<"Profile"> | string | null
     aboutme?: StringNullableWithAggregatesFilter<"Profile"> | string | null
     education?: StringNullableWithAggregatesFilter<"Profile"> | string | null
     college?: StringNullableWithAggregatesFilter<"Profile"> | string | null
@@ -4348,6 +4367,7 @@ export namespace Prisma {
     currentLiveCity: string
     phone?: string | null
     image?: string | null
+    imagePublicID?: string | null
     aboutme?: string | null
     education?: string | null
     college?: string | null
@@ -4380,6 +4400,7 @@ export namespace Prisma {
     phone?: string | null
     userId: string
     image?: string | null
+    imagePublicID?: string | null
     aboutme?: string | null
     education?: string | null
     college?: string | null
@@ -4410,6 +4431,7 @@ export namespace Prisma {
     currentLiveCity?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    imagePublicID?: NullableStringFieldUpdateOperationsInput | string | null
     aboutme?: NullableStringFieldUpdateOperationsInput | string | null
     education?: NullableStringFieldUpdateOperationsInput | string | null
     college?: NullableStringFieldUpdateOperationsInput | string | null
@@ -4442,6 +4464,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    imagePublicID?: NullableStringFieldUpdateOperationsInput | string | null
     aboutme?: NullableStringFieldUpdateOperationsInput | string | null
     education?: NullableStringFieldUpdateOperationsInput | string | null
     college?: NullableStringFieldUpdateOperationsInput | string | null
@@ -4473,6 +4496,7 @@ export namespace Prisma {
     phone?: string | null
     userId: string
     image?: string | null
+    imagePublicID?: string | null
     aboutme?: string | null
     education?: string | null
     college?: string | null
@@ -4503,6 +4527,7 @@ export namespace Prisma {
     currentLiveCity?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    imagePublicID?: NullableStringFieldUpdateOperationsInput | string | null
     aboutme?: NullableStringFieldUpdateOperationsInput | string | null
     education?: NullableStringFieldUpdateOperationsInput | string | null
     college?: NullableStringFieldUpdateOperationsInput | string | null
@@ -4534,6 +4559,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     userId?: StringFieldUpdateOperationsInput | string
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    imagePublicID?: NullableStringFieldUpdateOperationsInput | string | null
     aboutme?: NullableStringFieldUpdateOperationsInput | string | null
     education?: NullableStringFieldUpdateOperationsInput | string | null
     college?: NullableStringFieldUpdateOperationsInput | string | null
@@ -4840,6 +4866,7 @@ export namespace Prisma {
     phone?: SortOrder
     userId?: SortOrder
     image?: SortOrder
+    imagePublicID?: SortOrder
     aboutme?: SortOrder
     education?: SortOrder
     college?: SortOrder
@@ -4879,6 +4906,7 @@ export namespace Prisma {
     phone?: SortOrder
     userId?: SortOrder
     image?: SortOrder
+    imagePublicID?: SortOrder
     aboutme?: SortOrder
     education?: SortOrder
     college?: SortOrder
@@ -4910,6 +4938,7 @@ export namespace Prisma {
     phone?: SortOrder
     userId?: SortOrder
     image?: SortOrder
+    imagePublicID?: SortOrder
     aboutme?: SortOrder
     education?: SortOrder
     college?: SortOrder
@@ -5346,6 +5375,7 @@ export namespace Prisma {
     currentLiveCity: string
     phone?: string | null
     image?: string | null
+    imagePublicID?: string | null
     aboutme?: string | null
     education?: string | null
     college?: string | null
@@ -5376,6 +5406,7 @@ export namespace Prisma {
     currentLiveCity: string
     phone?: string | null
     image?: string | null
+    imagePublicID?: string | null
     aboutme?: string | null
     education?: string | null
     college?: string | null
@@ -5436,6 +5467,7 @@ export namespace Prisma {
     phone?: StringNullableFilter<"Profile"> | string | null
     userId?: StringFilter<"Profile"> | string
     image?: StringNullableFilter<"Profile"> | string | null
+    imagePublicID?: StringNullableFilter<"Profile"> | string | null
     aboutme?: StringNullableFilter<"Profile"> | string | null
     education?: StringNullableFilter<"Profile"> | string | null
     college?: StringNullableFilter<"Profile"> | string | null
@@ -5566,6 +5598,7 @@ export namespace Prisma {
     currentLiveCity: string
     phone?: string | null
     image?: string | null
+    imagePublicID?: string | null
     aboutme?: string | null
     education?: string | null
     college?: string | null
@@ -5596,6 +5629,7 @@ export namespace Prisma {
     currentLiveCity?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    imagePublicID?: NullableStringFieldUpdateOperationsInput | string | null
     aboutme?: NullableStringFieldUpdateOperationsInput | string | null
     education?: NullableStringFieldUpdateOperationsInput | string | null
     college?: NullableStringFieldUpdateOperationsInput | string | null
@@ -5626,6 +5660,7 @@ export namespace Prisma {
     currentLiveCity?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    imagePublicID?: NullableStringFieldUpdateOperationsInput | string | null
     aboutme?: NullableStringFieldUpdateOperationsInput | string | null
     education?: NullableStringFieldUpdateOperationsInput | string | null
     college?: NullableStringFieldUpdateOperationsInput | string | null
@@ -5656,6 +5691,7 @@ export namespace Prisma {
     currentLiveCity?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    imagePublicID?: NullableStringFieldUpdateOperationsInput | string | null
     aboutme?: NullableStringFieldUpdateOperationsInput | string | null
     education?: NullableStringFieldUpdateOperationsInput | string | null
     college?: NullableStringFieldUpdateOperationsInput | string | null

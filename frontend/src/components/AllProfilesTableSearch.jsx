@@ -22,7 +22,7 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
         navigation('/add-profile');
     };
 
-
+    const watermarkText = `"${authUser.email}  ${authUser.phone}"`;
     // Filter problems based on search,villagesearch, gender, and minage,maxage
     const filteredAllProfilesSearch = useMemo(() => {
         return (AllprofilesSearch || [])
@@ -83,6 +83,21 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
 
     return (
         <div className="w-full max-w-6xl mx-auto mt-10">
+            <div className="watermark">
+                {Array.from({ length: 50 }).map((_, i) => (
+                    <div
+                        key={i}
+                        className="watermark-text"
+                        style={{
+                            top: `${(i % 10) * 100}px`,
+                            left: `${Math.floor(i / 10) * 300}px`,
+                        }}
+                    >
+                        {authUser.email} | {authUser.phone}
+                    </div>
+                ))}
+            </div>
+
             {/* Header with Create Playlist Button */}
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold">Search For Profiles</h2>
@@ -164,7 +179,9 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
                 </select> */}
             </div>
             <div className="overflow-x-auto rounded-xl shadow-md">
-                <table className="table table-zebra table-lg bg-base-200 text-base-content">
+                <table className="table table-watermark table-zebra table-lg bg-base-200 text-base-content"
+                    style={{ "--watermark-text": watermarkText, backgroundRepeat: "repeat", backgroundPosition: "center" }}
+                >
                     <thead className="bg-base-300">
                         <tr>
                             <th>SrNo</th>
@@ -194,6 +211,9 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
                                             <td>
                                                 <Link to={`/profile/get-profile/${profile.id}`} className="font-semibold hover:underline">
                                                     {profile.fullname}
+                                                    <div className='text-xs text-color:gray-500'>
+                                                        {authUser.email}{authUser.phone}
+                                                    </div>
                                                 </Link>
                                             </td>
                                             <td>

@@ -12,6 +12,8 @@ export const useProfileStore = create((set) => ({
     profilesByUserId: [],
     isProfilesLoading: false,
     isProfileLoading: false,
+    isUserLoading: false,
+    user: null,
 
     getAllProfile: async () => {
 
@@ -40,8 +42,8 @@ export const useProfileStore = create((set) => ({
             set({ isProfileLoading: true })
             const res = await axiosInstance.get(`/profile/get-profile/${id}`);
             set({ profile: res.data.profile });
-            toast.success(res.data.message);
-
+            //toast.success(res.data.message);
+            console.log("Data profile by id:::", res.data.profile);
         } catch (error) {
             console.log("Error getting profile by id", error);
             toast.error("Error in Getting Profile");
@@ -99,6 +101,27 @@ export const useProfileStore = create((set) => ({
         }
         finally {
             set({ isProfileLoading: false })
+        }
+
+    },
+
+
+
+    getuserDataById: async (id) => {
+        try {
+            console.log(`ID:::${id}`);
+            set({ isUserLoading: true })
+            const res = await axiosInstance.get(`/profile/get-user-by-UserId/${id}`);
+            set({ user: res.data.User });
+            //toast.success(res.data.message);
+            console.log("Data User by id:::", res.data.User);
+        } catch (error) {
+            console.log("Error getting User by id", error);
+            toast.error("Error in Getting User");
+
+        }
+        finally {
+            set({ isUserLoading: false })
         }
 
     },

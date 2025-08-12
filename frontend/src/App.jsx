@@ -9,10 +9,13 @@ import { Loader } from 'lucide-react';
 import Layout from "./layout/Layout";
 import AdminRoute from "./components/AdminRoute";
 import AddProfile from "./Page/AddProfile";
+import EditProfile from "./Page/EditProfile";
+
 import DashBoardPage from "./Page/DashBoardPage";
 import ProfileViewPage from "./Page/ProfileViewPage";
 import AllProfilesSearchPage from "./Page/AllProfilesSearchPage";
 import UserFamilyProfileView from "./components/UserFamilyProfileView";
+import LoginUserProfilePage from "./Page/LoginUserProfilePage";
 
 
 
@@ -61,29 +64,45 @@ const App = () => {
           element={!authUser ? <SignUpPage /> : <Navigate to={"/"} />}
         />
         {/* <Route element={<AdminRoute />}> */}
-        <Route path="/add-profile"
-          element={authUser ? <AddProfile /> : <Navigate to={"/"} />} />
+
+        <Route path='/' element={<Layout />}>
+          <Route path="/profile/user"
+            element={authUser ? <LoginUserProfilePage /> : <Navigate to={"/"} />} />
+        </Route>
+
+        <Route path='/' element={<Layout />}>
+          <Route path="/add-profile"
+            element={authUser ? <AddProfile /> : <Navigate to={"/"} />} />
+        </Route>
 
 
-        <Route path="/profile/get-profile/:id"
-          element={authUser ? <UserFamilyProfileView /> : <Navigate to={"/"} />} />
+        <Route path='/' element={<Layout />}>
+          <Route path="/update-profile/:id"
+            element={authUser ? <EditProfile /> : <Navigate to={"/"} />} />
+        </Route>
 
 
-        <Route path="/search-profiles"
-          element={authUser ? <AllProfilesSearchPage /> : <Navigate to={"/"} />} />
+        <Route path='/' element={<Layout />}>
+          <Route path="/profile/get-profile/:id"
+            element={authUser ? <UserFamilyProfileView /> : <Navigate to={"/"} />} />
+        </Route>
 
-
+        <Route path='/' element={<Layout />}>
+          <Route path="/search-profiles"
+            element={authUser ? <AllProfilesSearchPage /> : <Navigate to={"/"} />} />
+        </Route>
 
         <Route element={<AdminRoute />}>
           <Route path="/dashboard"
             element={authUser ? <DashBoardPage /> : <Navigate to={"/"} />} />
-
         </Route>
 
-        <Route path="/admin/get-user-profiles-byUserId/:id"
-          element={authUser ? <ProfileViewPage /> : <Navigate to={"/dashboard"} />}
-        >
 
+        <Route path='/' element={<Layout />}>
+          <Route path="/admin/get-user-profiles-byUserId/:id"
+            element={authUser ? <ProfileViewPage /> : <Navigate to={"/dashboard"} />}
+          >
+          </Route>
         </Route>
 
 
