@@ -83,6 +83,7 @@ export default function ProfileView() {
                             <p className="text-white-700"><strong>Father: </strong> {profile.father}</p>
                             <p className="text-white-700"><strong>Mother: </strong> {profile.mother}</p>
                             <p className="text-white-700"><strong>Gender:</strong> {profile.gender}</p>
+                            <p className="text-white-700"><strong>Phone:</strong> {profile.phone}</p>
                             <p className="text-white-700"><strong>DOB: </strong> {profile.dateOfBirth?.slice(0, 10)}</p>
                             <p className="text-white-700"><strong>Age: </strong> {calculateAge(profile.dateOfBirth)} years</p>
                             <p className="text-white-700"><strong>Height: </strong> {profile.height}</p>

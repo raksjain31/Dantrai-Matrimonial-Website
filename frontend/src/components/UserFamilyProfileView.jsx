@@ -142,6 +142,8 @@ export default function UserFamilyProfileView() {
                             ? new Date(profile.dateOfBirth).toISOString().split("T")[0]
                             : "N/A"}</div>
                         <div><strong>Age:</strong>  {calculateAge(profile.dateOfBirth)}</div>
+                        <div><strong>Phone:</strong> {profile.phone}</div>
+                        <div></div>
                         <div><strong>About me:</strong> {profile.aboutme}</div>
                     </div>
                 </div>
@@ -163,6 +165,7 @@ export default function UserFamilyProfileView() {
                     <div className="grid grid-cols-2 gap-4 mt-2">
                         <div><strong>Highest Qualification:</strong> {profile.education}</div>
                         <div><strong>University/College:</strong> {profile.college}</div>
+
                         <div><strong>About My Education :</strong> {profile.aboutmyeducation}</div>
                     </div>
                 </div>
