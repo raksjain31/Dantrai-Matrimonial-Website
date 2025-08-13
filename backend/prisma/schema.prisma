@@ -35,6 +35,7 @@ enum  Villages {
   MADIYA
   MERMODAVARA
 
+
 }
 
 model User {

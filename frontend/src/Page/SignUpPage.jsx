@@ -206,6 +206,7 @@ const SignUpPage = () => {
                                 <option value="ANADARA">ANADARA</option>
                                 <option value="MAROL">MAROL</option>
                                 <option value="PAMERA">PAMERA</option>
+                                <option value="POSINDARA">POSINDARA</option>
                                 <option value="DHAN">DHAN</option>
                                 <option value="MADIYA">MADIYA</option>
                                 <option value="MERMODAVARA">MERMODAVARA</option>
