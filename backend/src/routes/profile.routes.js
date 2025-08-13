@@ -17,7 +17,7 @@ profileRoutes.get("/get-profile/:id", authMiddleware, getProfileById);//checkUse
 
 profileRoutes.put("/update-profile/:id", authMiddleware, upload.single('imageFile'), updateProfilebyId);
 
-profileRoutes.delete("/delete-profile/:id", authMiddleware, checkUserApproved, deleteProfileById);
+profileRoutes.delete("/delete-profile/:id", authMiddleware, deleteProfileById);//checkUserApproved,
 
 
 profileRoutes.get("/get-profiles-by-user/", authMiddleware, getProfilesByUserId);
