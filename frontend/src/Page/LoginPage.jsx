@@ -53,10 +53,14 @@ const LoginPage = () => {
                     {/* Logo */}
                     <div className="text-center mb-8">
                         <div className="flex flex-col items-center gap-2 group">
+
                             <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                                 <User2 className="w-6 h-6 text-primary" />
                             </div>
-                            <h1 className="text-2xl font-bold mt-2">Welcome Back </h1>
+                            <h1 className="text-4xl font-extrabold z-10 text-center">
+                                Welcome back to <span className="text-purple-800  ">Abugoad Youth Connect</span>
+                            </h1>
+                            {/* <h1 className="text-2xl font-bold mt-2">Welcome Back </h1> */}
                             <p className="text-base-content/60">Login in to your account</p>
                         </div>
                     </div>
