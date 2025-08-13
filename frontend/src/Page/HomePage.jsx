@@ -12,7 +12,10 @@ const HomePage = () => {
 
 
     useEffect(() => {
-        getProfileByUser()
+        if (authuser) {
+            getProfileByUser()
+        }
+
 
     }, [getProfileByUser])
 
