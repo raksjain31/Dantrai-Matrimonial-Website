@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import axiosInstance from '../lib/axios';
 import { useParams } from 'react-router-dom';
 import { useProfileStore } from '../store/useProfileStore';
+import { useAuthStore } from '../store/useAuthStore';
 
 export default function ProfileView() {
     const { id } = useParams();

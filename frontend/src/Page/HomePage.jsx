@@ -29,6 +29,7 @@ const HomePage = () => {
 
     return (
         <div className='min-h-screen flex flex-col items-center mt-14 px-4' >
+            {/* <div className="min-h-screen flex flex-col items-center mt-8 md:mt-14 px-2 sm:px-4 lg:px-8 w-full"> */}
             <div className="absolute top-16 left-0 w-1/3 h-1/3 bg-purple-800 opacity-30 blur-3xl rounded-md bottom-9"></div>
             <h1 className="text-4xl font-extrabold z-10 text-center">
                 Welcome to <span className="text-purple-800  ">Abugoad Youth Connect</span>

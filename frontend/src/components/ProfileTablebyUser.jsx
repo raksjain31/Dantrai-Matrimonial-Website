@@ -59,7 +59,7 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
     };
 
     return (
-        <div className="w-full max-w-6xl mx-auto mt-10 ">
+        <div className="h-screen w-full max-w-6xl mx-auto mt-10 ">
 
             {/* Header with Create Playlist Button */}
             <div className="flex justify-between items-center mb-6">
@@ -73,20 +73,24 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
                 </button>
             </div>
 
-            <div className="overflow-x-auto rounded-xl shadow-md ">
+            <div className="overflow-auto rounded-lg shadow">
 
                 <table className="table table-watermark table-zebra table-lg bg-base-200 text-base-content"
                     style={{ "--watermark-text": watermarkText }}
                 >
+
                     <thead className="bg-base-300">
                         <tr>
-                            <th>SrNo</th>
-                            <th>NAME</th>
-                            <th>GENDER</th>
-                            <th>DOB</th>
-                            <th>AGE</th>
-                            <th>Education</th>
-                            <th>Delete/Edit</th>
+                            <th scope="col" class="px-6 py-3">
+                                SrNo</th>
+                            <th scope="col" class="px-6 py-3">
+                                NAME
+                            </th>
+                            <th scope="col" class="px-6 py-3" >
+                                DOB</th>
+                            <th scope="col" class="px-6 py-3">AGE</th>
+                            <th scope="col" class="px-6 py-3">Education</th>
+                            <th scope="col" class="px-6 py-3">Delete/Edit</th>
 
                             {authUser?.role === "USER" && (<th>Actions</th>)}
                         </tr>
@@ -175,7 +179,7 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
                 </table>
             </div>
 
-        </div>
+        </div >
     )
 }
 
