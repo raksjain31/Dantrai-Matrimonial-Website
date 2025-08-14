@@ -69,7 +69,7 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
                         onClick={handleClick}
                     >
                         <Plus className="w-4 h-4 text-white" />
-                        Create Profile
+                        <p className="text-sm text-white"> Create Profile</p>
                     </button>
                 </div>
 
