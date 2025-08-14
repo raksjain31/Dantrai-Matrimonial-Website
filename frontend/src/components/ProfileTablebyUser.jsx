@@ -77,27 +77,25 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
 
                 <div className="w-full relative overflow-x-auto shadow-md sm:rounded-lg">
 
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
-                        // className="table table-watermark table-zebra bg-base-200 text-base-content text-sm sm:text-base min-w-[600px]"
-                        style={{ "--watermark-text": watermarkText }}
-                    >
-                        <thead className="bg-base-300 text-xs sm:text-sm">
-                            <tr>
-                                <th className="px-2 sm:px-6 py-3">SrNo</th>
-                                <th className="px-2 sm:px-6 py-3">NAME</th>
-                                <th className="px-2 sm:px-6 py-3">GENDER</th>
-                                {/* <th className="px-2 sm:px-6 py-3">DOB</th> */}
-                                <th className="px-2 sm:px-6 py-3">AGE</th>
-                                <th className="px-2 sm:px-6 py-3">EDUCATION</th>
-                                <th className="px-2 sm:px-6 py-3">Delete/Edit</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {paginatedProfiles.length > 0 ? (
-                                paginatedProfiles.map((profile, index) => (
-                                    <tr key={profile.id}>
-                                        <td>{index + 1}</td>
-                                        <td className="flex gap-2 flex-wrap">
+                    <div className="hidden sm:block overflow-x-auto">
+                        <table className="min-w-[800px] w-full text-sm text-left text-gray-500 dark:text-gray-400"
+                            style={{ "--watermark-text": watermarkText }}>
+                            <thead className="bg-base-300">
+                                <tr>
+                                    <th className="px-4 py-3">SrNo</th>
+                                    <th className="px-4 py-3">Name</th>
+                                    <th className="px-4 py-3">Gender</th>
+                                    <th className="px-4 py-3">DOB</th>
+                                    <th className="px-4 py-3">Age</th>
+                                    <th className="px-4 py-3">Education</th>
+                                    <th className="px-4 py-3">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {paginatedProfiles.map((profile, index) => (
+                                    <tr key={profile.id} className="border-b">
+                                        <td className="px-4 py-3">{index + 1}</td>
+                                        <td className="flex gap-2 flex-wrap px-4 py-3">
                                             <Link
                                                 to={`/profile/get-profile/${profile.id}`}
                                                 className="font-semibold hover:underline"
@@ -108,15 +106,13 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
                                                 </div>
                                             </Link>
                                         </td>
-                                        <td>{profile.gender}</td>
-                                        {/* <td>
-                                            {profile?.dateOfBirth && !isNaN(new Date(profile.dateOfBirth))
-                                                ? new Date(profile.dateOfBirth).toISOString().split("T")[0]
-                                                : "N/A"}
-                                        </td> */}
-                                        <td>{calculateAge(profile.dateOfBirth)}</td>
-                                        <td>{profile.education}</td>
-                                        <td>
+                                        <td className="px-4 py-3">{profile.gender}</td>
+                                        <td className="px-4 py-3">
+                                            {new Date(profile.dateOfBirth).toISOString().split("T")[0]}
+                                        </td>
+                                        <td className="px-4 py-3">{calculateAge(profile.dateOfBirth)}</td>
+                                        <td className="px-4 py-3">{profile.education}</td>
+                                        <td className="px-4 py-3">
                                             <div className="flex gap-2 flex-wrap">
                                                 <button
                                                     onClick={() => handleDelete(profile.id)}
@@ -141,19 +137,72 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
                                             </div>
                                         </td>
                                     </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td
-                                        colSpan={7}
-                                        className="text-center py-6 text-gray-500 text-sm sm:text-base"
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+
+                    {/* Mobile Card View */}
+                    <div className="sm:hidden space-y-4">
+                        {paginatedProfiles.map((profile, index) => (
+                            <div
+                                key={profile.id}
+                                className="border rounded-lg p-4 shadow-sm bg-white dark:bg-gray-800"
+                            >
+                                {/* <h3 className="font-bold text-lg text-white">{profile.fullname}</h3> */}
+                                <h3 className="font-bold text-lg text-white">
+                                    <Link
+                                        to={`/profile/get-profile/${profile.id}`}
+                                        className="font-semibold hover:underline"
                                     >
-                                        No profiles found.
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
+                                        {profile.fullname}
+                                        <div className="text-xs text-gray-500">
+                                            {authUser.email} {authUser.phone}
+                                        </div>
+                                    </Link>
+                                </h3>
+                                <p className="text-sm text-white">Gender: {profile.gender}</p>
+                                <p className="text-sm text-white">
+                                    DOB: {new Date(profile.dateOfBirth).toISOString().split("T")[0]}
+                                </p>
+                                <p className="text-sm  text-white">
+                                    Age: {calculateAge(profile.dateOfBirth)}
+                                </p>
+                                <p className="text-sm  text-white">Education: {profile.education}</p>
+
+                                {/* Actions */}
+                                <div className="flex gap-2 mt-3">
+                                    {/* <button className="btn btn-xs btn-error">Delete</button>
+                                    <button className="btn btn-xs btn-warning">Edit</button>
+                                     */}
+
+                                    <button
+                                        onClick={() => handleDelete(profile.id)}
+                                        className="btn btn-xs sm:btn-sm btn-error"
+                                    >
+                                        {isDeletingProfile ? (
+                                            <span className="loading loading-spinner text-white"></span>
+                                        ) : (
+                                            <TrashIcon className="w-4 h-4 text-white" />
+                                        )}
+                                    </button>
+                                    <button
+                                        onClick={() => navigation(`/update-profile/${profile.id}`)}
+                                        className="btn btn-xs sm:btn-sm btn-warning"
+                                    >
+                                        {isEditingProfile ? (
+                                            <span className="loading loading-spinner text-white"></span>
+                                        ) : (
+                                            <PencilIcon className="w-4 h-4 text-white" />
+                                        )}
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
 
                 </div>
             </div>
