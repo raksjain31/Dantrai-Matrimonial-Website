@@ -153,7 +153,7 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
                                 className="border rounded-lg p-4 shadow-sm bg-white dark:bg-gray-800"
                             >
                                 {/* <h3 className="font-bold text-lg text-white">{profile.fullname}</h3> */}
-                                <h3 className="font-bold text-lg text-white">
+                                <h3 className="font-bold text-lg">
                                     <Link
                                         to={`/profile/get-profile/${profile.id}`}
                                         className="font-semibold hover:underline"
@@ -164,14 +164,14 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
                                         </div>
                                     </Link>
                                 </h3>
-                                <p className="text-sm text-white">Gender: {profile.gender}</p>
-                                <p className="text-sm text-white">
+                                <p className="text-sm text-gray-600">Gender: {profile.gender}</p>
+                                <p className="text-sm text-gray-600">
                                     DOB: {new Date(profile.dateOfBirth).toISOString().split("T")[0]}
                                 </p>
-                                <p className="text-sm  text-white">
+                                <p className="text-sm  text-gray-600">
                                     Age: {calculateAge(profile.dateOfBirth)}
                                 </p>
-                                <p className="text-sm  text-white">Education: {profile.education}</p>
+                                <p className="text-sm  text-gray-600">Education: {profile.education}</p>
 
                                 {/* Actions */}
                                 <div className="flex gap-2 mt-3">
