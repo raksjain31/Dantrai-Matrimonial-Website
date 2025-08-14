@@ -83,6 +83,7 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
 
     return (
         <div className="w-full max-w-6xl mx-auto mt-10">
+            {/* Watermark */}
             <div className="watermark">
                 {Array.from({ length: 50 }).map((_, i) => (
                     <div
@@ -98,11 +99,12 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
                 ))}
             </div>
 
-            {/* Header with Create Playlist Button */}
+            {/* Header */}
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold">Search For Profiles</h2>
-
             </div>
+
+            {/* Filters */}
             <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
                 <input
                     type="text"
@@ -177,10 +179,18 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
                         </option>
                     ))}
                 </select> */}
+
             </div>
-            <div className="overflow-x-auto rounded-xl shadow-md">
-                <table className="table table-watermark table-zebra table-lg bg-base-200 text-base-content"
-                    style={{ "--watermark-text": watermarkText, backgroundRepeat: "repeat", backgroundPosition: "center" }}
+
+            {/* Desktop Table View */}
+            <div className="hidden sm:block overflow-x-auto rounded-xl shadow-md">
+                <table
+                    className="table table-watermark table-zebra table-lg bg-base-200 text-base-content min-w-[1000px]"
+                    style={{
+                        "--watermark-text": watermarkText,
+                        backgroundRepeat: "repeat",
+                        backgroundPosition: "center",
+                    }}
                 >
                     <thead className="bg-base-300">
                         <tr>
@@ -194,124 +204,167 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
                             <th>EDUCATION</th>
                             <th>VILLAGE</th>
                             <th>CITY</th>
-                            {authUser?.role === "USER" && (<th>Actions</th>)}
+                            {authUser?.role === "USER" && <th>Actions</th>}
                         </tr>
                     </thead>
                     <tbody>
-                        {
-                            paginatedProfiles.length > 0 ? (
-                                paginatedProfiles.map((profile, index) => {
-
-                                    return (
-                                        <tr key={profile.id}>
-                                            <td>
-
-                                                {index + 1}
-                                            </td>
-                                            <td>
-                                                <Link to={`/profile/get-profile/${profile.id}`} className="font-semibold hover:underline">
-                                                    {profile.fullname}
-                                                    <div className='text-xs text-color:gray-500'>
-                                                        {authUser.email}{authUser.phone}
-                                                    </div>
-                                                </Link>
-                                            </td>
-                                            <td>
-
-                                                {profile.father}
-
-                                            </td>
-                                            <td>
-                                                {profile.gender}
-                                            </td>
-                                            <td>
-
-                                                {profile?.dateOfBirth && !isNaN(new Date(profile.dateOfBirth))
-                                                    ? new Date(profile.dateOfBirth).toISOString().split("T")[0]
-                                                    : "N/A"}
-                                            </td>
-                                            <td>
-                                                {calculateAge(profile.dateOfBirth)}
-
-                                            </td>
-                                            <td>
-
-                                                {profile.height}
-
-                                            </td>
-                                            <td>
-
-                                                {profile.education}
-
-                                            </td>
-                                            <td>
-
-                                                {profile.user.village}
-
-                                            </td>
-                                            <td>
-
-                                                {profile.currentLiveCity}
-
-                                            </td>
-
-                                            <td>
-                                                <div className="flex flex-col md:flex-row gap-2 items-start md:items-center">
-                                                    {authUser?.role === "USER" && (
-                                                        <div className="flex gap-2">
-                                                            <button
-                                                                onClick={() => handleDelete(profile.id)}
-                                                                className="btn btn-sm btn-error"
-                                                            >
-
-                                                                {
-                                                                    isDeletingProfile ? (
-                                                                        <span className="loading loading-spinner text-white"></span>
-                                                                    ) : (
-                                                                        <TrashIcon className="w-4 h-4 text-white" />
-                                                                    )
-                                                                }
-
-                                                            </button>
-                                                            <button disabled className="btn btn-sm btn-warning">
-                                                                <PencilIcon className="w-4 h-4 text-white" />
-                                                            </button>
-                                                        </div>
-                                                    )}
-
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    );
-                                })
-                            ) : (
-                                <tr>
-                                    <td colSpan={5} className="text-center py-6 text-gray-500">
-                                        No problems found.
+                        {paginatedProfiles.length > 0 ? (
+                            paginatedProfiles.map((profile, index) => (
+                                <tr key={profile.id}>
+                                    <td>{index + 1}</td>
+                                    <td>
+                                        <Link
+                                            to={`/profile/get-profile/${profile.id}`}
+                                            className="font-semibold hover:underline"
+                                        >
+                                            {profile.fullname}
+                                            <div className="text-xs text-gray-500">
+                                                {authUser.email} {authUser.phone}
+                                            </div>
+                                        </Link>
                                     </td>
+                                    <td>{profile.father}</td>
+                                    <td>{profile.gender}</td>
+                                    <td>
+                                        {profile?.dateOfBirth &&
+                                            !isNaN(new Date(profile.dateOfBirth))
+                                            ? new Date(profile.dateOfBirth).toISOString().split("T")[0]
+                                            : "N/A"}
+                                    </td>
+                                    <td>{calculateAge(profile.dateOfBirth)}</td>
+                                    <td>{profile.height}</td>
+                                    <td>{profile.education}</td>
+                                    <td>{profile.user.village}</td>
+                                    <td>{profile.currentLiveCity}</td>
+                                    {authUser?.role === "USER" && (
+                                        <td>
+                                            <div className="flex gap-2">
+                                                <button
+                                                    onClick={() => handleDelete(profile.id)}
+                                                    className="btn btn-sm btn-error"
+                                                >
+                                                    {isDeletingProfile ? (
+                                                        <span className="loading loading-spinner text-white"></span>
+                                                    ) : (
+                                                        <TrashIcon className="w-4 h-4 text-white" />
+                                                    )}
+                                                </button>
+                                                <button
+                                                    disabled
+                                                    className="btn btn-sm btn-warning"
+                                                >
+                                                    <PencilIcon className="w-4 h-4 text-white" />
+                                                </button>
+                                            </div>
+                                        </td>
+                                    )}
                                 </tr>
-                            )}
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan={11} className="text-center py-6 text-gray-500">
+                                    No profiles found.
+                                </td>
+                            </tr>
+                        )}
                     </tbody>
                 </table>
             </div>
-            {
-                <div className="flex justify-center ">
-                    <button className="btn btn-sm" disabled={currentPage === 1}
-                        onClick={() => setCurrentPage((prev) => prev - 1)}>
-                        Prev
-                    </button>
-                    <span className="btn btn-ghost btn-sm">
-                        {currentPage} /{totalPages}
 
-                    </span>
-                    <button className="btn btn-sm"
-                        disabled={currentPage === totalPages}
-                        onClick={() => setCurrentPage((prev) => prev + 1)}>
-                        Next
-                    </button>
-                </div>
-            }
+            {/* Mobile Card View */}
+            <div className="sm:hidden space-y-4">
+                {paginatedProfiles.length > 0 ? (
+                    paginatedProfiles.map((profile, index) => (
+                        <div
+                            key={profile.id}
+                            className="border rounded-lg p-4 shadow-sm bg-base-200"
+                        >
+                            <h3 className="font-bold text-lg">
+                                <Link
+                                    to={`/profile/get-profile/${profile.id}`}
+                                    className="font-semibold hover:underline"
+                                >
+                                    {profile.fullname}
+                                    <div className="text-xs text-gray-500">
+                                        {authUser.email} {authUser.phone}
+                                    </div>
+                                </Link>
+                            </h3>
 
+                            <p className="text-sm text-gray-600">
+                                Father: {profile.father}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                                Gender: {profile.gender}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                                DOB:{" "}
+                                {profile?.dateOfBirth &&
+                                    !isNaN(new Date(profile.dateOfBirth))
+                                    ? new Date(profile.dateOfBirth).toISOString().split("T")[0]
+                                    : "N/A"}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                                Age: {calculateAge(profile.dateOfBirth)}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                                Height: {profile.height}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                                Education: {profile.education}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                                Village: {profile.user.village}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                                City: {profile.currentLiveCity}
+                            </p>
+
+                            {/* Actions */}
+                            {authUser?.role === "USER" && (
+                                <div className="flex gap-2 mt-3">
+                                    <button
+                                        onClick={() => handleDelete(profile.id)}
+                                        className="btn btn-sm btn-error"
+                                    >
+                                        {isDeletingProfile ? (
+                                            <span className="loading loading-spinner text-white"></span>
+                                        ) : (
+                                            <TrashIcon className="w-4 h-4 text-white" />
+                                        )}
+                                    </button>
+                                    <button disabled className="btn btn-sm btn-warning">
+                                        <PencilIcon className="w-4 h-4 text-white" />
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    ))
+                ) : (
+                    <p className="text-center py-6 text-gray-500">No profiles found.</p>
+                )}
+            </div>
+
+            {/* Pagination */}
+            <div className="flex justify-center mt-4">
+                <button
+                    className="btn btn-sm"
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage((prev) => prev - 1)}
+                >
+                    Prev
+                </button>
+                <span className="btn btn-ghost btn-sm">
+                    {currentPage} / {totalPages}
+                </span>
+                <button
+                    className="btn btn-sm"
+                    disabled={currentPage === totalPages}
+                    onClick={() => setCurrentPage((prev) => prev + 1)}
+                >
+                    Next
+                </button>
+            </div>
         </div>
     )
 }
