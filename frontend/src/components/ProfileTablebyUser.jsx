@@ -59,127 +59,100 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
     };
 
     return (
-        <div className="h-screen w-full max-w-6xl mx-auto mt-10 ">
-
+        <div className="h-screen w-full max-w-6xl mx-auto mt-10 px-2 sm:px-4">
             {/* Header with Create Playlist Button */}
-            <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold">Profiles of your family</h2>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
+                <h2 className="text-xl sm:text-2xl font-bold">Profiles of your family</h2>
                 <button
-                    className="btn bg-purple-800 gap-2"
+                    className="btn btn-sm sm:btn-md bg-purple-800 gap-2 w-full sm:w-auto"
                     onClick={handleClick}
                 >
-                    <Plus className="w-4 h-4" />
+                    <Plus className="w-4 h-4 text-white" />
                     Create Profile
                 </button>
             </div>
 
-            <div className="overflow-auto rounded-lg shadow">
-
-                <table className="table table-watermark table-zebra table-lg bg-base-200 text-base-content"
+            {/* Table wrapper for mobile scroll */}
+            <div className="overflow-x-auto rounded-lg shadow">
+                <table
+                    className="table table-watermark table-zebra bg-base-200 text-base-content text-sm sm:text-base min-w-[600px]"
                     style={{ "--watermark-text": watermarkText }}
                 >
-
-                    <thead className="bg-base-300">
+                    <thead className="bg-base-300 text-xs sm:text-sm">
                         <tr>
-                            <th scope="col" class="px-6 py-3">
-                                SrNo</th>
-                            <th scope="col" class="px-6 py-3">
-                                NAME
-                            </th>
-                            <th scope="col" class="px-6 py-3" >
-                                DOB</th>
-                            <th scope="col" class="px-6 py-3">AGE</th>
-                            <th scope="col" class="px-6 py-3">Education</th>
-                            <th scope="col" class="px-6 py-3">Delete/Edit</th>
-
-                            {authUser?.role === "USER" && (<th>Actions</th>)}
+                            <th className="px-2 sm:px-6 py-3">SrNo</th>
+                            <th className="px-2 sm:px-6 py-3">NAME</th>
+                            <th className="px-2 sm:px-6 py-3">GENDER</th>
+                            <th className="px-2 sm:px-6 py-3">DOB</th>
+                            <th className="px-2 sm:px-6 py-3">AGE</th>
+                            <th className="px-2 sm:px-6 py-3">EDUCATION</th>
+                            <th className="px-2 sm:px-6 py-3">Delete/Edit</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {
-                            paginatedProfiles.length > 0 ? (
-                                paginatedProfiles.map((profile, index) => {
-
-                                    return (
-                                        <tr key={profile.id}>
-                                            <td>
-
-                                                {index + 1}
-                                            </td>
-                                            <td className='watemark'>
-                                                <Link to={`/profile/get-profile/${profile.id}`} className="font-semibold hover:underline">
-                                                    {profile.fullname}
-                                                    <div className='text-xs text-color:gray-500'>
-                                                        {authUser.email}{authUser.phone}
-                                                    </div>
-                                                </Link>
-                                            </td>
-                                            <td >
-                                                {profile.gender}
-                                            </td>
-                                            <td>
-
-                                                {profile?.dateOfBirth && !isNaN(new Date(profile.dateOfBirth))
-                                                    ? new Date(profile.dateOfBirth).toISOString().split("T")[0]
-                                                    : "N/A"}
-                                            </td>
-                                            <td>
-                                                {calculateAge(profile.dateOfBirth)}
-
-                                            </td>
-                                            <td>
-
-                                                {profile.education}
-
-                                            </td>
-                                            <td>
-                                                <div className="flex flex-col md:flex-row gap-2 items-start md:items-center">
-                                                    {/* {authUser?.role === "USER" && ( */}
-                                                    <div className="flex gap-2">
-                                                        <button
-                                                            onClick={() => handleDelete(profile.id)}
-                                                            className="btn btn-sm btn-error"
-                                                        >
-
-                                                            {
-                                                                isDeletingProfile ? (
-                                                                    <span className="loading loading-spinner text-white"></span>
-                                                                ) : (
-                                                                    <TrashIcon className="w-4 h-4 text-white" />
-                                                                )
-                                                            }
-
-                                                        </button>
-                                                        <button onClick={() => navigation(`/update-profile/${profile.id}`)} className="btn btn-sm btn-warning">
-                                                            {
-                                                                isEditingProfile ? (
-                                                                    <span className="loading loading-spinner text-white"></span>
-                                                                ) : (
-                                                                    <PencilIcon className="w-4 h-4 text-white" />
-                                                                )
-                                                            }
-
-                                                        </button>
-                                                    </div>
-                                                    {/* )} */}
-
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    );
-                                })
-                            ) : (
-                                <tr>
-                                    <td colSpan={5} className="text-center py-6 text-gray-500">
-                                        No problems found.
+                        {paginatedProfiles.length > 0 ? (
+                            paginatedProfiles.map((profile, index) => (
+                                <tr key={profile.id}>
+                                    <td>{index + 1}</td>
+                                    <td className="whitespace-nowrap">
+                                        <Link
+                                            to={`/profile/get-profile/${profile.id}`}
+                                            className="font-semibold hover:underline"
+                                        >
+                                            {profile.fullname}
+                                            <div className="text-xs text-gray-500">
+                                                {authUser.email} {authUser.phone}
+                                            </div>
+                                        </Link>
+                                    </td>
+                                    <td>{profile.gender}</td>
+                                    <td>
+                                        {profile?.dateOfBirth && !isNaN(new Date(profile.dateOfBirth))
+                                            ? new Date(profile.dateOfBirth).toISOString().split("T")[0]
+                                            : "N/A"}
+                                    </td>
+                                    <td>{calculateAge(profile.dateOfBirth)}</td>
+                                    <td>{profile.education}</td>
+                                    <td>
+                                        <div className="flex gap-2 flex-wrap">
+                                            <button
+                                                onClick={() => handleDelete(profile.id)}
+                                                className="btn btn-xs sm:btn-sm btn-error"
+                                            >
+                                                {isDeletingProfile ? (
+                                                    <span className="loading loading-spinner text-white"></span>
+                                                ) : (
+                                                    <TrashIcon className="w-4 h-4 text-white" />
+                                                )}
+                                            </button>
+                                            <button
+                                                onClick={() => navigation(`/update-profile/${profile.id}`)}
+                                                className="btn btn-xs sm:btn-sm btn-warning"
+                                            >
+                                                {isEditingProfile ? (
+                                                    <span className="loading loading-spinner text-white"></span>
+                                                ) : (
+                                                    <PencilIcon className="w-4 h-4 text-white" />
+                                                )}
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
-                            )}
+                            ))
+                        ) : (
+                            <tr>
+                                <td
+                                    colSpan={7}
+                                    className="text-center py-6 text-gray-500 text-sm sm:text-base"
+                                >
+                                    No profiles found.
+                                </td>
+                            </tr>
+                        )}
                     </tbody>
                 </table>
             </div>
-
-        </div >
+        </div>
     )
 }
 
