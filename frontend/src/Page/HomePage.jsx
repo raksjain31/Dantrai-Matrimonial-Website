@@ -19,9 +19,10 @@ const HomePage = () => {
             </div>
         );
     }
+    //items-center text-center
 
     return (
-        <div className="min-h-screen flex flex-col items-center mt-10 sm:mt-14 px-3 sm:px-4 w-full relative overflow-hidden">
+        <div className="min-h-screen flex flex-col  mt-10 sm:mt-14 px-3 sm:px-4 w-full relative overflow-hidden">
 
             {/* Decorative Background - hidden on mobile if causing issues */}
             <div className="hidden sm:block absolute top-16 left-0 w-1/3 h-1/3 bg-purple-800 opacity-30 blur-3xl rounded-md"></div>
@@ -32,7 +33,7 @@ const HomePage = () => {
             </h1>
 
             {/* Subtitle */}
-            <p className="mt-3 sm:mt-4 text-center text-base sm:text-lg font-medium text-gray-500 dark:text-gray-400 z-10 px-2">
+            <p className="mt-3 sm:mt-4  text-base sm:text-lg font-medium text-gray-500 dark:text-gray-400 z-10 px-2">
                 A platform for Abugoad's eleven village family members to connect with each other in real time.
             </p>
 
