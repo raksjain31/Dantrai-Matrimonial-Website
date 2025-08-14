@@ -74,7 +74,9 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
                 </div>
 
                 {/* Table wrapper for mobile scroll */}
+
                 <div className="w-full relative overflow-x-auto shadow-md sm:rounded-lg">
+
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
                         // className="table table-watermark table-zebra bg-base-200 text-base-content text-sm sm:text-base min-w-[600px]"
                         style={{ "--watermark-text": watermarkText }}
@@ -84,7 +86,7 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
                                 <th className="px-2 sm:px-6 py-3">SrNo</th>
                                 <th className="px-2 sm:px-6 py-3">NAME</th>
                                 <th className="px-2 sm:px-6 py-3">GENDER</th>
-                                <th className="px-2 sm:px-6 py-3">DOB</th>
+                                {/* <th className="px-2 sm:px-6 py-3">DOB</th> */}
                                 <th className="px-2 sm:px-6 py-3">AGE</th>
                                 <th className="px-2 sm:px-6 py-3">EDUCATION</th>
                                 <th className="px-2 sm:px-6 py-3">Delete/Edit</th>
@@ -107,11 +109,11 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
                                             </Link>
                                         </td>
                                         <td>{profile.gender}</td>
-                                        <td>
+                                        {/* <td>
                                             {profile?.dateOfBirth && !isNaN(new Date(profile.dateOfBirth))
                                                 ? new Date(profile.dateOfBirth).toISOString().split("T")[0]
                                                 : "N/A"}
-                                        </td>
+                                        </td> */}
                                         <td>{calculateAge(profile.dateOfBirth)}</td>
                                         <td>{profile.education}</td>
                                         <td>
@@ -152,9 +154,10 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
                             )}
                         </tbody>
                     </table>
+
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 
