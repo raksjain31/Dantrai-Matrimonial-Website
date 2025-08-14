@@ -73,7 +73,7 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
             </div>
 
             {/* Table wrapper for mobile scroll */}
-            <div className="overflow-x-auto rounded-lg shadow">
+            <div className="w-full overflow-x-auto rounded-lg shadow">
                 <table
                     className="table table-watermark table-zebra bg-base-200 text-base-content text-sm sm:text-base min-w-[600px]"
                     style={{ "--watermark-text": watermarkText }}
@@ -94,7 +94,7 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
                             paginatedProfiles.map((profile, index) => (
                                 <tr key={profile.id}>
                                     <td>{index + 1}</td>
-                                    <td className="whitespace-nowrap">
+                                    <td className="flex gap-2 flex-wrap">
                                         <Link
                                             to={`/profile/get-profile/${profile.id}`}
                                             className="font-semibold hover:underline"
