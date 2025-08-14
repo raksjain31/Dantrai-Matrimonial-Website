@@ -59,9 +59,9 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
     };
 
     return (
-        <div className="h-screen w-full max-w-6xl mx-auto mt-10 px-2 sm:px-4">
-            {/* Header with Create Playlist Button */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
+        <div className="   h-screen w-full max-w-6xl mx-auto mt-10 px-2 sm:px-4 ">
+            {/* Header with Create Playlist Button //justify-between */}
+            <div className="flex flex-col sm:flex-row  items-start sm:items-center mb-6 gap-3">
                 <h2 className="text-xl sm:text-2xl font-bold">Profiles of your family</h2>
                 <button
                     className="btn btn-sm sm:btn-md bg-purple-800 gap-2 w-full sm:w-auto"
@@ -73,9 +73,9 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
             </div>
 
             {/* Table wrapper for mobile scroll */}
-            <div className="w-full overflow-x-auto rounded-lg shadow">
-                <table
-                    className="table table-watermark table-zebra bg-base-200 text-base-content text-sm sm:text-base min-w-[600px]"
+            <div className="w-full relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+                    // className="table table-watermark table-zebra bg-base-200 text-base-content text-sm sm:text-base min-w-[600px]"
                     style={{ "--watermark-text": watermarkText }}
                 >
                     <thead className="bg-base-300 text-xs sm:text-sm">
