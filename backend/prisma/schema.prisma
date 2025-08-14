@@ -92,7 +92,7 @@ father String?
 //fatherincome String?
 mother String?
 //motheroccupation String?
-noOfBrothers Int
+noOfBrothers Int 
 noOfMarriedBrothers Int
 noOfsisters Int
 noOfMarriedSisters Int
