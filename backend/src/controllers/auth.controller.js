@@ -217,7 +217,7 @@ export const forgetpassword = async (req, res) => {
             }
         })
 
-        // console.log("user:", our_user)
+        console.log("user:", our_user)
 
         if (!our_user) {
 
