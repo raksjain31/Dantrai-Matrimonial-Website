@@ -228,7 +228,10 @@ export const forgetpassword = async (req, res) => {
         }
 
 
-        const ttlMinutes = parseInt(process.env.OTP_TTL_MINUTES, 10) || 10;
+        const ttlMinutes = Number(process.env.OTP_TTL_MINUTES) || 10;
+
+        console.log("TTL minutes in VPS:", ttlMinutes);
+
         const otp = String(crypto.randomInt(100000, 999999));
         const hashed = crypto.createHash("sha256").update(otp).digest("hex");
         const expiresAt = new Date(Date.now() + ttlMinutes * 60 * 1000);
