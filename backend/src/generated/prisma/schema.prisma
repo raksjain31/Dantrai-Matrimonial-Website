@@ -51,7 +51,7 @@ model User {
   isVerified          Boolean   @default(false)
   verificationToken   String?
   passwordResetToken  String?
-  passwordResetExpiry DateTime?
+  passwordResetExpiry String?
   IsApproved          Boolean   @default(false)
   ApprovedbyUserId    String?
   ApprovedDate        DateTime?

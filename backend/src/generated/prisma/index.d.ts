@@ -1063,7 +1063,7 @@ export namespace Prisma {
     isVerified: boolean | null
     verificationToken: string | null
     passwordResetToken: string | null
-    passwordResetExpiry: Date | null
+    passwordResetExpiry: string | null
     IsApproved: boolean | null
     ApprovedbyUserId: string | null
     ApprovedDate: Date | null
@@ -1084,7 +1084,7 @@ export namespace Prisma {
     isVerified: boolean | null
     verificationToken: string | null
     passwordResetToken: string | null
-    passwordResetExpiry: Date | null
+    passwordResetExpiry: string | null
     IsApproved: boolean | null
     ApprovedbyUserId: string | null
     ApprovedDate: Date | null
@@ -1264,7 +1264,7 @@ export namespace Prisma {
     isVerified: boolean
     verificationToken: string | null
     passwordResetToken: string | null
-    passwordResetExpiry: Date | null
+    passwordResetExpiry: string | null
     IsApproved: boolean
     ApprovedbyUserId: string | null
     ApprovedDate: Date | null
@@ -1401,7 +1401,7 @@ export namespace Prisma {
       isVerified: boolean
       verificationToken: string | null
       passwordResetToken: string | null
-      passwordResetExpiry: Date | null
+      passwordResetExpiry: string | null
       IsApproved: boolean
       ApprovedbyUserId: string | null
       ApprovedDate: Date | null
@@ -1843,7 +1843,7 @@ export namespace Prisma {
     readonly isVerified: FieldRef<"User", 'Boolean'>
     readonly verificationToken: FieldRef<"User", 'String'>
     readonly passwordResetToken: FieldRef<"User", 'String'>
-    readonly passwordResetExpiry: FieldRef<"User", 'DateTime'>
+    readonly passwordResetExpiry: FieldRef<"User", 'String'>
     readonly IsApproved: FieldRef<"User", 'Boolean'>
     readonly ApprovedbyUserId: FieldRef<"User", 'String'>
     readonly ApprovedDate: FieldRef<"User", 'DateTime'>
@@ -3925,7 +3925,7 @@ export namespace Prisma {
     isVerified?: BoolFilter<"User"> | boolean
     verificationToken?: StringNullableFilter<"User"> | string | null
     passwordResetToken?: StringNullableFilter<"User"> | string | null
-    passwordResetExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
+    passwordResetExpiry?: StringNullableFilter<"User"> | string | null
     IsApproved?: BoolFilter<"User"> | boolean
     ApprovedbyUserId?: StringNullableFilter<"User"> | string | null
     ApprovedDate?: DateTimeNullableFilter<"User"> | Date | string | null
@@ -3972,7 +3972,7 @@ export namespace Prisma {
     isVerified?: BoolFilter<"User"> | boolean
     verificationToken?: StringNullableFilter<"User"> | string | null
     passwordResetToken?: StringNullableFilter<"User"> | string | null
-    passwordResetExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
+    passwordResetExpiry?: StringNullableFilter<"User"> | string | null
     IsApproved?: BoolFilter<"User"> | boolean
     ApprovedbyUserId?: StringNullableFilter<"User"> | string | null
     ApprovedDate?: DateTimeNullableFilter<"User"> | Date | string | null
@@ -4021,7 +4021,7 @@ export namespace Prisma {
     isVerified?: BoolWithAggregatesFilter<"User"> | boolean
     verificationToken?: StringNullableWithAggregatesFilter<"User"> | string | null
     passwordResetToken?: StringNullableWithAggregatesFilter<"User"> | string | null
-    passwordResetExpiry?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+    passwordResetExpiry?: StringNullableWithAggregatesFilter<"User"> | string | null
     IsApproved?: BoolWithAggregatesFilter<"User"> | boolean
     ApprovedbyUserId?: StringNullableWithAggregatesFilter<"User"> | string | null
     ApprovedDate?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
@@ -4219,7 +4219,7 @@ export namespace Prisma {
     isVerified?: boolean
     verificationToken?: string | null
     passwordResetToken?: string | null
-    passwordResetExpiry?: Date | string | null
+    passwordResetExpiry?: string | null
     IsApproved?: boolean
     ApprovedbyUserId?: string | null
     ApprovedDate?: Date | string | null
@@ -4241,7 +4241,7 @@ export namespace Prisma {
     isVerified?: boolean
     verificationToken?: string | null
     passwordResetToken?: string | null
-    passwordResetExpiry?: Date | string | null
+    passwordResetExpiry?: string | null
     IsApproved?: boolean
     ApprovedbyUserId?: string | null
     ApprovedDate?: Date | string | null
@@ -4263,7 +4263,7 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     passwordResetToken?: NullableStringFieldUpdateOperationsInput | string | null
-    passwordResetExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    passwordResetExpiry?: NullableStringFieldUpdateOperationsInput | string | null
     IsApproved?: BoolFieldUpdateOperationsInput | boolean
     ApprovedbyUserId?: NullableStringFieldUpdateOperationsInput | string | null
     ApprovedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4285,7 +4285,7 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     passwordResetToken?: NullableStringFieldUpdateOperationsInput | string | null
-    passwordResetExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    passwordResetExpiry?: NullableStringFieldUpdateOperationsInput | string | null
     IsApproved?: BoolFieldUpdateOperationsInput | boolean
     ApprovedbyUserId?: NullableStringFieldUpdateOperationsInput | string | null
     ApprovedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4307,7 +4307,7 @@ export namespace Prisma {
     isVerified?: boolean
     verificationToken?: string | null
     passwordResetToken?: string | null
-    passwordResetExpiry?: Date | string | null
+    passwordResetExpiry?: string | null
     IsApproved?: boolean
     ApprovedbyUserId?: string | null
     ApprovedDate?: Date | string | null
@@ -4328,7 +4328,7 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     passwordResetToken?: NullableStringFieldUpdateOperationsInput | string | null
-    passwordResetExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    passwordResetExpiry?: NullableStringFieldUpdateOperationsInput | string | null
     IsApproved?: BoolFieldUpdateOperationsInput | boolean
     ApprovedbyUserId?: NullableStringFieldUpdateOperationsInput | string | null
     ApprovedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4349,7 +4349,7 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     passwordResetToken?: NullableStringFieldUpdateOperationsInput | string | null
-    passwordResetExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    passwordResetExpiry?: NullableStringFieldUpdateOperationsInput | string | null
     IsApproved?: BoolFieldUpdateOperationsInput | boolean
     ApprovedbyUserId?: NullableStringFieldUpdateOperationsInput | string | null
     ApprovedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -5501,7 +5501,7 @@ export namespace Prisma {
     isVerified?: boolean
     verificationToken?: string | null
     passwordResetToken?: string | null
-    passwordResetExpiry?: Date | string | null
+    passwordResetExpiry?: string | null
     IsApproved?: boolean
     ApprovedbyUserId?: string | null
     ApprovedDate?: Date | string | null
@@ -5522,7 +5522,7 @@ export namespace Prisma {
     isVerified?: boolean
     verificationToken?: string | null
     passwordResetToken?: string | null
-    passwordResetExpiry?: Date | string | null
+    passwordResetExpiry?: string | null
     IsApproved?: boolean
     ApprovedbyUserId?: string | null
     ApprovedDate?: Date | string | null
@@ -5559,7 +5559,7 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     passwordResetToken?: NullableStringFieldUpdateOperationsInput | string | null
-    passwordResetExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    passwordResetExpiry?: NullableStringFieldUpdateOperationsInput | string | null
     IsApproved?: BoolFieldUpdateOperationsInput | boolean
     ApprovedbyUserId?: NullableStringFieldUpdateOperationsInput | string | null
     ApprovedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -5580,7 +5580,7 @@ export namespace Prisma {
     isVerified?: BoolFieldUpdateOperationsInput | boolean
     verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     passwordResetToken?: NullableStringFieldUpdateOperationsInput | string | null
-    passwordResetExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    passwordResetExpiry?: NullableStringFieldUpdateOperationsInput | string | null
     IsApproved?: BoolFieldUpdateOperationsInput | boolean
     ApprovedbyUserId?: NullableStringFieldUpdateOperationsInput | string | null
     ApprovedDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
