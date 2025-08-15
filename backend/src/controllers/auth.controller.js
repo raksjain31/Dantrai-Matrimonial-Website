@@ -233,6 +233,8 @@ export const forgetpassword = async (req, res) => {
         const hashed = crypto.createHash("sha256").update(otp).digest("hex");
         const expiresAt = new Date(Date.now() + process.env.OTP_TTL_MINUTES * 60 * 1000);
 
+        console.log("expiresAT:", expiresAt);
+
         our_user.passwordResetToken = hashed;
         our_user.passwordResetExpiry = expiresAt;
         const updatedUser = await db.User.update({
