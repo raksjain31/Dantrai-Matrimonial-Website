@@ -239,9 +239,7 @@ export const forgetpassword = async (req, res) => {
 
         console.log("expiresAT:", expiresAt);
 
-        if (isNaN(expiresAt.getTime())) {
-            throw new Error("Invalid Date calculation for passwordResetExpiry");
-        }
+        console.log("expiresAt:", expiresAt, expiresAt instanceof Date);
         console.log("expiresAT:", expiresAt);
 
         // our_user.passwordResetToken = hashed;
