@@ -171,6 +171,12 @@ const LoginPage = () => {
                     {/* Footer */}
                     <div className="text-center">
                         <p className="text-base-content/60">
+
+                            <Link to="/forget-password" className="link link-primary">
+                                Forget Password?
+                            </Link>
+                        </p>
+                        <p className="text-base-content/60">
                             Already have an account?{" "}
                             <Link to="/signup" className="link link-primary">
                                 Sign in

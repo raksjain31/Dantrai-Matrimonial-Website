@@ -10,6 +10,13 @@ export const useAuthStore = create((set) => ({
     isCheckingAuth: false,
     isApprovedUser: false,
 
+    isEmailVerifying: false,
+    EmailVerifyforOtp: null,
+    HashOtp: null,
+
+    isResetPassword: false,
+    ResetPasswordData: null,
+
 
     checkAuth: async () => {
         set({ isCheckingAuth: true })
@@ -77,6 +84,47 @@ export const useAuthStore = create((set) => ({
             console.log("Error logging out", error);
             toast.error("Error logging out");
         }
+    },
+
+
+    forgetPassword: async (data) => {
+        set({ isEmailVerifying: true });
+        try {
+
+            const res = await axiosInstance.post(`/auth/forget-password`, data);
+            const { email, hashed } = res.data;
+            console.log("Email:", res.data.hashed);
+            set({ EmailVerifyforOtp: email });
+            set({ HashOtp: hashed });
+            toast.success(res.data.message);
+            return { email, hashed };
+        } catch (error) {
+            console.log("Error sending Otp", error);
+            toast.error("Error Sending Otp");
+        } finally {
+            set({ isEmailVerifying: false });
+        }
+
+    }, //passowrd
+
+
+
+    ResetPassword: async (data) => {
+        set({ isResetPassword: true });
+        try {
+
+            const res = await axiosInstance.post(`/auth/reset-password/${data.email}/${data.token}`, data);
+            console.log("Email:", res);
+            set({ ResetPasswordData: res.data.user_verfiytoken });
+
+            toast.success(res.data.message);
+        } catch (error) {
+            console.log("Error Reset Password", error);
+            toast.error("Error Reset Password");
+        } finally {
+            set({ isResetPassword: false });
+        }
+
     },
 
 }))

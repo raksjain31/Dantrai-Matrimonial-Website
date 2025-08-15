@@ -2,6 +2,10 @@ import bcrypt from "bcryptjs";
 import { db } from "../libs/db.js";
 import { UserRole } from "../generated/prisma/index.js";
 import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
+import crypto, { hash } from "crypto";
+
+
 
 
 export const register = async (req, res) => {
@@ -200,3 +204,216 @@ export const check = async (req, res) => {
 }
 
 
+export const forgetpassword = async (req, res) => {
+    const { email } = req.body;//email,
+
+    console.log("Backend:email:", email)
+    try {
+        const our_user = await db.User.findUnique({
+            where: {
+
+                email
+
+            }
+        })
+
+        // console.log("user:", our_user)
+
+        if (!our_user) {
+
+            return res.status(401).json({
+                message: "User Email Not found for Password Reset"
+            })
+
+        }
+
+
+
+        const otp = String(crypto.randomInt(100000, 999999));
+        const hashed = crypto.createHash("sha256").update(otp).digest("hex");
+        const expiresAt = new Date(Date.now() + process.env.OTP_TTL_MINUTES * 60 * 1000);
+
+        our_user.passwordResetToken = hashed;
+        our_user.passwordResetExpiry = expiresAt;
+        const updatedUser = await db.User.update({
+            where: {
+                id: our_user.id
+            },
+            data: {
+                passwordResetToken: hashed,
+                passwordResetExpiry: expiresAt,
+            },
+        });
+
+        //const message = `Your OTP for password reset is ${otp}. This OTP is valid for ${process.env.OTP_TTL_MINUTES} minutes.`;
+
+
+        const transporter = nodemailer.createTransport({
+            host: process.env.MAILTRAP_HOST,
+            port: Number(process.env.MAILTRAP_PORT || 587),
+            auth: {
+                user: process.env.MAILTRAP_USER,
+                pass: process.env.MAILTRAP_PASS,
+            },
+        });
+
+
+        const info = await transporter.sendMail({
+            from: '"Abugoad Youth Connect Support" <noreply@abugoadyouthconnect.com>',
+            to: our_user.email,
+            subject: "Your OTP for Password Reset AbugoadYouthConnect",
+            text: `<h2>Hello  ${our_user.name},</h2><p>Your OTP: ${otp}</h2><p>Expires in ${process.env.OTP_TTL_MINUTES} minutes</p><p>Do not share OTP with anyone.</p>`,
+            html: `Hello  ${our_user.name},<br>Your One Time Password (OTP) is <b>${otp}</b> For Password Reset in Abugoadyouthconnect.com. Expires in ${process.env.OTP_TTL_MINUTES} minutes.Do not share OTP with anyone`,
+        });
+
+        console.log("info:", info)
+
+
+        return res.status(200).json({
+            success: true,
+            message: "OTP send Successfully to Your Email ID",
+            email,
+            hashed,
+
+        })
+
+
+    } catch (error) {
+        console.error("Failed to send Otp to your Email:", error);
+        return res.status(500).json({
+            error: "Error sending Otp to email"
+        })
+
+    }
+
+}
+
+
+
+export const resetpassword = async (req, res) => {
+    const { email, token } = req.params;
+    console.log("email:", email, "token:", token);
+    const { password } = req.body;
+    try {
+
+        if (!token) {
+            return res.status(401).json({
+                message: "OTP is INVALID"
+            })
+        }
+
+        const user_verfiytoken = await db.User.findUnique(
+            {
+                where: {
+                    email: email,
+                    passwordResetToken: token
+                }
+            });
+
+
+
+
+
+        if (!user_verfiytoken) {
+            return res.status(401).json({
+                message: "OTP is INVALID"
+            })
+        }
+        if (user_verfiytoken.passwordResetExpiry < Date.now()) {
+            return res.status(401).json({
+                message: "OTP is Expired"
+            })
+        }
+
+        console.log('user_verfiytoken', user_verfiytoken);
+
+
+        if (!user_verfiytoken) {
+
+            return res.status(401).json({
+                message: "OTP is not valid for user"
+            })
+
+        }
+
+        const hashedOtp = crypto.createHash("sha256").update(token).digest("hex");
+
+        if (token !== user_verfiytoken.passwordResetToken) {
+
+            return res.status(401).json({
+                message: "OTP is not Match for user"
+            })
+
+        }
+
+
+
+        if (!password) {
+            return res.status(400).json({ error: "new password are required" });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+
+        await prisma.User.update({
+            where: {
+                email: user_verfiytoken.email
+            },
+            data: {
+                password: hashedPassword,
+                passwordResetToken: null,
+                passwordResetExpiry: null
+            }
+        });
+
+        //res.json({ message: "Password reset successfully" });
+
+
+
+        return res.status(200).json({
+            success: true,
+            message: "Password Reset Sucessfully",
+            user_verfiytoken
+
+        })
+
+
+    } catch (error) {
+        console.error("Error Otp verify in user:", error);
+        return res.status(500).json({
+            error: "Error Otp verify in user"
+        })
+
+    }
+
+}
+
+
+// export const resetpassword = async (req, res) => {
+
+//     try {
+//         const { email, newPassword } = req.body;
+
+//         if (!email || !newPassword) {
+//             return res.status(400).json({ error: "Email and new password are required" });
+//         }
+
+//         const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+
+//         await prisma.User.update({
+//             where: { email },
+//             data: {
+//                 password: hashedPassword,
+//                 passwordResetToken: null,
+//                 passwordResetExpiry: null
+//             }
+//         });
+
+//         res.json({ message: "Password reset successfully" });
+//     } catch (error) {
+//         console.error("Error resetting password:", error);
+//         res.status(500).json({ error: "Failed to reset password" });
+//     }
+
+// }

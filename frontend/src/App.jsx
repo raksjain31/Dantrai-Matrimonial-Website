@@ -16,6 +16,9 @@ import ProfileViewPage from "./Page/ProfileViewPage";
 import AllProfilesSearchPage from "./Page/AllProfilesSearchPage";
 import UserFamilyProfileView from "./components/UserFamilyProfileView";
 import LoginUserProfilePage from "./Page/LoginUserProfilePage";
+import ForgetPasswordPage from "./Page/ForgetPasswordPage";
+import ResetPasswordPage from "./Page/ResetPasswordPage";
+
 
 
 
@@ -59,10 +62,25 @@ const App = () => {
           element={!authUser ? <LoginPage /> : <Navigate to={"/"} />}
         />
 
+
         <Route
           path='/signup'
           element={!authUser ? <SignUpPage /> : <Navigate to={"/"} />}
         />
+
+        <Route
+          path='/forget-password'
+          element={!authUser ? <ForgetPasswordPage /> : <Navigate to={"/"} />}
+        />
+
+        <Route
+          path="/reset-password/:email/:hashed"
+          element={!authUser ? <ResetPasswordPage /> : <Navigate to={"/"} />}
+        />
+
+
+
+
         {/* <Route element={<AdminRoute />}> */}
 
         <Route path='/' element={<Layout />}>
@@ -74,6 +92,8 @@ const App = () => {
           <Route path="/add-profile"
             element={authUser ? <AddProfile /> : <Navigate to={"/"} />} />
         </Route>
+
+
 
 
         <Route path='/' element={<Layout />}>

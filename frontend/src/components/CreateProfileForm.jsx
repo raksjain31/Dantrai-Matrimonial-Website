@@ -214,7 +214,7 @@ const CreateProfileForm = () => {
             // }
             const res = await axiosInstance.post("/profile/create-profile", formData);
             console.log(res.data);
-            toast.success(res.data.message || "Profile Created successfully⚡");
+            toast.success(res.data.message || "Biodata Created successfully⚡");
             navigation("/");
             setPreview(null);
             reset();
