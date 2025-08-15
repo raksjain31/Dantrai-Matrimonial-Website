@@ -49,7 +49,7 @@ model User {
   Father String? //Father or GrandFather full name
   password String
   isVerified Boolean @default(false)
-  verificationtoken String?
+  verificationToken String?
   passwordResetToken String?
   passwordResetExpiry DateTime?
   IsApproved Boolean @default(false)

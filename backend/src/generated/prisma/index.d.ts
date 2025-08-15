@@ -1061,7 +1061,7 @@ export namespace Prisma {
     Father: string | null
     password: string | null
     isVerified: boolean | null
-    verificationtoken: string | null
+    verificationToken: string | null
     passwordResetToken: string | null
     passwordResetExpiry: Date | null
     IsApproved: boolean | null
@@ -1082,7 +1082,7 @@ export namespace Prisma {
     Father: string | null
     password: string | null
     isVerified: boolean | null
-    verificationtoken: string | null
+    verificationToken: string | null
     passwordResetToken: string | null
     passwordResetExpiry: Date | null
     IsApproved: boolean | null
@@ -1103,7 +1103,7 @@ export namespace Prisma {
     Father: number
     password: number
     isVerified: number
-    verificationtoken: number
+    verificationToken: number
     passwordResetToken: number
     passwordResetExpiry: number
     IsApproved: number
@@ -1126,7 +1126,7 @@ export namespace Prisma {
     Father?: true
     password?: true
     isVerified?: true
-    verificationtoken?: true
+    verificationToken?: true
     passwordResetToken?: true
     passwordResetExpiry?: true
     IsApproved?: true
@@ -1147,7 +1147,7 @@ export namespace Prisma {
     Father?: true
     password?: true
     isVerified?: true
-    verificationtoken?: true
+    verificationToken?: true
     passwordResetToken?: true
     passwordResetExpiry?: true
     IsApproved?: true
@@ -1168,7 +1168,7 @@ export namespace Prisma {
     Father?: true
     password?: true
     isVerified?: true
-    verificationtoken?: true
+    verificationToken?: true
     passwordResetToken?: true
     passwordResetExpiry?: true
     IsApproved?: true
@@ -1262,7 +1262,7 @@ export namespace Prisma {
     Father: string | null
     password: string
     isVerified: boolean
-    verificationtoken: string | null
+    verificationToken: string | null
     passwordResetToken: string | null
     passwordResetExpiry: Date | null
     IsApproved: boolean
@@ -1300,7 +1300,7 @@ export namespace Prisma {
     Father?: boolean
     password?: boolean
     isVerified?: boolean
-    verificationtoken?: boolean
+    verificationToken?: boolean
     passwordResetToken?: boolean
     passwordResetExpiry?: boolean
     IsApproved?: boolean
@@ -1323,7 +1323,7 @@ export namespace Prisma {
     Father?: boolean
     password?: boolean
     isVerified?: boolean
-    verificationtoken?: boolean
+    verificationToken?: boolean
     passwordResetToken?: boolean
     passwordResetExpiry?: boolean
     IsApproved?: boolean
@@ -1344,7 +1344,7 @@ export namespace Prisma {
     Father?: boolean
     password?: boolean
     isVerified?: boolean
-    verificationtoken?: boolean
+    verificationToken?: boolean
     passwordResetToken?: boolean
     passwordResetExpiry?: boolean
     IsApproved?: boolean
@@ -1365,7 +1365,7 @@ export namespace Prisma {
     Father?: boolean
     password?: boolean
     isVerified?: boolean
-    verificationtoken?: boolean
+    verificationToken?: boolean
     passwordResetToken?: boolean
     passwordResetExpiry?: boolean
     IsApproved?: boolean
@@ -1375,7 +1375,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "phone" | "image" | "role" | "village" | "Father" | "password" | "isVerified" | "verificationtoken" | "passwordResetToken" | "passwordResetExpiry" | "IsApproved" | "ApprovedbyUserId" | "ApprovedDate" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "phone" | "image" | "role" | "village" | "Father" | "password" | "isVerified" | "verificationToken" | "passwordResetToken" | "passwordResetExpiry" | "IsApproved" | "ApprovedbyUserId" | "ApprovedDate" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     profiles?: boolean | User$profilesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -1399,7 +1399,7 @@ export namespace Prisma {
       Father: string | null
       password: string
       isVerified: boolean
-      verificationtoken: string | null
+      verificationToken: string | null
       passwordResetToken: string | null
       passwordResetExpiry: Date | null
       IsApproved: boolean
@@ -1841,7 +1841,7 @@ export namespace Prisma {
     readonly Father: FieldRef<"User", 'String'>
     readonly password: FieldRef<"User", 'String'>
     readonly isVerified: FieldRef<"User", 'Boolean'>
-    readonly verificationtoken: FieldRef<"User", 'String'>
+    readonly verificationToken: FieldRef<"User", 'String'>
     readonly passwordResetToken: FieldRef<"User", 'String'>
     readonly passwordResetExpiry: FieldRef<"User", 'DateTime'>
     readonly IsApproved: FieldRef<"User", 'Boolean'>
@@ -3724,7 +3724,7 @@ export namespace Prisma {
     Father: 'Father',
     password: 'password',
     isVerified: 'isVerified',
-    verificationtoken: 'verificationtoken',
+    verificationToken: 'verificationToken',
     passwordResetToken: 'passwordResetToken',
     passwordResetExpiry: 'passwordResetExpiry',
     IsApproved: 'IsApproved',
@@ -3923,7 +3923,7 @@ export namespace Prisma {
     Father?: StringNullableFilter<"User"> | string | null
     password?: StringFilter<"User"> | string
     isVerified?: BoolFilter<"User"> | boolean
-    verificationtoken?: StringNullableFilter<"User"> | string | null
+    verificationToken?: StringNullableFilter<"User"> | string | null
     passwordResetToken?: StringNullableFilter<"User"> | string | null
     passwordResetExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
     IsApproved?: BoolFilter<"User"> | boolean
@@ -3945,7 +3945,7 @@ export namespace Prisma {
     Father?: SortOrderInput | SortOrder
     password?: SortOrder
     isVerified?: SortOrder
-    verificationtoken?: SortOrderInput | SortOrder
+    verificationToken?: SortOrderInput | SortOrder
     passwordResetToken?: SortOrderInput | SortOrder
     passwordResetExpiry?: SortOrderInput | SortOrder
     IsApproved?: SortOrder
@@ -3970,7 +3970,7 @@ export namespace Prisma {
     Father?: StringNullableFilter<"User"> | string | null
     password?: StringFilter<"User"> | string
     isVerified?: BoolFilter<"User"> | boolean
-    verificationtoken?: StringNullableFilter<"User"> | string | null
+    verificationToken?: StringNullableFilter<"User"> | string | null
     passwordResetToken?: StringNullableFilter<"User"> | string | null
     passwordResetExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
     IsApproved?: BoolFilter<"User"> | boolean
@@ -3992,7 +3992,7 @@ export namespace Prisma {
     Father?: SortOrderInput | SortOrder
     password?: SortOrder
     isVerified?: SortOrder
-    verificationtoken?: SortOrderInput | SortOrder
+    verificationToken?: SortOrderInput | SortOrder
     passwordResetToken?: SortOrderInput | SortOrder
     passwordResetExpiry?: SortOrderInput | SortOrder
     IsApproved?: SortOrder
@@ -4019,7 +4019,7 @@ export namespace Prisma {
     Father?: StringNullableWithAggregatesFilter<"User"> | string | null
     password?: StringWithAggregatesFilter<"User"> | string
     isVerified?: BoolWithAggregatesFilter<"User"> | boolean
-    verificationtoken?: StringNullableWithAggregatesFilter<"User"> | string | null
+    verificationToken?: StringNullableWithAggregatesFilter<"User"> | string | null
     passwordResetToken?: StringNullableWithAggregatesFilter<"User"> | string | null
     passwordResetExpiry?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     IsApproved?: BoolWithAggregatesFilter<"User"> | boolean
@@ -4217,7 +4217,7 @@ export namespace Prisma {
     Father?: string | null
     password: string
     isVerified?: boolean
-    verificationtoken?: string | null
+    verificationToken?: string | null
     passwordResetToken?: string | null
     passwordResetExpiry?: Date | string | null
     IsApproved?: boolean
@@ -4239,7 +4239,7 @@ export namespace Prisma {
     Father?: string | null
     password: string
     isVerified?: boolean
-    verificationtoken?: string | null
+    verificationToken?: string | null
     passwordResetToken?: string | null
     passwordResetExpiry?: Date | string | null
     IsApproved?: boolean
@@ -4261,7 +4261,7 @@ export namespace Prisma {
     Father?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
     isVerified?: BoolFieldUpdateOperationsInput | boolean
-    verificationtoken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     passwordResetToken?: NullableStringFieldUpdateOperationsInput | string | null
     passwordResetExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     IsApproved?: BoolFieldUpdateOperationsInput | boolean
@@ -4283,7 +4283,7 @@ export namespace Prisma {
     Father?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
     isVerified?: BoolFieldUpdateOperationsInput | boolean
-    verificationtoken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     passwordResetToken?: NullableStringFieldUpdateOperationsInput | string | null
     passwordResetExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     IsApproved?: BoolFieldUpdateOperationsInput | boolean
@@ -4305,7 +4305,7 @@ export namespace Prisma {
     Father?: string | null
     password: string
     isVerified?: boolean
-    verificationtoken?: string | null
+    verificationToken?: string | null
     passwordResetToken?: string | null
     passwordResetExpiry?: Date | string | null
     IsApproved?: boolean
@@ -4326,7 +4326,7 @@ export namespace Prisma {
     Father?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
     isVerified?: BoolFieldUpdateOperationsInput | boolean
-    verificationtoken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     passwordResetToken?: NullableStringFieldUpdateOperationsInput | string | null
     passwordResetExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     IsApproved?: BoolFieldUpdateOperationsInput | boolean
@@ -4347,7 +4347,7 @@ export namespace Prisma {
     Father?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
     isVerified?: BoolFieldUpdateOperationsInput | boolean
-    verificationtoken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     passwordResetToken?: NullableStringFieldUpdateOperationsInput | string | null
     passwordResetExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     IsApproved?: BoolFieldUpdateOperationsInput | boolean
@@ -4677,7 +4677,7 @@ export namespace Prisma {
     Father?: SortOrder
     password?: SortOrder
     isVerified?: SortOrder
-    verificationtoken?: SortOrder
+    verificationToken?: SortOrder
     passwordResetToken?: SortOrder
     passwordResetExpiry?: SortOrder
     IsApproved?: SortOrder
@@ -4698,7 +4698,7 @@ export namespace Prisma {
     Father?: SortOrder
     password?: SortOrder
     isVerified?: SortOrder
-    verificationtoken?: SortOrder
+    verificationToken?: SortOrder
     passwordResetToken?: SortOrder
     passwordResetExpiry?: SortOrder
     IsApproved?: SortOrder
@@ -4719,7 +4719,7 @@ export namespace Prisma {
     Father?: SortOrder
     password?: SortOrder
     isVerified?: SortOrder
-    verificationtoken?: SortOrder
+    verificationToken?: SortOrder
     passwordResetToken?: SortOrder
     passwordResetExpiry?: SortOrder
     IsApproved?: SortOrder
@@ -5499,7 +5499,7 @@ export namespace Prisma {
     Father?: string | null
     password: string
     isVerified?: boolean
-    verificationtoken?: string | null
+    verificationToken?: string | null
     passwordResetToken?: string | null
     passwordResetExpiry?: Date | string | null
     IsApproved?: boolean
@@ -5520,7 +5520,7 @@ export namespace Prisma {
     Father?: string | null
     password: string
     isVerified?: boolean
-    verificationtoken?: string | null
+    verificationToken?: string | null
     passwordResetToken?: string | null
     passwordResetExpiry?: Date | string | null
     IsApproved?: boolean
@@ -5557,7 +5557,7 @@ export namespace Prisma {
     Father?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
     isVerified?: BoolFieldUpdateOperationsInput | boolean
-    verificationtoken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     passwordResetToken?: NullableStringFieldUpdateOperationsInput | string | null
     passwordResetExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     IsApproved?: BoolFieldUpdateOperationsInput | boolean
@@ -5578,7 +5578,7 @@ export namespace Prisma {
     Father?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
     isVerified?: BoolFieldUpdateOperationsInput | boolean
-    verificationtoken?: NullableStringFieldUpdateOperationsInput | string | null
+    verificationToken?: NullableStringFieldUpdateOperationsInput | string | null
     passwordResetToken?: NullableStringFieldUpdateOperationsInput | string | null
     passwordResetExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     IsApproved?: BoolFieldUpdateOperationsInput | boolean
