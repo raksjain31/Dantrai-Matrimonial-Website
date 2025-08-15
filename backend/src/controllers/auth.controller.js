@@ -233,7 +233,10 @@ export const forgetpassword = async (req, res) => {
         const hashed = crypto.createHash("sha256").update(otp).digest("hex");
         const expiresAt = new Date(Date.now() + ttlMinutes * 60 * 1000);
 
-        if (isNaN(passwordResetExpiry.getTime())) {
+
+        console.log("expiresAT:", expiresAt);
+
+        if (isNaN(expiresAt.getTime())) {
             throw new Error("Invalid Date calculation for passwordResetExpiry");
         }
         console.log("expiresAT:", expiresAt);
