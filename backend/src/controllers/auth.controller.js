@@ -208,6 +208,7 @@ export const forgetpassword = async (req, res) => {
     const { email } = req.body;//email,
     console.log("🚀 VPSss is running THIS");
     console.log("Rakshit Backend:email:", email)
+    console.log("NEEEEWW_DATE:", new Date(Date.now() + 10 * 60 * 1000));
     try {
         const our_user = await db.User.findUnique({
             where: {
