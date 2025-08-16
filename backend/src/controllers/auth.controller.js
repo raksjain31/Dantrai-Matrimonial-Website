@@ -7,7 +7,6 @@ import crypto, { hash } from "crypto";
 
 
 
-const db = new PrismaClient();
 export const register = async (req, res) => {
     const { email, password, name, phone, village, Father } = req.body;
 
