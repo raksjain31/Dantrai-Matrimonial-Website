@@ -292,7 +292,7 @@ export const forgetpassword = async (req, res) => {
 
 
     } catch (error) {
-        console.error("Failed to send Otp to your Email:", error);
+        console.error("Failed to send Otp to your Email please try again:", error);
         return res.status(500).json({
             error: "Error sending Otp to email"
         })
