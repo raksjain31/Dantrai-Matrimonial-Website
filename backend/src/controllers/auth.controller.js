@@ -240,6 +240,7 @@ export const forgetpassword = async (req, res) => {
         const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
         const cleanDate = toUTCDateOnly(expiresAt);
         const expiresAtISO = cleanDate.toISOString();
+
         console.log("expiresAT:", expiresAt);
 
         console.log("expiresAt:", expiresAt, expiresAt instanceof Date);
@@ -253,7 +254,7 @@ export const forgetpassword = async (req, res) => {
             },
             data: {
                 passwordResetToken: hashed,
-                passwordResetExpiry: expiresAtISO.toISOString(),
+                passwordResetExpiry: cleanDate,
             },
         });
 
