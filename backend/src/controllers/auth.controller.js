@@ -257,17 +257,19 @@ export const forgetpassword = async (req, res) => {
         console.log("expiresAt:", expiresAt, expiresAt instanceof Date);
         console.log("expiresAT:", expiresAt);
 
-        // our_user.passwordResetToken = hashed;
-        // our_user.passwordResetExpiry = expiresAt;
-        const updatedUser = await db.User.update({
-            where: {
-                id: our_user.id
-            },
-            data: {
-                passwordResetToken: hashed,
-                passwordResetExpiry: passwordResetExpiry,
-            },
-        });
+        our_user.passwordResetToken = hashed;
+        our_user.passwordResetExpiry = passwordResetExpiry;
+
+        our_user.update();
+        // const updatedUser = await db.User.update({
+        //     where: {
+        //         id: our_user.id
+        //     },
+        //     data: {
+        //         passwordResetToken: hashed,
+        //         passwordResetExpiry: passwordResetExpiry,
+        //     },
+        // });
 
         //const message = `Your OTP for password reset is ${otp}. This OTP is valid for ${process.env.OTP_TTL_MINUTES} minutes.`;
 
