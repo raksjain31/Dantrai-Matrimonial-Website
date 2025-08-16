@@ -227,33 +227,10 @@ export const forgetpassword = async (req, res) => {
 
         }
 
-        function toUTCDateOnly(date) {
-            return new Date(Date.UTC(
-                date.getFullYear(),
-                date.getMonth(),
-                date.getDate(),
-                date.getHours(),
-                date.getMinutes(),
-                date.getSeconds()
-            ));
-        }
-
-
-        function toIST(date) {
-            // Get UTC time
-            const utc = date.getTime() + date.getTimezoneOffset() * 60000;
-            // Add 5 hours 30 minutes
-            return new Date(utc + (5.5 * 60 * 60000));
-        }
-        const ttlMin = Number.parseInt(String(process.env.OTP_TTL_MINUTES ?? '10').trim(), 10);
-        if (!Number.isFinite(ttlMin) || ttlMin <= 0) throw new Error('OTP_TTL_MINUTES invalid');
-
 
         const otp = String(crypto.randomInt(100000, 999999));
         const hashed = crypto.createHash("sha256").update(otp).digest("hex");
         const expiry = new Date(Date.now() + (10 * 60 * 1000));
-        //const cleanDate = toIST(passwordResetExpiry);
-        //const expiresAtISO = cleanDate.toISOString();
 
 
         console.log('TTL minutes:', ttlMin);
