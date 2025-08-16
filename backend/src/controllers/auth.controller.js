@@ -245,27 +245,22 @@ export const forgetpassword = async (req, res) => {
             // Add 5 hours 30 minutes
             return new Date(utc + (5.5 * 60 * 60000));
         }
-        // const ttlMinutes = Number(process.env.OTP_TTL_MINUTES) || 10;
+        const ttlMin = Number.parseInt(String(process.env.OTP_TTL_MINUTES ?? '10').trim(), 10);
+        if (!Number.isFinite(ttlMin) || ttlMin <= 0) throw new Error('OTP_TTL_MINUTES invalid');
 
-        // console.log("TTL minutes in VPS:", ttlMinutes);
 
         const otp = String(crypto.randomInt(100000, 999999));
         const hashed = crypto.createHash("sha256").update(otp).digest("hex");
-        const passwordResetExpiry = new Date(Date.now() + (10 * 60 * 1000));
-        const cleanDate = toIST(passwordResetExpiry);
-        const expiresAtISO = cleanDate.toISOString();
+        const expiry = new Date(Date.now() + (ttlMin * 60 * 1000));
+        //const cleanDate = toIST(passwordResetExpiry);
+        //const expiresAtISO = cleanDate.toISOString();
 
 
-        //const expiresAt = new Date().now;
-        //expiresAt.setMinutes(expiresAt.getMinutes() + 10);
+        console.log('TTL minutes:', ttlMin);
+        console.log('expiry instanceof Date:', expiry instanceof Date);
+        console.log('expiry.getTime():', expiry.getTime());
+        console.log('expiry.toISOString():', expiry.toISOString());
 
-        // console.log("expiresAT:", expiresAt);
-
-        // console.log("expiresAt:", expiresAt, expiresAt instanceof Date);
-        // console.log("expiresAT:", expiresAt);
-
-        our_user.passwordResetToken = hashed;
-        our_user.passwordResetExpiry = passwordResetExpiry;
 
         await db.User.update({
             where: {
@@ -273,7 +268,7 @@ export const forgetpassword = async (req, res) => {
             },
             data: {
                 passwordResetToken: hashed,
-                passwordResetExpiry: cleanDate,
+                passwordResetExpiry: expiry,
             },
         });
         // const updatedUser = await db.User.update({
