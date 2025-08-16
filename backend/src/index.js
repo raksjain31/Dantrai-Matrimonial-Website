@@ -56,4 +56,5 @@ app.use("/api/v1/admin", adminRoutes);
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on Port ${process.env.PORT}`);
     console.log("✅ Server starting from VPS index.js...");
+    console.log("🚀 VPS is running THIS index.js");
 })

@@ -206,7 +206,7 @@ export const check = async (req, res) => {
 
 export const forgetpassword = async (req, res) => {
     const { email } = req.body;//email,
-
+    console.log("🚀 VPS is running THIS");
     console.log("Rakshit Backend:email:", email)
     try {
         const our_user = await db.User.findUnique({
