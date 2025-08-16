@@ -233,7 +233,7 @@ export const forgetpassword = async (req, res) => {
         const expiry = new Date(Date.now() + (10 * 60 * 1000));
 
 
-        console.log('TTL minutes:', ttlMin);
+        // console.log('TTL minutes:', ttlMin);
         console.log('expiry instanceof Date:', expiry instanceof Date);
         console.log('expiry.getTime():', expiry.getTime());
         console.log('expiry.toISOString():', expiry.toISOString());
