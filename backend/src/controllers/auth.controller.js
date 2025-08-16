@@ -253,7 +253,7 @@ export const forgetpassword = async (req, res) => {
             },
             data: {
                 passwordResetToken: hashed,
-                passwordResetExpiry: expiresAtISO,
+                passwordResetExpiry: expiresAtISO.toISOString(),
             },
         });
 
