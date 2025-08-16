@@ -1,13 +1,13 @@
 import bcrypt from "bcryptjs";
 import { db } from "../libs/db.js";
-import { UserRole } from "../generated/prisma/index.js";
+// import { UserRole } from "../generated/prisma/index.js";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import crypto, { hash } from "crypto";
 
 
 
-
+const db = new PrismaClient();
 export const register = async (req, res) => {
     const { email, password, name, phone, village, Father } = req.body;
 
@@ -48,7 +48,7 @@ export const register = async (req, res) => {
                 phone,
                 village,
                 Father,
-                role: UserRole.USER
+                role: 'USER'
             }
         })
         const token = jwt.sign(
