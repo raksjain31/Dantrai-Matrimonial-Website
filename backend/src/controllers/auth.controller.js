@@ -244,9 +244,13 @@ export const forgetpassword = async (req, res) => {
 
         const otp = String(crypto.randomInt(100000, 999999));
         const hashed = crypto.createHash("sha256").update(otp).digest("hex");
-        const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
+        //const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
         const cleanDate = toUTCDateOnly(expiresAt);
         const expiresAtISO = cleanDate.toISOString();
+
+
+        const expiresAt = new Date().now;
+        expiresAt.setMinutes(expiresAt.getMinutes() + 10);
 
         console.log("expiresAT:", expiresAt);
 
@@ -261,7 +265,7 @@ export const forgetpassword = async (req, res) => {
             },
             data: {
                 passwordResetToken: hashed,
-                passwordResetExpiry: cleanDate,
+                passwordResetExpiry: expiresAt,
             },
         });
 
