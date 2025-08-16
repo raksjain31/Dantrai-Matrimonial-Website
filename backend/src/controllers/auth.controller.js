@@ -227,6 +227,9 @@ export const forgetpassword = async (req, res) => {
 
         }
 
+        function toUTCDateOnly(date) {
+            return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.gethours(), date.getMinutes(), date.getSeconds()));
+        }
 
         // const ttlMinutes = Number(process.env.OTP_TTL_MINUTES) || 10;
 
