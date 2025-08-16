@@ -27,7 +27,7 @@ const ResetPasswordschema = z.object({
 
 const ResetPasswordPage = () => {
     const location = useLocation();
-    const { email, hashed } = useParams();
+    const { email, token } = useParams();
     const navigation = useNavigate();
     const { ResetPassword, ResetPasswordData, isResetPassword } = useAuthStore()
     const [showPassword, setShowPassword] = useState(false);
@@ -64,7 +64,7 @@ const ResetPasswordPage = () => {
 
             ResetPassword({
                 email,
-                token: hashed,
+                hashed: token,
                 password: data.password,
             });
             navigation(`/login`);

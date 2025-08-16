@@ -112,9 +112,9 @@ export const useAuthStore = create((set) => ({
     ResetPassword: async (data) => {
         set({ isResetPassword: true });
         try {
-
-            const res = await axiosInstance.post(`/auth/reset-password/${data.email}/${data.token}`, data);
-            console.log("Email:", res);
+            console.log("is data getting hash:", data)
+            const res = await axiosInstance.post(`/auth/reset-password/${data.email}/${data.hashed}`, data);
+            console.log("EmailRes:", res);
             set({ ResetPasswordData: res.data.user_verfiytoken });
 
             toast.success(res.data.message);

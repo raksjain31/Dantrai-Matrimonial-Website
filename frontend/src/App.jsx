@@ -70,11 +70,11 @@ const App = () => {
 
         <Route
           path='/forget-password'
-          element={!authUser ? <ForgetPasswordPage /> : <Navigate to={"/"} />}
+          element={<ForgetPasswordPage />}
         />
-
+        {/* element={!authUser ? <ForgetPasswordPage /> : <Navigate to={"/"} />} */}
         <Route
-          path="/reset-password/:email/:hashed"
+          path="/reset-password/:email/:token"
           element={!authUser ? <ResetPasswordPage /> : <Navigate to={"/"} />}
         />
 

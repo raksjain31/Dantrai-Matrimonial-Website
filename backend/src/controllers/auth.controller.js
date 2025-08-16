@@ -252,15 +252,23 @@ export const forgetpassword = async (req, res) => {
         //const expiresAt = new Date().now;
         //expiresAt.setMinutes(expiresAt.getMinutes() + 10);
 
-        console.log("expiresAT:", expiresAt);
+        // console.log("expiresAT:", expiresAt);
 
-        console.log("expiresAt:", expiresAt, expiresAt instanceof Date);
-        console.log("expiresAT:", expiresAt);
+        // console.log("expiresAt:", expiresAt, expiresAt instanceof Date);
+        // console.log("expiresAT:", expiresAt);
 
         our_user.passwordResetToken = hashed;
         our_user.passwordResetExpiry = passwordResetExpiry;
 
-        our_user.update();
+        await db.User.update({
+            where: {
+                id: our_user.id
+            },
+            data: {
+                passwordResetToken: hashed,
+                passwordResetExpiry: passwordResetExpiry,
+            },
+        });
         // const updatedUser = await db.User.update({
         //     where: {
         //         id: our_user.id

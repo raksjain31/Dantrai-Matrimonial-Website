@@ -49,6 +49,10 @@ const ForgetPasswordPage = () => {
             if (res?.email && res?.hashed) {
                 navigation(`/reset-password/${res.email}/${res.hashed}`);
             }
+            else {
+                console.error("No Otp Generated!");
+
+            }
 
 
         } catch (error) {
