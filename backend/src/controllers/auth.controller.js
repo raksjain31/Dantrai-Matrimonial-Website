@@ -238,14 +238,21 @@ export const forgetpassword = async (req, res) => {
             ));
         }
 
+
+        function toIST(date) {
+            // Get UTC time
+            const utc = date.getTime() + date.getTimezoneOffset() * 60000;
+            // Add 5 hours 30 minutes
+            return new Date(utc + (5.5 * 60 * 60000));
+        }
         // const ttlMinutes = Number(process.env.OTP_TTL_MINUTES) || 10;
 
         // console.log("TTL minutes in VPS:", ttlMinutes);
 
         const otp = String(crypto.randomInt(100000, 999999));
         const hashed = crypto.createHash("sha256").update(otp).digest("hex");
-        const passwordResetExpiry = new Date(Date.now() + 10 * 60 * 1000);
-        const cleanDate = toUTCDateOnly(passwordResetExpiry);
+        const passwordResetExpiry = new Date(Date.now() + (10 * 60 * 1000));
+        const cleanDate = toIST(passwordResetExpiry);
         const expiresAtISO = cleanDate.toISOString();
 
 
