@@ -273,7 +273,7 @@ export const forgetpassword = async (req, res) => {
             },
             data: {
                 passwordResetToken: hashed,
-                passwordResetExpiry: cleanDate,
+                passwordResetExpiry: new Date(Date.now() + (10 * 60 * 1000)),
             },
         });
         // const updatedUser = await db.User.update({
