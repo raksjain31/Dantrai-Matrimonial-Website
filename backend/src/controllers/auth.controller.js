@@ -251,7 +251,7 @@ export const forgetpassword = async (req, res) => {
 
         const otp = String(crypto.randomInt(100000, 999999));
         const hashed = crypto.createHash("sha256").update(otp).digest("hex");
-        const expiry = new Date(Date.now() + (ttlMin * 60 * 1000));
+        const expiry = new Date(Date.now() + (10 * 60 * 1000));
         //const cleanDate = toIST(passwordResetExpiry);
         //const expiresAtISO = cleanDate.toISOString();
 
