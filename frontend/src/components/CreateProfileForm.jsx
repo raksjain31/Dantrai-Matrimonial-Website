@@ -441,7 +441,7 @@ const CreateProfileForm = () => {
                                     <label className="label">
                                         {/* <span className="label-text text-base md:text-lg font-semibold"> */}
                                         <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
-                                            Phone Number(Father Mobile No)
+                                            Phone Number <br>(Father Mobile No)</br>
                                         </span>
                                     </label>
                                     <input
