@@ -119,7 +119,7 @@ const ForgetPasswordPage = () => {
                                     Loading...
                                 </>
                             ) : (
-                                "Send OTP"
+                                "Submit"
 
                             )}
                         </button>
