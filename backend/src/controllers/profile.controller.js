@@ -318,18 +318,18 @@ export const deleteProfileById = async (req, res) => {
             })
         }
 
-        //console.log("Findprofile public_id:", Findprofile.imagePublicID)
-        if (Findprofile.imagePublicID) {
+        // //console.log("Findprofile public_id:", Findprofile.imagePublicID)
+        // if (Findprofile.imagePublicID) {
 
-            try {
-                await cloudinary.uploader.destroy(Findprofile.imagePublicID);
+        //     try {
+        //         await cloudinary.uploader.destroy(Findprofile.imagePublicID);
 
-            } catch (delErr) {
-                console.error("Error deleting image from Cloudinary:", delErr);
-            }
+        //     } catch (delErr) {
+        //         console.error("Error deleting image from Cloudinary:", delErr);
+        //     }
 
 
-        }
+        // }
 
         const Deleteprofile = await db.profile.delete({
             where: {
