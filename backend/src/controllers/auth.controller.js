@@ -208,7 +208,7 @@ export const forgetpassword = async (req, res) => {
     console.log("🚀 VPSss is running THIS");
     console.log("🔥 My NEW controller is running");
     console.log("Rakshitt Backend:email:", email)
-    console.log("NEEEEWW_DATE:", new Date(Date.now() + 10 * 60 * 1000));
+    // console.log("NEEEEWW_DATE:", new Date(Date.now()));// + 10 * 60 * 1000
     try {
         const our_user = await db.User.findUnique({
             where: {
@@ -231,7 +231,7 @@ export const forgetpassword = async (req, res) => {
 
         const otp = String(crypto.randomInt(100000, 999999));
         const hashed = crypto.createHash("sha256").update(otp).digest("hex");
-        const expiry = new Date(Date.now() + (10 * 60 * 1000));
+        const expiry = Date.now()//new Date(Date.now());// + (10 * 60 * 1000)
 
         if (isNaN(expiry.getTime())) {
             console.error("Expiry date is invalid");
