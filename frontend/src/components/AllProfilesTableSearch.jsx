@@ -45,9 +45,9 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
             .filter((profile) =>
                 gender === "ALL" ? true : profile.gender === gender
             )
-            .filter((profile) =>
-                profile.user.village.toLowerCase().includes(village.toLowerCase())
-            )
+            // .filter((profile) =>
+            //     profile.user.village.toLowerCase().includes(village.toLowerCase())
+            // )
             .filter((profile) =>
                 village === "ALL" ? true : profile.user.village === village
             )
