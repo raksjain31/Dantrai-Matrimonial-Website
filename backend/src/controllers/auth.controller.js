@@ -253,15 +253,6 @@ export const forgetpassword = async (req, res) => {
                 //passwordResetExpiry: expiry,
             },
         });
-        // const updatedUser = await db.User.update({
-        //     where: {
-        //         id: our_user.id
-        //     },
-        //     data: {
-        //         passwordResetToken: hashed,
-        //         passwordResetExpiry: passwordResetExpiry,
-        //     },
-        // });
 
         //const message = `Your OTP for password reset is ${otp}. This OTP is valid for ${process.env.OTP_TTL_MINUTES} minutes.`;
 
@@ -337,11 +328,11 @@ export const resetpassword = async (req, res) => {
                 message: "OTP is INVALID"
             })
         }
-        if (user_verfiytoken.passwordResetExpiry < Date.now()) {
-            return res.status(401).json({
-                message: "OTP is Expired"
-            })
-        }
+        // if (user_verfiytoken.passwordResetExpiry < Date.now()) {
+        //     return res.status(401).json({
+        //         message: "OTP is Expired"
+        //     })
+        // }
 
         console.log('user_verfiytoken', user_verfiytoken);
 
@@ -380,10 +371,10 @@ export const resetpassword = async (req, res) => {
             data: {
                 password: hashedPassword,
                 passwordResetToken: null,
-                passwordResetExpiry: null
+
             }
         });
-
+        //passwordResetExpiry: null
         //res.json({ message: "Password reset successfully" });
 
 
@@ -407,31 +398,3 @@ export const resetpassword = async (req, res) => {
 }
 
 
-// export const resetpassword = async (req, res) => {
-
-//     try {
-//         const { email, newPassword } = req.body;
-
-//         if (!email || !newPassword) {
-//             return res.status(400).json({ error: "Email and new password are required" });
-//         }
-
-//         const hashedPassword = await bcrypt.hash(newPassword, 10);
-
-
-//         await prisma.User.update({
-//             where: { email },
-//             data: {
-//                 password: hashedPassword,
-//                 passwordResetToken: null,
-//                 passwordResetExpiry: null
-//             }
-//         });
-
-//         res.json({ message: "Password reset successfully" });
-//     } catch (error) {
-//         console.error("Error resetting password:", error);
-//         res.status(500).json({ error: "Failed to reset password" });
-//     }
-
-// }
