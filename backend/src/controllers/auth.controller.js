@@ -206,6 +206,7 @@ export const check = async (req, res) => {
 export const forgetpassword = async (req, res) => {
     const { email } = req.body;//email,
     console.log("🚀 VPSss is running THIS");
+    console.log("🔥 My NEW controller is running");
     console.log("Rakshitt Backend:email:", email)
     console.log("NEEEEWW_DATE:", new Date(Date.now() + 10 * 60 * 1000));
     try {
