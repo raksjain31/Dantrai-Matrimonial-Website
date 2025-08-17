@@ -238,9 +238,10 @@ export const forgetpassword = async (req, res) => {
             return res.status(500).json({ error: "Failed to generate OTP expiry date" });
         }
         // console.log('TTL minutes:', ttlMin);
-        console.log('expiry instanceof Date:', expiry instanceof Date);
-        console.log('expiry.getTime():', expiry.getTime());
-        console.log('expiry.toISOString():', expiry.toISOString());
+        console.log("expiry raw:", expiry);
+        console.log("expiry instanceof Date:", expiry instanceof Date);
+        console.log("expiry.getTime():", expiry.getTime());
+        console.log("expiry.toISOString():", expiry.toISOString());
 
 
         await db.User.update({
