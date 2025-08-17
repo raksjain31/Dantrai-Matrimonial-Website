@@ -231,17 +231,17 @@ export const forgetpassword = async (req, res) => {
 
         const otp = String(crypto.randomInt(100000, 999999));
         const hashed = crypto.createHash("sha256").update(otp).digest("hex");
-        const expiry = Date.now()//new Date(Date.now());// + (10 * 60 * 1000)
+        // const expiry = Date.now()//new Date(Date.now());// + (10 * 60 * 1000)
 
-        if (isNaN(expiry.getTime())) {
-            console.error("Expiry date is invalid");
-            return res.status(500).json({ error: "Failed to generate OTP expiry date" });
-        }
+        // if (isNaN(expiry.getTime())) {
+        //     console.error("Expiry date is invalid");
+        //     return res.status(500).json({ error: "Failed to generate OTP expiry date" });
+        // }
         // console.log('TTL minutes:', ttlMin);
-        console.log("expiry raw:", expiry);
-        console.log("expiry instanceof Date:", expiry instanceof Date);
-        console.log("expiry.getTime():", expiry.getTime());
-        console.log("expiry.toISOString():", expiry.toISOString());
+        // console.log("expiry raw:", expiry);
+        // console.log("expiry instanceof Date:", expiry instanceof Date);
+        // console.log("expiry.getTime():", expiry.getTime());
+        // console.log("expiry.toISOString():", expiry.toISOString());
 
 
         await db.User.update({
@@ -249,8 +249,8 @@ export const forgetpassword = async (req, res) => {
                 id: our_user.id
             },
             data: {
-                passwordResetToken: hashed,
-                passwordResetExpiry: expiry,
+                passwordResetToken: hashed//,
+                //passwordResetExpiry: expiry,
             },
         });
         // const updatedUser = await db.User.update({
