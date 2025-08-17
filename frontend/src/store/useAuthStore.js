@@ -100,7 +100,7 @@ export const useAuthStore = create((set) => ({
             return { email, hashed };
         } catch (error) {
             console.log("Error sending Otp", error);
-            toast.error("Error Sending Otp");
+            toast.error(error.response.data.message);
         } finally {
             set({ isEmailVerifying: false });
         }
