@@ -81,16 +81,38 @@ const profileSchema = z.object({
     // )
 
 
-    aboutme: z.string().max(250, "About Me at most 250 characters").transform((str) => str.toUpperCase()),
-    education: z.string().min(3, "Education at most 3 characters").transform((str) => str.toUpperCase()),
-    college: z.string().min(3, "College at most 3 characters").transform((str) => str.toUpperCase()),
-    aboutmyeducation: z.string().max(250, "About My Education at most 250 characters").transform((str) => str.toUpperCase()),
+    // aboutme: z.string().max(250, "About Me at most 250 characters").transform((str) => str.toUpperCase()),
+    // education: z.string().min(3, "Education at most 3 characters").transform((str) => str.toUpperCase()),
+    // college: z.string().min(3, "College at most 3 characters").transform((str) => str.toUpperCase()),
+    // aboutmyeducation: z.string().max(250, "About My Education at most 250 characters").transform((str) => str.toUpperCase()),
+    // employedIn: z.enum(["PRIVATE", "GOVT", "BUSINESS"]),
+    // occupation: z.string().min(3, "Occupation  must be atleast 3 characters").transform((str) => str.toUpperCase()),
+    // organisation: z.string().min(3, "Organisation  must be atleast 3 characters").transform((str) => str.toUpperCase()),
+    // aboutmycareer: z.string().max(250, "About My Career at most 250 characters").transform((str) => str.toUpperCase()),
+    // father: z.string().min(3, "Father Name must be atleast 3 characters").transform((str) => str.toUpperCase()),
+    // mother: z.string().min(3, "Mother Name must be atleast 3 characters").transform((str) => str.toUpperCase()),
+    // noOfBrothers: z.coerce.number().int("No of Brothers must be an integer"),
+    // // .positive("Number of Brothers must be a positive number"),
+    // noOfMarriedBrothers: z.coerce.number().int("No of Brothers must be an integer"),
+    // //.positive("Number of Brothers must be a positive number")
+    // noOfsisters: z.coerce.number().int("No of Sisters must be an integer"),
+    // //.positive("Number of Sisters must be a positive number")
+    // noOfMarriedSisters: z.coerce.number().int("No of Sisters must be an integer"),
+    // //.positive("Number of Sisters must be a positive number")
+    // aboutmyfamily: z.string().max(250, "About My Family at most 250 characters").transform((str) => str.toUpperCase()),
+    // hobbies: z.string()//.min(3, "Hobbies Name must be atleast 3 characters").transform((str) => str.toUpperCase())
+
+
+    aboutme: z.string().optional().transform((str) => str.toUpperCase()),//.max(250, "About Me at most 250 characters")
+    education: z.string().optional().transform((str) => str.toUpperCase()),//.min(3, "Education at most 3 characters")
+    college: z.string().optional().transform((str) => str.toUpperCase()),//.min(3, "College at most 3 characters")
+    aboutmyeducation: z.string().optional().transform((str) => str.toUpperCase()),//.max(250, "About My Education at most 250 characters")
     employedIn: z.enum(["PRIVATE", "GOVT", "BUSINESS"]),
-    occupation: z.string().min(3, "Occupation  must be atleast 3 characters").transform((str) => str.toUpperCase()),
-    organisation: z.string().min(3, "Organisation  must be atleast 3 characters").transform((str) => str.toUpperCase()),
-    aboutmycareer: z.string().max(250, "About My Career at most 250 characters").transform((str) => str.toUpperCase()),
-    father: z.string().min(3, "Father Name must be atleast 3 characters").transform((str) => str.toUpperCase()),
-    mother: z.string().min(3, "Mother Name must be atleast 3 characters").transform((str) => str.toUpperCase()),
+    occupation: z.string().optional().transform((str) => str.toUpperCase()),//.min(3, "Occupation  must be atleast 3 characters")
+    organisation: z.string().optional().transform((str) => str.toUpperCase()),//.min(3, "Organisation  must be atleast 3 characters")
+    aboutmycareer: z.string().optional().transform((str) => str.toUpperCase()),//.max(250, "About My Career at most 250 characters")
+    father: z.string().optional().transform((str) => str.toUpperCase()),//.min(3, "Father Name must be atleast 3 characters")
+    mother: z.string().optional().transform((str) => str.toUpperCase()),//.min(3, "Mother Name must be atleast 3 characters")
     noOfBrothers: z.coerce.number().int("No of Brothers must be an integer"),
     // .positive("Number of Brothers must be a positive number"),
     noOfMarriedBrothers: z.coerce.number().int("No of Brothers must be an integer"),
@@ -99,8 +121,8 @@ const profileSchema = z.object({
     //.positive("Number of Sisters must be a positive number")
     noOfMarriedSisters: z.coerce.number().int("No of Sisters must be an integer"),
     //.positive("Number of Sisters must be a positive number")
-    aboutmyfamily: z.string().max(250, "About My Family at most 250 characters").transform((str) => str.toUpperCase()),
-    hobbies: z.string()//.min(3, "Hobbies Name must be atleast 3 characters").transform((str) => str.toUpperCase())
+    aboutmyfamily: z.string().optional().transform((str) => str.toUpperCase()),//.max(250, "About My Family at most 250 characters")
+    hobbies: z.string().optional()//.min(3, "Hobbies Name must be atleast 3 characters").transform((str) => str.toUpperCase())
 
 
 });
