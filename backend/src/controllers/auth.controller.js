@@ -222,7 +222,7 @@ export const forgetpassword = async (req, res) => {
         if (!our_user) {
 
             return res.status(401).json({
-                message: "User Email Not found for Password Reset"
+                message: "User Email Not found for Password Reset Process"
             })
 
         }
