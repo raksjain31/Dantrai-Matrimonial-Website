@@ -3,16 +3,18 @@ import React, { useEffect, useState } from "react";
 import { useAdminStore } from "../store/useAdminStore";
 import { axiosInstance } from "../lib/axios";
 import { toast } from "react-hot-toast";
+
 import {
     Users,
     UserCheck,
     UserPlus,
     Clock,
     CircleUser,
-
+    LogOut,
     UsersRound
 } from "lucide-react"
 import AdminUsersTable from "../components/AdminUsersTable";
+import LogoutButton from "../components/LogoutButton";
 
 
 
@@ -37,7 +39,7 @@ const DashBoardPage = () => {
     });
 
 
-    const { getAllPendingApproval, userApprovedPending, 
+    const { getAllPendingApproval, userApprovedPending,
         isUsersApprovalPendingLoading } = useAdminStore();
 
     console.log("approval data:", userApprovedPending);
@@ -162,7 +164,10 @@ const DashBoardPage = () => {
                             <a>Settings</a>
                         </li>
                         <li>
-                            <a>Logout</a>
+                            <LogoutButton className="hover:bg-primary hover:text-white">
+                                <LogOut className="w-4 h-4 mr-2" />
+                                Logout
+                            </LogoutButton>
                         </li>
                     </ul>
                 </aside>

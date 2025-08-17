@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
     const { authUser } = useAuthStore();
     const [search, setSearch] = useState("");
-    const [searchvillage, setVillageSearch] = useState("");
+    const [village, setVillageSearch] = useState("ALL");
 
     const [searchcurrentLiveCity, setCurrentLiveCitySearch] = useState(""); // Add state for searchcurrentLiveCity
     const [minAge, setMinAge] = useState("");
@@ -22,6 +22,19 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
         navigation('/add-profile');
     };
 
+
+
+    //     DANTRAI
+    //   NIMBAJ
+    //   MALGAON
+    //   AMBLARI
+    //   ANADARA
+    //   MAROL
+    //   PAMERA
+    //   POSINDARA
+    //   DHAN
+    //   MADIYA
+    //   MERMODAVARA
     const watermarkText = `"${authUser.email}  ${authUser.phone}"`;
     // Filter problems based on search,villagesearch, gender, and minage,maxage
     const filteredAllProfilesSearch = useMemo(() => {
@@ -33,7 +46,10 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
                 gender === "ALL" ? true : profile.gender === gender
             )
             .filter((profile) =>
-                profile.user.village.toLowerCase().includes(searchvillage.toLowerCase())
+                profile.user.village.toLowerCase().includes(village.toLowerCase())
+            )
+            .filter((profile) =>
+                village === "ALL" ? true : profile.user.village === village
             )
             .filter((profile) =>
                 profile.currentLiveCity.toLowerCase().includes(searchcurrentLiveCity.toLowerCase())
@@ -45,7 +61,7 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
                 if (maxAge && age > Number(maxAge)) return false;
                 return true;
             });
-    }, [AllprofilesSearch, search, , searchvillage, gender, minAge, maxAge, searchcurrentLiveCity]);
+    }, [AllprofilesSearch, search, , village, gender, minAge, maxAge, searchcurrentLiveCity]);
 
 
     function calculateAge(dateOfBirth) {
@@ -71,6 +87,19 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
 
 
     const genders = ["MALE", "FEMALE"];
+
+
+    const VillagesArray = ["DANTRAI",
+        "NIMBAJ",
+        "MALGAON",
+        "AMBLARI",
+        "ANADARA",
+        "MAROL",
+        "PAMERA",
+        "POSINDARA",
+        "DHAN",
+        "MADIYA",
+        "MERMODAVARA"];
 
     const handleDelete = (id) => {
         const isConfirmed = confirm("Are you sure you want to delete this Profile ?")
@@ -113,13 +142,26 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                 />
-                <input
+                {/* <input
                     type="text"
                     placeholder="Search by Village"
                     className="input input-bordered w-full md:w-1/3 bg-base-200"
                     value={searchvillage}
                     onChange={(e) => setVillageSearch(e.target.value)}
-                />
+                /> */}
+
+                <select
+                    className="select select-bordered bg-base-200"
+                    value={village}
+                    onChange={(e) => setVillageSearch(e.target.value)}
+                >
+                    <option value="ALL">All Villages</option>
+                    {VillagesArray.map((diff) => (
+                        <option key={diff} value={diff}>
+                            {diff.charAt(0).toUpperCase() + diff.slice(1).toLowerCase()}
+                        </option>
+                    ))}
+                </select>
                 <select
                     className="select select-bordered bg-base-200"
                     value={gender}
