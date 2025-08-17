@@ -205,9 +205,9 @@ export const check = async (req, res) => {
 
 export const forgetpassword = async (req, res) => {
     const { email } = req.body;//email,
-    console.log("🚀 VPSss is running THIS");
-    console.log("🔥 My NEW controller is running");
-    console.log("Rakshitt Backend:email:", email)
+    //console.log("🚀 VPSss is running THIS");
+    //console.log("🔥 My NEW controller is running");
+    //console.log("Rakshitt Backend:email:", email)
     // console.log("NEEEEWW_DATE:", new Date(Date.now()));// + 10 * 60 * 1000
     try {
         const our_user = await db.User.findUnique({
@@ -231,7 +231,7 @@ export const forgetpassword = async (req, res) => {
 
         const otp = String(crypto.randomInt(100000, 999999));
         const hashed = crypto.createHash("sha256").update(otp).digest("hex");
-        // const expiry = Date.now()//new Date(Date.now());// + (10 * 60 * 1000)
+        const expiry = new Date(Date.now() + (10 * 60 * 1000));// 
 
         // if (isNaN(expiry.getTime())) {
         //     console.error("Expiry date is invalid");
@@ -249,32 +249,32 @@ export const forgetpassword = async (req, res) => {
                 id: our_user.id
             },
             data: {
-                passwordResetToken: hashed//,
-                //passwordResetExpiry: expiry,
+                passwordResetToken: hashed,
+                passwordResetExpiry: expiry,
             },
         });
 
-        console.log("otp:", otp);
+        //console.log("otp:", otp);
         //const message = `Your OTP for password reset is ${otp}. This OTP is valid for ${process.env.OTP_TTL_MINUTES} minutes.`;
 
 
-        // const transporter = nodemailer.createTransport({
-        //     host: process.env.MAILTRAP_HOST,
-        //     port: Number(process.env.MAILTRAP_PORT || 587),
-        //     auth: {
-        //         user: process.env.MAILTRAP_USER,
-        //         pass: process.env.MAILTRAP_PASS,
-        //     },
-        // });
+        const transporter = nodemailer.createTransport({
+            host: process.env.MAILTRAP_HOST,
+            port: Number(process.env.MAILTRAP_PORT || 587),
+            auth: {
+                user: process.env.MAILTRAP_USER,
+                pass: process.env.MAILTRAP_PASS,
+            },
+        });
 
 
-        // const info = await transporter.sendMail({
-        //     from: '"Abugoad Youth Connect Support" <noreply@abugoadyouthconnect.com>',
-        //     to: our_user.email,
-        //     subject: "Your OTP for Password Reset AbugoadYouthConnect",
-        //     text: `<h2>Hello  ${our_user.name},</h2><p>Your OTP: ${otp}</h2><p>Expires in ${process.env.OTP_TTL_MINUTES} minutes</p><p>Do not share OTP with anyone.</p>`,
-        //     html: `Hello  ${our_user.name},<br>Your One Time Password (OTP) is <b>${otp}</b> For Password Reset in Abugoadyouthconnect.com. Expires in ${process.env.OTP_TTL_MINUTES} minutes.Do not share OTP with anyone`,
-        // });
+        const info = await transporter.sendMail({
+            from: '"Abugoad Youth Connect Support" <noreply@abugoadyouthconnect.com>',
+            to: our_user.email,
+            subject: "Your OTP for Password Reset AbugoadYouthConnect",
+            text: `<h2>Hello  ${our_user.name},</h2><p>Your OTP: ${otp}</h2><p>Expires in ${process.env.OTP_TTL_MINUTES} minutes</p><p>Do not share OTP with anyone.</p>`,
+            html: `Hello  ${our_user.name},<br>Your One Time Password (OTP) is <b>${otp}</b> For Password Reset in Abugoadyouthconnect.com. Expires in ${process.env.OTP_TTL_MINUTES} minutes.Do not share OTP with anyone`,
+        });
 
         //console.log("info:", info)
 
@@ -302,7 +302,7 @@ export const forgetpassword = async (req, res) => {
 
 export const resetpassword = async (req, res) => {
     const { email, token } = req.params;
-    console.log("email:", email, "token:", token);
+    //console.log("email:", email, "token:", token);
     const { password } = req.body;
     try {
 
@@ -329,11 +329,11 @@ export const resetpassword = async (req, res) => {
                 message: "OTP is INVALID"
             })
         }
-        // if (user_verfiytoken.passwordResetExpiry < Date.now()) {
-        //     return res.status(401).json({
-        //         message: "OTP is Expired"
-        //     })
-        // }
+        if (user_verfiytoken.passwordResetExpiry < Date.now()) {
+            return res.status(401).json({
+                message: "OTP is Expired"
+            })
+        }
 
         console.log('user_verfiytoken', user_verfiytoken);
 
@@ -372,10 +372,10 @@ export const resetpassword = async (req, res) => {
             data: {
                 password: hashedPassword,
                 passwordResetToken: null,
-
+                passwordResetExpiry: null
             }
         });
-        //passwordResetExpiry: null
+
         //res.json({ message: "Password reset successfully" });
 
 
