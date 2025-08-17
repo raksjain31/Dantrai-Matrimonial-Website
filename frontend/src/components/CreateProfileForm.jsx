@@ -371,7 +371,8 @@ const CreateProfileForm = () => {
                                 </div>
                                 <div className="form-control">
                                     <label className="label">
-                                        <span className="label-text text-base md:text-lg font-semibold">
+                                        {/* <span className="label-text text-base md:text-lg font-semibold"> */}
+                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words">
                                             Age (Age will Display Auto)
                                         </span>
                                     </label>
@@ -438,7 +439,8 @@ const CreateProfileForm = () => {
 
                                 <div className="form-control">
                                     <label className="label">
-                                        <span className="label-text text-base md:text-lg font-semibold">
+                                        {/* <span className="label-text text-base md:text-lg font-semibold"> */}
+                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words">
                                             Phone Number(Father Mobile No)
                                         </span>
                                     </label>
@@ -615,7 +617,8 @@ const CreateProfileForm = () => {
                             <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-6 ">
                                 <div className="form-control">
                                     <label className="label">
-                                        <span className="label-text text-base md:text-lg font-semibold">
+                                        {/* <span className="label-text text-base md:text-lg font-semibold"> */}
+                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words">
                                             Education(Highest Degree)
                                         </span>
                                     </label>
@@ -752,7 +755,8 @@ const CreateProfileForm = () => {
                                 </div>
                                 <div className="form-control">
                                     <label className="label">
-                                        <span className="label-text text-base md:text-lg font-semibold">
+                                        {/* <span className="label-text text-base md:text-lg font-semibold"> */}
+                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words">
                                             About My Career(Optional)
                                         </span>
                                     </label>
