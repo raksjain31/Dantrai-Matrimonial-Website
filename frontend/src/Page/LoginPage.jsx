@@ -177,9 +177,9 @@ const LoginPage = () => {
                             </Link>
                         </p>
                         <p className="text-base-content/60">
-                            Already have an account?{" "}
+                            Don't have an account?{" "}
                             <Link to="/signup" className="link link-primary">
-                                Sign in
+                                Sign Up
                             </Link>
                         </p>
                         <p className="text-base-content/60">Developed and Design by Rakshit Rathod <br /> @Darpan Software Solution</p>
