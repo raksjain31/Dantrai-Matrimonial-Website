@@ -105,6 +105,8 @@ aboutmyfamily String?
 hobbies String?
 createdAt DateTime @default(now())
 updatedAt DateTime @updatedAt
+IsApprovedProfile Boolean @default(false)
+ApprovedProfilebyUserId String?
 
 //Relationship
 user User @relation(fields:[userId], references: [id], onDelete: Cascade)
