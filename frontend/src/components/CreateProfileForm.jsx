@@ -275,7 +275,7 @@ const CreateProfileForm = () => {
                                         type="text"
                                         className="input input-bordered w-full text-base md:text-lg"
                                         {...register("fullname")}
-                                        placeholder="Name            Father/Gaurdian             Surname"
+                                        placeholder="Name"
                                     />
                                     {errors.fullname && (
                                         <label className="label">
