@@ -232,7 +232,10 @@ export const forgetpassword = async (req, res) => {
         const hashed = crypto.createHash("sha256").update(otp).digest("hex");
         const expiry = new Date(Date.now() + (10 * 60 * 1000));
 
-
+        if (isNaN(expiry.getTime())) {
+            console.error("Expiry date is invalid");
+            return res.status(500).json({ error: "Failed to generate OTP expiry date" });
+        }
         // console.log('TTL minutes:', ttlMin);
         console.log('expiry instanceof Date:', expiry instanceof Date);
         console.log('expiry.getTime():', expiry.getTime());
