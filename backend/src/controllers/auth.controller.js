@@ -254,28 +254,29 @@ export const forgetpassword = async (req, res) => {
             },
         });
 
+        console.log("otp:", otp);
         //const message = `Your OTP for password reset is ${otp}. This OTP is valid for ${process.env.OTP_TTL_MINUTES} minutes.`;
 
 
-        const transporter = nodemailer.createTransport({
-            host: process.env.MAILTRAP_HOST,
-            port: Number(process.env.MAILTRAP_PORT || 587),
-            auth: {
-                user: process.env.MAILTRAP_USER,
-                pass: process.env.MAILTRAP_PASS,
-            },
-        });
+        // const transporter = nodemailer.createTransport({
+        //     host: process.env.MAILTRAP_HOST,
+        //     port: Number(process.env.MAILTRAP_PORT || 587),
+        //     auth: {
+        //         user: process.env.MAILTRAP_USER,
+        //         pass: process.env.MAILTRAP_PASS,
+        //     },
+        // });
 
 
-        const info = await transporter.sendMail({
-            from: '"Abugoad Youth Connect Support" <noreply@abugoadyouthconnect.com>',
-            to: our_user.email,
-            subject: "Your OTP for Password Reset AbugoadYouthConnect",
-            text: `<h2>Hello  ${our_user.name},</h2><p>Your OTP: ${otp}</h2><p>Expires in ${process.env.OTP_TTL_MINUTES} minutes</p><p>Do not share OTP with anyone.</p>`,
-            html: `Hello  ${our_user.name},<br>Your One Time Password (OTP) is <b>${otp}</b> For Password Reset in Abugoadyouthconnect.com. Expires in ${process.env.OTP_TTL_MINUTES} minutes.Do not share OTP with anyone`,
-        });
+        // const info = await transporter.sendMail({
+        //     from: '"Abugoad Youth Connect Support" <noreply@abugoadyouthconnect.com>',
+        //     to: our_user.email,
+        //     subject: "Your OTP for Password Reset AbugoadYouthConnect",
+        //     text: `<h2>Hello  ${our_user.name},</h2><p>Your OTP: ${otp}</h2><p>Expires in ${process.env.OTP_TTL_MINUTES} minutes</p><p>Do not share OTP with anyone.</p>`,
+        //     html: `Hello  ${our_user.name},<br>Your One Time Password (OTP) is <b>${otp}</b> For Password Reset in Abugoadyouthconnect.com. Expires in ${process.env.OTP_TTL_MINUTES} minutes.Do not share OTP with anyone`,
+        // });
 
-        console.log("info:", info)
+        //console.log("info:", info)
 
 
         return res.status(200).json({
