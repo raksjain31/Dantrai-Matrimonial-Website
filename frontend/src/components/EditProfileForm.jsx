@@ -70,15 +70,36 @@ const profileSchema = z.object({
         // ),
         .any()
 
-        .transform((file) => file.length > 0 && file.item(0), "Image is Required")
-        .refine((files) => !files[0]?.size <= 5 * 1024 * 1024, {
-            message: "Image must be less than or equal to 5MB",
-        }),
+        //.transform((file) => file.length > 0 && file.item(0), "Image is Required")
+        .transform((val) => {
+            // Case 1: FileList (new upload)
+            if (val instanceof FileList && val.length > 0) {
+                return val[0];
+            }
 
+            // Case 2: Already saved string URL (from DB)
+            if (typeof val === "string") {
+                return val; // keep DB image
+            }
+
+            return null;
+        }),
     // .refine(
-    //     (File) => ACCEPTED_IMAGE_TYPES.includes(File?.[0]?.type),
-    //     'Only JPG,JPEG, PNG, WEBP formats are supported'
-    // )
+    //     (file) => {
+    //         // Skip size check if it's just a string (DB URL)
+    //         if (typeof file === "string" || file === null) return true;
+
+    //         // Validate file size (<= 5 MB)
+    //         return file.size <= 5 * 1024 * 1024;
+    //     },
+    //     { message: "Image must be less than or equal to 5MB" }
+    // ),
+
+
+    // .refine((files) => !files[0]?.size <= 5 * 1024 * 1024, {
+    //     message: "Image must be less than or equal to 5MB",
+    // }),
+
 
 
     // aboutme: z.string().max(250, "About Me at most 250 characters").transform((str) => str.toUpperCase()),
@@ -162,7 +183,7 @@ const EditProfileForm = () => {
     const calculateAge = (dateOfBirth) => {
         const dob = new Date(dateOfBirth);
         const today = new Date();
-
+        const profileImageCloudpublic_id = "";
         let age = today.getFullYear() - dob.getFullYear();
         const m = today.getMonth() - dob.getMonth();
 
@@ -203,13 +224,14 @@ const EditProfileForm = () => {
             reset({
                 fullname: profile.fullname,
                 gender: profile.gender,
-                dateOfBirth: profile.dateOfBirth,
+                dateOfBirth: profile.dateOfBirth ? new Date(profile.dateOfBirth) : null,
                 age: calculateAge(profile.dateOfBirth),
                 height: profile.height,
                 phone: profile.phone,
                 aboutme: profile.aboutme,
                 currentLiveCity: profile.currentLiveCity,
-                // image: profile.image,
+                image: profile.image,
+                imagePublicID: profile.imagePublicID,
                 education: profile.education,
                 college: profile.college,
                 aboutmyeducation: profile.aboutmyeducation,
@@ -227,24 +249,30 @@ const EditProfileForm = () => {
                 hobbies: profile.hobbies
 
             })
+            setPreview(profile.image || null); // show saved image on load
         }
-    }, [reset]);
+    }, [reset, profile]);
 
     React.useEffect(() => {
-        if (imageFile && imageFile[0]) {
+        if (imageFile && imageFile[0] instanceof File) {
+
             const file = imageFile[0];
+
             const previewUrl = URL.createObjectURL(file);
             setPreview(previewUrl);
 
             // Clean up preview when component unmounts or new file selected
             return () => URL.revokeObjectURL(previewUrl);
         } else {
-            setPreview(null);
+
+
+            setPreview(profile?.image || null);
         }
-    }, [imageFile]);
+    }, [imageFile, profile]);
 
     const onSubmit = async (data) => {
         try {
+
             setIsLoading(true)
 
 
@@ -265,7 +293,7 @@ const EditProfileForm = () => {
             formData.append('currentLiveCity', data.currentLiveCity);
             formData.append('phone', data.phone);
             formData.append('imageFile', data.image);
-
+            formData.append('imagePublicID', profile.imagePublicID);
 
 
 
@@ -435,8 +463,8 @@ const EditProfileForm = () => {
                                                 className="select select-bordered text-base md:text-lg birthdate border-2  placeholder-gray-500 rounded-1xl w-full width-full    outline-none"
                                                 name="dateOfBirth"
                                                 placeholderText="1999-01-25"
-                                                selected={dob}
-
+                                                // selected={dob}
+                                                selected={field.value}
                                                 dateFormat="yyyy-MM-dd"
                                                 onChange={(date) => {
                                                     field.onChange(date);

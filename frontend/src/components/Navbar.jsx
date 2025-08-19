@@ -73,7 +73,7 @@ const Navbar = () => {
                             </li>
                             <li>
                                 <Link
-                                    to={`/profile/user`}//get-user-by-UserId/${authUser.id}
+                                    to={`/profile/get-user/${authUser?.id}`}//`/profile/user`
                                     className="hover:bg-primary hover:text-white text-base font-semibold"
                                 >
                                     <User className="w-4 h-4 mr-2" />

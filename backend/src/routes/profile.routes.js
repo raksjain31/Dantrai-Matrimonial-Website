@@ -22,7 +22,7 @@ profileRoutes.delete("/delete-profile/:id", authMiddleware, deleteProfileById);/
 
 profileRoutes.get("/get-profiles-by-user/", authMiddleware, getProfilesByUserId);
 
-profileRoutes.get("/user", authMiddleware, getUserProfileByUserId);///get-user-by-UserId/:id
+profileRoutes.get("/get-user/:id", authMiddleware, getUserProfileByUserId);///get-user-by-UserId/:id///user
 
 
 export default profileRoutes;

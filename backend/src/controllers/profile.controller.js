@@ -107,9 +107,6 @@ export const createProfile = async (req, res) => {
 }
 
 
-
-
-
 export const getAllProfile = async (req, res) => {
 
     try {
@@ -215,9 +212,10 @@ export const updateProfilebyId = async (req, res) => {
     let result = null;
     try {
         const { id } = req.params;
-        const file = req.file.path;
+        //const file = req.file.path;
 
-        const { fullname, gender, dateOfBirth, age, height, currentLiveCity, phone, image,
+
+        const { fullname, gender, dateOfBirth, age, height, currentLiveCity, phone, image, imagePublicID,
             aboutme, education, college, aboutmyeducation, employedIn, occupation, organisation,
             aboutmycareer, father, mother, noOfBrothers, noOfsisters, noOfMarriedBrothers,
             noOfMarriedSisters, aboutmyfamily, hobbies } = req.body;
@@ -228,32 +226,59 @@ export const updateProfilebyId = async (req, res) => {
         //     })
         // }
 
-        if (!file) {
-            return res.status(400).json({ error: 'Image is required file empty' });
+        // const profile = await db.profile.findUnique(
+        //     {
+        //         where: {
+        //             id
+        //         }
+        //     });
+
+
+        // if (!profile) {
+        //     return res.status(404).json({
+        //         error: "Profile Not Found!"
+        //     })
+        // }
+
+
+        let oldimageUrl = image;
+        let oldimagePublicId = imagePublicID
+
+        console.log("Backend Image old Public ID:", imagePublicID);
+
+        //const oldprofileImage_publicID = imagePublicID
+        // if (!file) {
+        //     return res.status(400).json({ error: 'Image is required file empty' });
+        // }
+
+        if (req.file) {
+            //Working for cloudinary save File
+            result = await cloudinary.uploader.upload(req.file.path, (error, result) => {
+                folder: 'user_profiles'
+                if (error) {
+                    console.log(error);
+                    return res.status(500).json({
+                        success: false,
+                        message: "Error uploading image",
+                    })
+                }
+                else {
+                    console.log('Image uploaded successfully!');
+
+                    // console.log('Image URL:', result.secure_url);
+                }
+
+            })
+            oldimageUrl = result.secure_url;
+            oldimagePublicId = result.public_id
+
+
         }
-
-        //Working for cloudinary save File
-        result = await cloudinary.uploader.upload(req.file.path, (error, result) => {
-            folder: 'user_profiles'
-            if (error) {
-                console.log(error);
-                return res.status(500).json({
-                    success: false,
-                    message: "Error uploading image",
-                })
-            }
-            else {
-                console.log('Image uploaded successfully!');
-
-                // console.log('Image URL:', result.secure_url);
-            }
-
-        })
 
         console.log("Backend ID:", id);
         console.log("Backend UserID:", req.user.id);
 
-        console.log("Backend Image Public ID:", result.public_id);
+        console.log("Backend Image Public ID:", oldimagePublicId);
 
         const Updateprofile = await db.profile.update({
             where: {
@@ -261,7 +286,8 @@ export const updateProfilebyId = async (req, res) => {
                 userId: req.user.id
             },
             data: {
-                fullname, gender, dateOfBirth, age: parseInt(age), height, currentLiveCity, phone, image: result.secure_url, imagePublicID: result.public_id,
+                fullname, gender, dateOfBirth, age: parseInt(age), height, currentLiveCity, phone,
+                image: oldimageUrl, imagePublicID: oldimagePublicId,
                 aboutme, education, college, aboutmyeducation, employedIn, occupation, organisation,
                 aboutmycareer, father, mother,
                 noOfBrothers: parseInt(noOfBrothers),
@@ -273,17 +299,29 @@ export const updateProfilebyId = async (req, res) => {
 
 
         });
+
+        if (Updateprofile && oldimagePublicId != imagePublicID) {
+
+            try {
+                await cloudinary.uploader.destroy(imagePublicID);
+
+            } catch (delErr) {
+                console.error("Error deleting image from Cloudinary:", delErr);
+            }
+
+
+        }
         console.log('Profile updated:', Updateprofile);
         //return Updateprofile;
         return res.status(201).json(Updateprofile);
 
     } catch (error) {
         console.log(error);
-        console.log("Rolled back image:", result.public_id);
+        console.log("Rolled back image:", result?.public_id);
         if (result?.public_id) {
             try {
-                await cloudinary.uploader.destroy(result.public_id);
-                console.log("Rolled back image:", result.public_id);
+                await cloudinary.uploader.destroy(result?.public_id);
+                console.log("Rolled back image:", result?.public_id);
             } catch (delErr) {
                 console.error("Error deleting image from Cloudinary:", delErr);
             }
