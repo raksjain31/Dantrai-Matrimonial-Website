@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react'
 import { useAuthStore } from '../store/useAuthStore'
 import { Link } from "react-router-dom";
-import { Bookmark, PencilIcon, Trash, TrashIcon, Plus } from "lucide-react";
+import { Bookmark, PencilIcon, Trash, PhoneCall, TrashIcon, Plus } from "lucide-react";
 import useAction from '../store/useAction'
 import { useNavigate } from "react-router-dom";
 
@@ -108,6 +108,9 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
         }
 
 
+    };
+    const handleCall = () => {
+        window.location.href = `tel:${phoneNumber}`;
     };
 
     return (
@@ -362,24 +365,19 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
                                 City: {profile.currentLiveCity}
                             </p>
 
+                            <a
+
+                                href={`tel:${profile.phone}`}
+
+                                className="px-4  rounded-2xl mt-4 bg-green-500 text-white font-semibold shadow-md hover:bg-green-600 transition"
+                            >
+
+                                Call Now
+
+                            </a>
+
                             {/* Actions */}
-                            {authUser?.role === "USER" && (
-                                <div className="flex gap-2 mt-3">
-                                    <button
-                                        onClick={() => handleDelete(profile.id)}
-                                        className="btn btn-sm btn-error"
-                                    >
-                                        {isDeletingProfile ? (
-                                            <span className="loading loading-spinner text-white"></span>
-                                        ) : (
-                                            <TrashIcon className="w-4 h-4 text-white" />
-                                        )}
-                                    </button>
-                                    <button disabled className="btn btn-sm btn-warning">
-                                        <PencilIcon className="w-4 h-4 text-white" />
-                                    </button>
-                                </div>
-                            )}
+
                         </div>
                     ))
                 ) : (
