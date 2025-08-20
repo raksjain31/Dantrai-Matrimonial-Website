@@ -9,6 +9,9 @@ import ThemeSwitcher from "./ThemeSwitcher";
 const Navbar = () => {
 
     const { authUser } = useAuthStore();
+    // console.log("navbardataimage:", `{authUser?.image}`);
+    // console.log("navbardata:", `http://localhost:8081${authUser?.image}`);
+    //console.log("path saved:", `${import.meta.env.VITE_REACT_APP_API_URL}${authUser?.image}`)
     return (
         <nav className="sticky top-0 z-50 w-full  py-4">
             <div className="flex w-full justify-between mx-auto max-w-4xl bg-black/15 shadow-lg shadow-neutral-600/5 backdrop-blur-lg border border-gray-200/10 p-2 rounded-2xl">
@@ -45,8 +48,8 @@ const Navbar = () => {
                         <label tabIndex={0} className="btn btn-ghost btn-circle avatar flex flex-row ">
                             <div className="w-10 rounded-full ">
                                 <img
-                                    src={
-                                        authUser?.image ||
+                                    src={authUser?.image ? `${import.meta.env.VITE_REACT_APP_API_URL}${authUser?.image}`
+                                        :
                                         "https://avatar.iran.liara.run/public/boy"
                                     }
                                     alt="User Avatar"

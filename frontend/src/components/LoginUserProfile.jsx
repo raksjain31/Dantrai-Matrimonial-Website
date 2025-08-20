@@ -3,13 +3,14 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from 'react-router-dom'
 import { z } from 'zod'
-import { User, Code, Code2, Eye, EyeOff, Loader2, Lock, Mail, User2, PhoneCall } from 'lucide-react'
+import { User, Code, Code2, Eye, EyeOff, Loader2, Lock, CheckCircle2, Mail, User2, PhoneCall } from 'lucide-react'
 
 import { useAuthStore } from '../store/useAuthStore'
 import { useParams } from 'react-router-dom';
 import { axiosInstance } from "../lib/axios"
 import toast from "react-hot-toast";
 import { useProfileStore } from '../store/useProfileStore'
+import { useNavigate } from "react-router-dom";
 
 
 const phoneValidation = new RegExp(
@@ -20,33 +21,45 @@ const UserEditSchema = z.object({
     email: z.string().email("Enter a valid email").transform((str) => str.toLowerCase()),
     Father: z.string().min(3, "Father must be at least 3 characters long").transform((str) => str.toUpperCase()),
     phone: z.string().min(10, 'Phone number is required.').refine(value => /^\d{10}$/.test(value), 'Invalid Number!'),
-    village: z.string()
-    // image: z
+    village: z.string(),
+    image: z
 
 
 
-    //     .any()
+        .any()
 
-    //     .transform((file) => file.length > 0 && file.item(0), "Image is Required")
-    //     .refine((files) => !files[0]?.size <= 5 * 1024 * 1024, {
-    //         message: "Image must be less than or equal to 5MB",
-    //     }),
+        //.transform((file) => file.length > 0 && file.item(0), "Image is Required")
+        .transform((val) => {
+            // Case 1: FileList (new upload)
+            if (val instanceof FileList && val.length > 0) {
+                return val[0];
+            }
+
+            // Case 2: Already saved string URL (from DB)
+            if (typeof val === "string") {
+                return val; // keep DB image
+            }
+
+            return null;
+        }),
 })
 
 
 
 const LoginUserProfile = () => {
-
+    const navigation = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const { id } = useParams();
     const [authUser, setAuthUser] = React.useState(null);
-
+    const [isLoading, setIsLoading] = useState(false);
+    const [image, setImage] = useState(null);
     const { UpdateUser, isUpdatingUser } = useAuthStore();
     const { getuserDataById, user } = useProfileStore();
     const {
         register,
         handleSubmit,
         reset,
+        watch,
         formState: { errors }
 
     } = useForm({
@@ -54,7 +67,12 @@ const LoginUserProfile = () => {
     })
 
 
-
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setImage(URL.createObjectURL(file)); // create preview URL
+        }
+    };
 
 
     React.useEffect(() => {
@@ -69,7 +87,8 @@ const LoginUserProfile = () => {
                         email: fetchedUser.email || "",
                         phone: fetchedUser.phone || "",
                         village: fetchedUser.village || "",
-                        Father: fetchedUser.Father || ""
+                        Father: fetchedUser.Father || "",
+                        image: fetchedUser.image
                     });
                 }
             } catch (error) {
@@ -81,23 +100,60 @@ const LoginUserProfile = () => {
     }, [id, reset]);
 
 
+    const imageFile = watch('image');
+
+    const [preview, setPreview] = useState(null);
+
     const onSubmit = async (data) => {
         console.log("update user:", data);
+
         try {
-            //await UpdateUser(data)
 
-            const result = await axiosInstance.post(`/profile/update-user/${id}`, data);
-            // console.log(res.data);
+            setIsLoading(true)
 
 
 
+            const formData = new FormData();
+
+
+
+            formData.append('name', data.name);
+            formData.append('email', data.email);
+            formData.append('phone', data.phone);
+            formData.append('village', data.village);
+            formData.append('Father', data.Father);
+            formData.append('imageFile', data.image);
+            // formData.append('imagePublicID', profile.imagePublicID);
+
+            console.log("Form data:", data);
+            console.log('Selected avatar image file:', data.image);         // should be a FileList
+            console.log('Actual avatar file object:', data.image?.[0]);
+            console.log("Submitted avatar image:", data.image);
+            console.log("image avatar file:", data.image);
+
+            // if (!file) {
+            //     alert("Image file is missing!!!!");
+            //     return;
+            // }
+            console.log("Update avatar FormData:", formData)
+
+            const result = await axiosInstance.post(`/profile/update-user/${id}`, formData);
             setAuthUser(result.Updateuser);
 
             toast.success(result.data.message || "User Updated successfully⚡");
+            navigation("/");
             console.log("Update User Data", data);
 
+            setPreview(null);
+            reset();
+
         } catch (error) {
-            console.log("Updating User Data Failed", error);
+            console.log(error);
+            toast.error("Error Updating profile")
+
+        }
+        finally {
+            setIsLoading(false);
         }
 
     }
@@ -110,17 +166,42 @@ const LoginUserProfile = () => {
                         {/* Logo */}
                         <div className="text-center mb-8">
                             <div className="flex flex-col items-center gap-2 group">
-                                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                                {/* <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                                     <User2 className="w-6 h-6 text-primary" />
-                                </div>
+                                </div> */}
 
                                 <p className="text-base-content/60">Edit Your Login Profile</p>
                             </div>
                         </div>
 
                         {/* Form */}
-                        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
 
+                        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                            <div className="form-control justify-center">
+                                <div className="avatar gap-4">
+                                    <div className="ring-primary ring-offset-base-100 w-24 rounded-full ring-2 ring-offset-2 ">
+
+                                        <img src={image || "https://avatar.iran.liara.run/public/boy"} // default placeholder
+                                            alt="avatar"
+                                        />
+                                    </div>
+
+                                    <input type="file" {...register("image", {
+                                        onChange: (e) => {
+                                            const file = e.target.files?.[0];
+                                            if (file) {
+                                                // use the file for preview
+                                                setPreview(URL.createObjectURL(file));
+                                            }
+                                        },
+                                    })} accept="image/*" className="file-input file-input-primary" />
+
+                                </div>
+                                {errors.image && (
+                                    <p className="text-red-500 text-sm mt-1">{errors.image.message}</p>
+                                )}
+
+                            </div>
                             {/* name */}
                             <div className="form-control">
 
@@ -288,14 +369,13 @@ const LoginUserProfile = () => {
                                 className="btn btn-primary w-full"
                                 disabled={isUpdatingUser}
                             >
-                                {isUpdatingUser ? (
-                                    <>
-                                        <Loader2 className="h-5 w-5 animate-spin" />
-                                        Loading...
-                                    </>
+                                {isLoading ? (
+                                    <span className="loading loading-spinner text-white"></span>
                                 ) : (
-                                    "Update"
-
+                                    <>
+                                        <CheckCircle2 className="w-5 h-5" />
+                                        Update
+                                    </>
                                 )}
                             </button>
                         </form>

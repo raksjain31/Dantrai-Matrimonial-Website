@@ -30,7 +30,7 @@ profileRoutes.get("/get-profiles-by-user/", authMiddleware, getProfilesByUserId)
 profileRoutes.get("/get-user-by-UserId/:id", authMiddleware, getUserData);
 
 
-profileRoutes.post("/update-user/:id", authMiddleware, UpdateUserByUserId);
+profileRoutes.post("/update-user/:id", authMiddleware, upload.single('imageFile'), UpdateUserByUserId);
 
 
 export default profileRoutes;

@@ -3,7 +3,8 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import cors from "cors";
-
+import path from "path";
+import { fileURLToPath } from "url";
 
 import authRoutes from "./routes/auth.routes.js";
 import profileRoutes from "./routes/profile.routes.js";
@@ -12,7 +13,8 @@ import adminRoutes from "./routes/admin.routes.js";
 
 dotenv.config()
 const app = express();
-
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 app.use(
     cors({
         origin: process.env.BASE_URL,
@@ -24,6 +26,9 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
+
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+console.log("Serving uploads from:", path.join(__dirname, "../uploads"));
 // app.use(setCorsHeaders);
 
 app.use(session(

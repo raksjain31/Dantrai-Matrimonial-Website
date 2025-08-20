@@ -2,6 +2,9 @@ import { db } from "../libs/db.js";
 
 import dotenv from "dotenv";
 
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
 import cloudinary from "../Utils/cloudinary.js";
 dotenv.config();
@@ -15,53 +18,65 @@ cloudinary.config({
 export const createProfile = async (req, res) => {
 
     let result = null;
+    let ImageUrl = null;
+    let ImagePublicId = null;
     try {
 
-        console.log("File from multer:", req.file);
-        console.log("File Path from multer:", req.file.path);
-        const { fullname, gender, dateOfBirth, age, height, currentLiveCity, phone, image,
+        // console.log("File from multer:", req.file);
+        // console.log("File Path from multer:", req.file.path);
+        const { fullname, gender, dateOfBirth, age, height, currentLiveCity, phone, image, imagePublicID,
             aboutme, education, college, aboutmyeducation, employedIn, occupation, organisation,
             aboutmycareer, father, mother, noOfBrothers, noOfsisters, noOfMarriedBrothers,
             noOfMarriedSisters, aboutmyfamily, hobbies } = req.body;
 
 
-        const file = req.file.path;
+        const file = req.file ? req.file.path : null;
 
 
         console.log('Received fields:', req.body);
         console.log('Received file:', req.file);
-        console.log('Received file Paths:', req.file.path);
+        //console.log('Received file Paths:', req.file.path);
 
 
-        if (!file) {
-            return res.status(400).json({ error: 'Image is required file empty' });
+        // if (!file) {
+        //     return res.status(400).json({ error: 'Image is required file empty' });
+        // }
+
+        if (file) {
+            //Working for cloudinary save File
+            result = await cloudinary.uploader.upload(req.file.path, (error, result) => {
+                folder: 'user_profiles'
+                if (error) {
+                    console.log(error);
+                    return res.status(500).json({
+                        success: false,
+                        message: "Error uploading image",
+                    })
+                }
+                else {
+                    ImageUrl = result.secure_url;
+                    ImagePublicId = result.public_id;
+                    console.log('Image uploaded successfully!');
+
+                    // console.log('Image URL:', result.secure_url);
+                }
+
+
+
+            })
+
+        }
+        else {
+            console.log('Image File not found !');
         }
 
-        //Working for cloudinary save File
-        result = await cloudinary.uploader.upload(req.file.path, (error, result) => {
-            folder: 'user_profiles'
-            if (error) {
-                console.log(error);
-                return res.status(500).json({
-                    success: false,
-                    message: "Error uploading image",
-                })
-            }
-            else {
-                console.log('Image uploaded successfully!');
-
-                // console.log('Image URL:', result.secure_url);
-            }
 
 
-
-        })
-
-        console.log("Backend Image Public ID:", result.public_id);
+        //console.log("Backend Image Public ID:", result.public_id);
         const newprofile = await db.Profile.create({
             data: {
                 fullname, gender, dateOfBirth, age: parseInt(age), height, currentLiveCity, phone,
-                image: result.secure_url, imagePublicID: result.public_id,
+                image: ImageUrl, imagePublicID: ImagePublicId,
                 aboutme, education, college, aboutmyeducation, employedIn, occupation, organisation,
                 aboutmycareer, father, mother,
                 noOfBrothers: parseInt(noOfBrothers),
@@ -508,22 +523,25 @@ export const getUserData = async (req, res) => {
 
 export const UpdateUserByUserId = async (req, res) => {
     const { id } = req.params;
-    const { name, email, phone, village, Father } = req.body;
-
+    const { name, email, phone, village, Father, image } = req.body;
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
     console.log(`User Id :${id}`)
     try {
-        const User = await db.user.findUnique(
-            {
-                where: {
-                    id
+
+        let avatarPath = image;
+
+        if (req.file) {
+            // delete old image if exists
+            if (avatarPath) {
+                const oldPath = path.join(__dirname, "..", avatarPath);
+
+                console.log("Oldfile path:", oldPath)
+                if (fs.existsSync(oldPath)) {
+                    fs.unlinkSync(oldPath);
                 }
-            });
-
-
-        if (!User) {
-            return res.status(404).json({
-                error: "User Not Found!"
-            })
+            }
+            avatarPath = `/uploads/${req.file.filename}`;
         }
 
         const Updateuser = await db.User.update({
@@ -532,7 +550,7 @@ export const UpdateUserByUserId = async (req, res) => {
 
             },
             data: {
-                name, email, phone, village, Father
+                name, email, phone, village, Father, image: avatarPath
             },
 
 

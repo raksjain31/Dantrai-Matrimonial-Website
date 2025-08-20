@@ -141,8 +141,8 @@ export const login = async (req, res) => {
                 role: user.role,
                 phone: user.phone,
                 Father: user.Father,
-                IsApproved: user.IsApproved
-                // image: user.image
+                IsApproved: user.IsApproved,
+                image: user.image
             }
         })
 
