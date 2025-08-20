@@ -67,7 +67,13 @@ export const useProfileStore = create((set) => ({
 
             console.log("Profile Fetched for User Sucessfully", res.data.profiles);
             toast.dismiss();
-            toast.success("Profile Fetched for User Sucessfully");
+            if (res.data.profiles.length === 0) {
+                toast.error("No Biodata found \n Please Add Within 72Hours ⚠️");
+            }
+            else {
+                toast.success("Biodata Fetched for User Sucessfully⚡");
+            }
+
             set({ profilesByUser: res.data.profiles });
 
         } catch (error) {
