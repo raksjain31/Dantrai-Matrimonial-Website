@@ -70,7 +70,7 @@ export const useAuthStore = create((set) => ({
             toast.success(res.data.message);
         } catch (error) {
             console.log("Error logging in", error);
-            toast.error("Error logging in");
+            toast.error("Incorrect Mobile No. or Password. \n Please Enter Valid Details");
         } finally {
             set({ isLoggingIn: false });
         }
