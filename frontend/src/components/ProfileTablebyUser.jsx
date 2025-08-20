@@ -63,7 +63,7 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
             <div className="   h-screen w-full max-w-6xl mx-auto mt-10 px-2 sm:px-4 ">
                 {/* Header with Create Playlist Button //justify-between */}
                 <div className="flex flex-col sm:flex-row  items-start sm:items-center mb-6 gap-3">
-                    <h2 className="text-xl sm:text-2xl font-bold">Profiles of your family</h2>
+                    <h2 className="text-xl sm:text-2xl font-bold">Biodata's of your family</h2>
                     <button
                         className="btn btn-sm sm:btn-md bg-purple-800 gap-2 w-full sm:w-auto"
                         onClick={handleClick}
