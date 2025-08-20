@@ -153,10 +153,10 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
                                 className="border rounded-lg p-4 shadow-sm bg-white dark:bg-gray-800"
                             >
                                 {/* <h3 className="font-bold text-lg text-white">{profile.fullname}</h3> */}
-                                <h3 className="font-bold text-lg">
+                                <h3 className="font-bold text-lg ">
                                     <Link
                                         to={`/profile/get-profile/${profile.id}`}
-                                        className="font-semibold hover:underline"
+                                        className="font-semibold  hover:underline"
                                     >
                                         {profile.fullname}
                                         <div className="text-xs text-gray-500">

@@ -1,5 +1,5 @@
 import React from "react"
-import { User, Code, LogOut, Search } from "lucide-react";
+import { User, Code, LogOut, Search, FilePlus, LaptopMinimalCheck } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
 
 import { Link } from "react-router-dom";
@@ -85,8 +85,8 @@ const Navbar = () => {
                                     to="/add-profile"
                                     className="hover:bg-primary hover:text-white text-base font-semibold"
                                 >
-                                    <User className="w-4 h-4 mr-2" />
-                                    Add Biodata
+                                    <FilePlus className="w-4 h-4 mr-2" />
+                                    Biodata
                                 </Link>
                             </li>
                             {authUser?.IsApproved === true && (
@@ -106,7 +106,7 @@ const Navbar = () => {
                                         to="/dashboard"
                                         className="hover:bg-primary hover:text-white text-base font-semibold"
                                     >
-                                        <Code className="w-4 h-4 mr-1" />
+                                        <LaptopMinimalCheck className="w-4 h-4 mr-1" />
                                         Dashboard
                                     </Link>
                                 </li>
