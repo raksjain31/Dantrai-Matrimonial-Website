@@ -84,9 +84,12 @@ const App = () => {
         {/* <Route element={<AdminRoute />}> */}
 
         <Route path='/' element={<Layout />}>
-          <Route path="/profile/get-user/:id"
+          <Route path="/update-user/:id"
             element={authUser ? <LoginUserProfilePage /> : <Navigate to={"/"} />} />
         </Route>
+
+
+
 
         <Route path='/' element={<Layout />}>
           <Route path="/add-profile"

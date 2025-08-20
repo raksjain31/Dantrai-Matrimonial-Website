@@ -470,9 +470,45 @@ export const getProfilesByUserId = async (req, res) => {
 
 }
 
-
-export const getUserProfileByUserId = async (req, res) => {
+export const getUserData = async (req, res) => {
     const { id } = req.params;
+    try {
+
+        const user = await db.User.findUnique({
+            where: {
+                id
+            }
+        });
+
+
+        if (!user) {
+
+            return res.status(404).json({
+                message: "No User data Found"
+            })
+        }
+        res.status(200).json({
+            sucess: true,
+            message: "user Fetched Successfully",
+            user
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            error: "Error Fetching User ",
+        });
+
+    }
+
+
+
+}
+
+
+export const UpdateUserByUserId = async (req, res) => {
+    const { id } = req.params;
+    const { name, email, phone, village, Father } = req.body;
 
     console.log(`User Id :${id}`)
     try {
@@ -490,17 +526,29 @@ export const getUserProfileByUserId = async (req, res) => {
             })
         }
 
+        const Updateuser = await db.User.update({
+            where: {
+                id: id,
+
+            },
+            data: {
+                name, email, phone, village, Father
+            },
+
+
+        });
+
         res.status(200).json({
             sucess: true,
-            message: "User Fetched Successfully",
-            User
+            message: "User Updated Successfully",
+            Updateuser
         });
 
 
     } catch (error) {
         console.log(error);
         return res.status(500).json({
-            error: "Error while Fetching User Data  ",
+            error: "Error while Updating User Data  ",
         });
 
 
@@ -509,3 +557,6 @@ export const getUserProfileByUserId = async (req, res) => {
 
 
 }
+
+
+

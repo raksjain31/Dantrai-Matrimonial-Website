@@ -250,7 +250,7 @@ const CreateProfileForm = () => {
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 pb-4 border-b">
                         <h2 className="card-title text-2xl md:text-3xl flex items-center gap-3">
                             <FileText className="w-6 h-6 md:w-8 md:h-8 text-primary" />
-                            Create Profile
+                            Create Biodata
                         </h2>
 
 
@@ -948,7 +948,7 @@ const CreateProfileForm = () => {
                                 ) : (
                                     <>
                                         <CheckCircle2 className="w-5 h-5" />
-                                        Create Profile
+                                        Create Biodata
                                     </>
                                 )}
                             </button>

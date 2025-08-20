@@ -203,6 +203,49 @@ export const check = async (req, res) => {
 }
 
 
+export const updateUserbyId = async (req, res) => {
+    let result = null;
+    try {
+        const { id } = req.params;
+        //const file = req.file.path;
+
+
+        const { name,
+            email,
+            phone,
+
+            village,
+            Father } = req.body;
+
+        const UpdateUser = await db.User.update({
+            where: {
+                id: id,
+            },
+            data: {
+                name,
+                email,
+                phone,
+
+                village,
+                Father
+            },
+        });
+
+
+
+        return res.status(201).json(UpdateUser);
+
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            error: "Error Updating User",
+        });
+
+    }
+
+}
+
 export const forgetpassword = async (req, res) => {
     const { email } = req.body;//email,
     //console.log("🚀 VPSss is running THIS");

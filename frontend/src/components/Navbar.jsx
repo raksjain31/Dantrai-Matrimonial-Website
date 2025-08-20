@@ -73,7 +73,7 @@ const Navbar = () => {
                             </li>
                             <li>
                                 <Link
-                                    to={`/profile/get-user/${authUser?.id}`}//`/profile/user`
+                                    to={`/update-user/${authUser?.id}`}//`/profile/user`
                                     className="hover:bg-primary hover:text-white text-base font-semibold"
                                 >
                                     <User className="w-4 h-4 mr-2" />
@@ -86,7 +86,7 @@ const Navbar = () => {
                                     className="hover:bg-primary hover:text-white text-base font-semibold"
                                 >
                                     <User className="w-4 h-4 mr-2" />
-                                    Add Profile
+                                    Add Biodata
                                 </Link>
                             </li>
                             {authUser?.IsApproved === true && (
@@ -96,7 +96,7 @@ const Navbar = () => {
                                         className="hover:bg-primary hover:text-white text-base font-semibold"
                                     >
                                         <Search className="w-4 h-4 mr-1" />
-                                        Search Profiles
+                                        Search Biodata
                                     </Link>
                                 </li>
                             )}

@@ -44,7 +44,7 @@ const HomePage = () => {
                 </div>
             ) : (
                 <p className="mt-8 sm:mt-10 text-center text-base sm:text-lg font-medium text-gray-500 dark:text-gray-400 z-10 border border-primary px-3 sm:px-4 py-2 rounded-md border-dashed max-w-sm">
-                    No profile found. Please add your son/daughter’s profile.
+                    No Biodata found. Please add your son/daughter’s Biodata within 72hours of Registrations else your Account will be deleted - Team Abugoad Youth Connect.
                 </p>
             )}
         </div>

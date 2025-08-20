@@ -1,5 +1,5 @@
 import express from "express";
-import { check, forgetpassword, login, logout, register, resetpassword } from "../controllers/auth.controller.js";
+import { check, forgetpassword, login, logout, register, resetpassword, updateUserbyId } from "../controllers/auth.controller.js";
 import { authMiddleware, checkAdmin } from "../middleware/auth.middleware.js";
 
 const authRoutes = express.Router();
@@ -16,6 +16,9 @@ authRoutes.get("/check", authMiddleware, check)
 authRoutes.post("/forget-password", forgetpassword)
 
 authRoutes.post("/reset-password/:email/:token", resetpassword)
+
+authRoutes.put("/update-user/:id", authMiddleware, updateUserbyId);
+
 
 //authRoutes.post("/reset-password", resetpassword)
 

@@ -1,6 +1,10 @@
 import express from "express";
 import { authMiddleware, checkUserApproved } from "../middleware/auth.middleware.js";
-import { createProfile, deleteProfileById, getAllProfile, getProfileById, getProfilesByUserId, getUserProfileByUserId, updateProfilebyId } from "../controllers/profile.controller.js";
+import {
+    createProfile, deleteProfileById, getAllProfile, getProfileById,
+    getProfilesByUserId, getUserData, updateProfilebyId,
+    UpdateUserByUserId
+} from "../controllers/profile.controller.js";
 import upload from "../middleware/multer.middleware.js";
 
 const profileRoutes = express.Router();
@@ -22,7 +26,11 @@ profileRoutes.delete("/delete-profile/:id", authMiddleware, deleteProfileById);/
 
 profileRoutes.get("/get-profiles-by-user/", authMiddleware, getProfilesByUserId);
 
-profileRoutes.get("/get-user/:id", authMiddleware, getUserProfileByUserId);///get-user-by-UserId/:id///user
+
+profileRoutes.get("/get-user-by-UserId/:id", authMiddleware, getUserData);
+
+
+profileRoutes.post("/update-user/:id", authMiddleware, UpdateUserByUserId);
 
 
 export default profileRoutes;

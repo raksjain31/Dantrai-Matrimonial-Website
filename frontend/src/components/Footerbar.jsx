@@ -13,7 +13,7 @@ const Footerbar = () => {
                 </nav>
 
                 <aside>
-                    <p>Copyright © {new Date().getFullYear()} - All right reserved by Abougoad Youth Connect Team</p>
+                    <p>Copyright © {new Date().getFullYear()} - All right reserved by Abugoad Youth Connect Team</p>
                 </aside>
                 <aside>
                     <p>Developed and Design by Rakshit Rathod @Dapan Software Solution</p>
