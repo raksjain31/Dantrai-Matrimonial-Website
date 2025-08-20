@@ -181,7 +181,7 @@ const LoginUserProfile = () => {
                                 <div className="avatar gap-4">
                                     <div className="ring-primary ring-offset-base-100 w-24 rounded-full ring-2 ring-offset-2 ">
 
-                                        <img src={image || "https://avatar.iran.liara.run/public/boy"} // default placeholder
+                                        <img src={preview || "https://avatar.iran.liara.run/public/boy"} // default placeholder
                                             alt="avatar"
                                         />
                                     </div>
@@ -191,6 +191,7 @@ const LoginUserProfile = () => {
                                             const file = e.target.files?.[0];
                                             if (file) {
                                                 // use the file for preview
+
                                                 setPreview(URL.createObjectURL(file));
                                             }
                                         },
