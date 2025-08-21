@@ -44,6 +44,8 @@ export default function ProfileView() {
     if (profiles.length <= 0)
         return <div className="text-center py-10">Loading...</div>;
 
+
+    console.log("path saved:", { uri: profile.image ? `${import.meta.env.VITE_REACT_APP_API_URL}${profile.image}` : "/NO-Image_preview.png" })
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
 

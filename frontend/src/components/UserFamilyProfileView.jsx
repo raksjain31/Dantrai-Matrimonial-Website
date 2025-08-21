@@ -36,6 +36,13 @@ export default function UserFamilyProfileView() {
 
     useEffect(() => {
 
+
+        const imagePath = profile.image
+            ? `${import.meta.env.VITE_REACT_APP_API_URL}${profile.image}`
+            : "/NO-Image_preview.png";
+
+        console.log("🖼️ Image path for preview:", imagePath);
+
         setProfile(profile)
     }, [profile]);
 
