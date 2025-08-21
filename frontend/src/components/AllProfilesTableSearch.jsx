@@ -281,28 +281,7 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
                                     <td>{profile.education}</td>
                                     <td>{profile.user.village}</td>
                                     <td>{profile.currentLiveCity}</td>
-                                    {authUser?.role === "USER" && (
-                                        <td>
-                                            <div className="flex gap-2">
-                                                <button
-                                                    onClick={() => handleDelete(profile.id)}
-                                                    className="btn btn-sm btn-error"
-                                                >
-                                                    {isDeletingProfile ? (
-                                                        <span className="loading loading-spinner text-white"></span>
-                                                    ) : (
-                                                        <TrashIcon className="w-4 h-4 text-white" />
-                                                    )}
-                                                </button>
-                                                <button
-                                                    disabled
-                                                    className="btn btn-sm btn-warning"
-                                                >
-                                                    <PencilIcon className="w-4 h-4 text-white" />
-                                                </button>
-                                            </div>
-                                        </td>
-                                    )}
+
                                 </tr>
                             ))
                         ) : (
