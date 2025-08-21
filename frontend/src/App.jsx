@@ -42,7 +42,10 @@ const App = () => {
 
     )
   }
+  if (import.meta.env.PROD) {
+    console.log = () => { };
 
+  }
 
   return (
     <div className='flex flex-col items-center justify-start'>
