@@ -249,7 +249,7 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
                             <th>EDUCATION</th>
                             <th>VILLAGE</th>
                             <th>CITY</th>
-                            {authUser?.role === "USER" && <th>Actions</th>}
+
                         </tr>
                     </thead>
                     <tbody>
