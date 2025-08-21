@@ -45,7 +45,7 @@ export default function ProfileView() {
         return <div className="text-center py-10">Loading...</div>;
 
 
-    console.log("path saved:", { uri: profile.image ? `${import.meta.env.VITE_REACT_APP_API_URL}${profile.image}` : "/NO-Image_preview.png" })
+    //console.log("path saved:", { uri: profile.image ? `${import.meta.env.VITE_REACT_APP_API_URL}${profile.image}` : "/NO-Image_preview.png" })
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
 
@@ -74,7 +74,7 @@ export default function ProfileView() {
                                 width={300}
                                 height={300}
                                 // src={profile.image}
-                                src={profile.image ? `${import.meta.env.VITE_REACT_APP_API_URL}${profile.image}` : "/NO-Image_preview.png"}
+                                src={profile?.image ? `${import.meta.env.VITE_REACT_APP_API_URL}${profile.image}` : "/NO-Image_preview.png"}
                                 alt="profile"
                                 className="rounded-xl" />
 

@@ -249,7 +249,7 @@ const EditProfileForm = () => {
                 hobbies: profile.hobbies
 
             })
-            setPreview(profile.image ? `${import.meta.env.VITE_REACT_APP_API_URL}${profile.image}` : "/NO-Image_preview.png" || null); // show saved image on load
+            setPreview(profile?.image ? `${import.meta.env.VITE_REACT_APP_API_URL}${profile.image}` : "/NO-Image_preview.png" || null); // show saved image on load
         }
     }, [reset, profile]);
 
@@ -265,7 +265,7 @@ const EditProfileForm = () => {
             return () => URL.revokeObjectURL(previewUrl);
         } else {
 
-            setPreview(profile.image ? `${import.meta.env.VITE_REACT_APP_API_URL}${profile.image}` : "/NO-Image_preview.png" || null);
+            setPreview(profile?.image ? `${import.meta.env.VITE_REACT_APP_API_URL}${profile.image}` : "/NO-Image_preview.png" || null);
             //setPreview(profile?.image || null);
         }
     }, [imageFile, profile]);

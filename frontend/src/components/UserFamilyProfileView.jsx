@@ -108,7 +108,7 @@ export default function UserFamilyProfileView() {
 
                     <img
                         //src={profile.image}
-                        src={profile.image ? `${import.meta.env.VITE_REACT_APP_API_URL}${profile.image}` : "/NO-Image_preview.png"}
+                        src={profile?.image ? `${import.meta.env.VITE_REACT_APP_API_URL}${profile.image}` : "/NO-Image_preview.png"}
                         alt="Preview"
                         className=" w-48 h-48 object-cover object-center rounded-lg items-center"
 
