@@ -41,11 +41,7 @@ export default function UserFamilyProfileView() {
 
         setProfile(profile)
 
-        const imagePath = profile.image
-            ? `${import.meta.env.VITE_REACT_APP_API_URL}${profile.image}`
-            : "/NO-Image_preview.png";
 
-        console.log("🖼️ Image path for preview:", imagePath);
     }, [profile]);
 
     function calculateAge(dateOfBirth) {
