@@ -20,6 +20,9 @@ export const createProfile = async (req, res) => {
     let result = null;
     let ImageUrl = null;
     let ImagePublicId = null;
+
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
     try {
 
         // console.log("File from multer:", req.file);
@@ -37,46 +40,60 @@ export const createProfile = async (req, res) => {
         console.log('Received file:', req.file);
         //console.log('Received file Paths:', req.file.path);
 
+        let biodataImagePath = image;
 
+        if (req.file) {
+            // delete old image if exists
+            if (biodataImagePath) {
+                const oldPath = path.join(__dirname, "..", biodataImagePath);
+
+                console.log("Oldfile path:", oldPath)
+                if (fs.existsSync(oldPath)) {
+                    fs.unlinkSync(oldPath);
+                }
+            }
+            biodataImagePath = `/uploads/${req.file.filename}`;
+        }
         // if (!file) {
         //     return res.status(400).json({ error: 'Image is required file empty' });
         // }
 
-        if (file) {
-            //Working for cloudinary save File
-            result = await cloudinary.uploader.upload(req.file.path, (error, result) => {
-                folder: 'user_profiles'
-                if (error) {
-                    console.log(error);
-                    return res.status(500).json({
-                        success: false,
-                        message: "Error uploading image",
-                    })
-                }
-                else {
-                    ImageUrl = result.secure_url;
-                    ImagePublicId = result.public_id;
-                    console.log('Image uploaded successfully!');
+        // if (file) {
+        //     //Working for cloudinary save File
+        //     result = await cloudinary.uploader.upload(req.file.path, (error, result) => {
+        //         folder: 'user_profiles'
+        //         if (error) {
+        //             console.log(error);
+        //             return res.status(500).json({
+        //                 success: false,
+        //                 message: "Error uploading image",
+        //             })
+        //         }
+        //         else {
+        //             ImageUrl = result.secure_url;
+        //             ImagePublicId = result.public_id;
+        //             console.log('Image uploaded successfully!');
 
-                    // console.log('Image URL:', result.secure_url);
-                }
+        //             // console.log('Image URL:', result.secure_url);
+        //         }
 
 
 
-            })
+        //     })
 
-        }
-        else {
-            console.log('Image File not found !');
-        }
+        // }
+        // else {
+        //     console.log('Image File not found !');
+        // }
 
 
 
         //console.log("Backend Image Public ID:", result.public_id);
+        // // imagePublicID: ImagePublicId,
         const newprofile = await db.Profile.create({
             data: {
                 fullname, gender, dateOfBirth, age: parseInt(age), height, currentLiveCity, phone,
-                image: ImageUrl, imagePublicID: ImagePublicId,
+                image: biodataImagePath,
                 aboutme, education, college, aboutmyeducation, employedIn, occupation, organisation,
                 aboutmycareer, father, mother,
                 noOfBrothers: parseInt(noOfBrothers),
@@ -101,14 +118,14 @@ export const createProfile = async (req, res) => {
 
     catch (error) {
 
-        if (result?.public_id) {
-            try {
-                await cloudinary.uploader.destroy(result.public_id);
-                console.log("Rolled back image:", result.public_id);
-            } catch (delErr) {
-                console.error("Error deleting image from Cloudinary:", delErr);
-            }
-        }
+        // if (result?.public_id) {
+        //     try {
+        //         await cloudinary.uploader.destroy(result.public_id);
+        //         console.log("Rolled back image:", result.public_id);
+        //     } catch (delErr) {
+        //         console.error("Error deleting image from Cloudinary:", delErr);
+        //     }
+        // }
 
         console.log(error);
         return res.status(500).json({
@@ -241,60 +258,73 @@ export const updateProfilebyId = async (req, res) => {
         //     })
         // }
 
-        // const profile = await db.profile.findUnique(
-        //     {
-        //         where: {
-        //             id
-        //         }
-        //     });
 
 
-        // if (!profile) {
-        //     return res.status(404).json({
-        //         error: "Profile Not Found!"
-        //     })
-        // }
+
+        const oldUserImage = await prisma.profile.findUnique({
+            where: { id: id },
+        });
 
 
         let oldimageUrl = image;
-        let oldimagePublicId = imagePublicID
+        // let oldimagePublicId = imagePublicID
 
-        console.log("Backend Image old Public ID:", imagePublicID);
+        // console.log("Backend Image old Public ID:", imagePublicID);
 
         //const oldprofileImage_publicID = imagePublicID
         // if (!file) {
         //     return res.status(400).json({ error: 'Image is required file empty' });
         // }
 
+        // if (req.file) {
+        //     //Working for cloudinary save File
+        //     result = await cloudinary.uploader.upload(req.file.path, (error, result) => {
+        //         folder: 'user_profiles'
+        //         if (error) {
+        //             console.log(error);
+        //             return res.status(500).json({
+        //                 success: false,
+        //                 message: "Error uploading image",
+        //             })
+        //         }
+        //         else {
+        //             console.log('Image uploaded successfully!');
+
+        //             // console.log('Image URL:', result.secure_url);
+        //         }
+
+        //     })
+        //     oldimageUrl = result.secure_url;
+        //     oldimagePublicId = result.public_id
+
+
+        // }
+
+
+        let biodataImagePath = oldUserImage.image;
+        console.log("oldurlpath:", oldUserImage.image)
+        console.log("req old file path:", req.file)
+        // const __filename = fileURLToPath(import.meta.url);
+        // const __dirname = path.dirname(__filename);
         if (req.file) {
-            //Working for cloudinary save File
-            result = await cloudinary.uploader.upload(req.file.path, (error, result) => {
-                folder: 'user_profiles'
-                if (error) {
-                    console.log(error);
-                    return res.status(500).json({
-                        success: false,
-                        message: "Error uploading image",
-                    })
+            // delete old image if exists
+            if (biodataImagePath) {
+                const oldPath = path.join(process.cwd(), "uploads", path.basename(biodataImagePath))
+                //path.join(__dirname, "../", oldUserImage.image);
+
+                console.log("Oldfile path:", oldPath)
+                if (fs.existsSync(oldPath)) {
+                    fs.unlinkSync(oldPath);
                 }
-                else {
-                    console.log('Image uploaded successfully!');
-
-                    // console.log('Image URL:', result.secure_url);
-                }
-
-            })
-            oldimageUrl = result.secure_url;
-            oldimagePublicId = result.public_id
-
-
+            }
+            biodataImagePath = `/uploads/${req.file.filename}`;
         }
 
         console.log("Backend ID:", id);
         console.log("Backend UserID:", req.user.id);
 
-        console.log("Backend Image Public ID:", oldimagePublicId);
-
+        //console.log("Backend Image Public ID:", oldimagePublicId);
+        //image:oldimageUrl,imagePublicID: oldimagePublicId,
         const Updateprofile = await db.profile.update({
             where: {
                 id: id,
@@ -302,7 +332,7 @@ export const updateProfilebyId = async (req, res) => {
             },
             data: {
                 fullname, gender, dateOfBirth, age: parseInt(age), height, currentLiveCity, phone,
-                image: oldimageUrl, imagePublicID: oldimagePublicId,
+                image: biodataImagePath,
                 aboutme, education, college, aboutmyeducation, employedIn, occupation, organisation,
                 aboutmycareer, father, mother,
                 noOfBrothers: parseInt(noOfBrothers),
@@ -315,32 +345,32 @@ export const updateProfilebyId = async (req, res) => {
 
         });
 
-        if (Updateprofile && oldimagePublicId != imagePublicID) {
+        // if (Updateprofile && oldimagePublicId != imagePublicID) {
 
-            try {
-                await cloudinary.uploader.destroy(imagePublicID);
+        //     try {
+        //         await cloudinary.uploader.destroy(imagePublicID);
 
-            } catch (delErr) {
-                console.error("Error deleting image from Cloudinary:", delErr);
-            }
+        //     } catch (delErr) {
+        //         console.error("Error deleting image from Cloudinary:", delErr);
+        //     }
 
 
-        }
-        console.log('Profile updated:', Updateprofile);
-        //return Updateprofile;
+        // }
+        // console.log('Profile updated:', Updateprofile);
+
         return res.status(201).json(Updateprofile);
 
     } catch (error) {
         console.log(error);
-        console.log("Rolled back image:", result?.public_id);
-        if (result?.public_id) {
-            try {
-                await cloudinary.uploader.destroy(result?.public_id);
-                console.log("Rolled back image:", result?.public_id);
-            } catch (delErr) {
-                console.error("Error deleting image from Cloudinary:", delErr);
-            }
-        }
+        // console.log("Rolled back image:", result?.public_id);
+        // if (result?.public_id) {
+        //     try {
+        //         await cloudinary.uploader.destroy(result?.public_id);
+        //         console.log("Rolled back image:", result?.public_id);
+        //     } catch (delErr) {
+        //         console.error("Error deleting image from Cloudinary:", delErr);
+        //     }
+        // }
         return res.status(500).json({
             error: "Error Updating Profile",
         });
@@ -391,18 +421,35 @@ export const deleteProfileById = async (req, res) => {
             }
         });
 
-
+        let biodataImagePath = Findprofile.image
         if (Deleteprofile) {
-
             try {
-                await cloudinary.uploader.destroy(Findprofile.imagePublicID);
+                if (biodataImagePath) {
+                    const oldPath = path.join(process.cwd(), "uploads", path.basename(biodataImagePath))
+                    //path.join(__dirname, "../", oldUserImage.image);
 
+                    console.log("Oldfile path:", oldPath)
+                    if (fs.existsSync(oldPath)) {
+                        fs.unlinkSync(oldPath);
+                    }
+                }
             } catch (delErr) {
-                console.error("Error deleting image from Cloudinary:", delErr);
+                console.error("Error deleting image from folder:", delErr);
             }
 
 
         }
+        // if (Deleteprofile) {
+
+        //     try {
+        //         await cloudinary.uploader.destroy(Findprofile.imagePublicID);
+
+        //     } catch (delErr) {
+        //         console.error("Error deleting image from Cloudinary:", delErr);
+        //     }
+
+
+        // }
 
         res.status(200).json({
             sucess: true,

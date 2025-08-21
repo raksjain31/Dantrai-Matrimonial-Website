@@ -71,7 +71,8 @@ export default function ProfileView() {
                             <img border="4"
                                 width={300}
                                 height={300}
-                                src={profile.image}
+                                // src={profile.image}
+                                src={profile.image ? `${import.meta.env.VITE_REACT_APP_API_URL}${profile.image}` : "/NO-Image_preview.png"}
                                 alt="profile"
                                 className="rounded-xl" />
 
