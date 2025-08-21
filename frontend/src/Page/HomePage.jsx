@@ -3,11 +3,13 @@ import { useProfileStore } from '../store/useProfileStore';
 import { Loader } from "lucide-react";
 import ProfileTablebyUser from '../components/ProfileTablebyUser';
 import { useAuthStore } from '../store/useAuthStore';
+import { Plus } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
     const { authuser } = useAuthStore();
     const { getProfileByUser, profilesByUser, isProfileLoading } = useProfileStore();
-
+    const navigation = useNavigate();
     useEffect(() => {
         getProfileByUser();
     }, [getProfileByUser]);
@@ -19,6 +21,9 @@ const HomePage = () => {
             </div>
         );
     }
+    const handleClick = () => {
+        navigation('/add-profile');
+    };
     //items-center text-center
 
     return (
@@ -44,7 +49,14 @@ const HomePage = () => {
                 </div>
             ) : (
                 <p className="mt-8 sm:mt-10 text-center text-base sm:text-lg font-medium text-gray-500 dark:text-gray-400 z-10 border border-primary px-3 sm:px-4 py-2 rounded-md border-dashed max-w-sm">
-                    No Biodata found. Please add your son/daughter’s Biodata within 72hours of Registrations else your Account will be deleted - Team Abugoad Youth Connect.
+                    No Biodata found. Please add your son/daughter’s Biodata  - Team Abugoad Youth Connect.
+                    <button
+                        className="btn btn-sm sm:btn-md bg-purple-800 gap-2 w-full sm:w-auto"
+                        onClick={handleClick}
+                    >
+                        <Plus className="w-4 h-4 text-white" />
+                        <p className="text-sm text-white"> Create Biodata</p>
+                    </button>
                 </p>
             )}
         </div>
