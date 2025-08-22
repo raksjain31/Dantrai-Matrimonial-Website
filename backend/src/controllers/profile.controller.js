@@ -474,7 +474,8 @@ export const deleteProfileById = async (req, res) => {
                         id: req.user.id
                     },
                     data: {
-                        IsApproved: false
+                        IsApproved: false,
+                        IsRejected: false
                     }
                 });
 
