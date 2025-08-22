@@ -367,7 +367,7 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
             {/* Pagination */}
             <div className="flex justify-center mt-4">
                 <button
-                    className="btn btn-sm"
+                    className="btn btn-sm "
                     disabled={currentPage === 1}
                     onClick={() => setCurrentPage((prev) => prev - 1)}
                 >

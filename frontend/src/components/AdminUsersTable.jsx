@@ -394,7 +394,7 @@ const AdminUsersTable = ({ approvedPending }) => {
                                 <span>
                                     <button
                                         onClick={() => handleUpdate(user.id)}
-                                        className="btn btn-xs btn-success w-full"
+                                        className="btn btn-xs btn-success w-full h-9"
                                     >
                                         {isUpdatingUser ? "..." : "Approve"}
                                     </button>
@@ -402,7 +402,7 @@ const AdminUsersTable = ({ approvedPending }) => {
                                 <span>
                                     <button
                                         onClick={() => handleRejectionUpdate(user.id)}
-                                        className="btn btn-xs btn-error w-full"
+                                        className="btn btn-xs btn-error w-full h-9"
                                     >
                                         {isUpdateRejectingUser ? "..." : "Reject"}
                                     </button>
