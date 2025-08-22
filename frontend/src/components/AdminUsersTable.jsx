@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react'
 import { useAuthStore } from '../store/useAuthStore'
 import { Link } from "react-router-dom";
-import { Bookmark, PencilIcon, Trash, TrashIcon, CircleCheckBig } from "lucide-react";
+import { Bookmark, PencilIcon, Trash, TrashIcon, X, CircleCheckBig } from "lucide-react";
 import useAction from '../store/useAction'
 import { useNavigate } from "react-router-dom";
 
@@ -151,7 +151,7 @@ const AdminUsersTable = ({ approvedPending }) => {
                                                         <div className="flex gap-2" >
                                                             <button
                                                                 onClick={() => handleUpdate(user.id)}
-                                                                className="btn btn-sm btn-error"
+                                                                className="btn btn-sm btn-success"
                                                                 onMouseEnter={() => setShowHoverText(true)}
                                                                 onMouseLeave={() => setShowHoverText(false)}
                                                             >
@@ -165,8 +165,8 @@ const AdminUsersTable = ({ approvedPending }) => {
                                                                 }
                                                                 {showHoverText && <p>Approve User!</p>}
                                                             </button>
-                                                            < button disabled className="btn btn-sm btn-warning" >
-                                                                <PencilIcon className="w-4 h-4 text-white" />
+                                                            < button className="btn btn-sm btn-error">
+                                                                <X className="w-4 h-4 text-white" />
                                                             </button>
                                                         </div>
                                                     )}

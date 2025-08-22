@@ -174,6 +174,49 @@ export const getAllApprovePendingUsers = async (req, res) => {
             },
         });
 
+        // const users = await db.profile.findMany({
+        //     where: {
+        //         // IsApprovedProfile: false,
+        //         user: {
+        //             IsApproved: false,
+        //             profiles: {
+        //                 some: {
+
+        //                 }
+
+        //             }
+        //         },
+
+
+        //     },
+        //     select: {
+        //         id: true,
+        //         fullname: true,
+        //         gender: true,
+        //         dateOfBirth: true,
+        //         age: true,
+        //         height: true,
+        //         currentLiveCity: true,
+        //         phone: true,
+        //         education: true,
+        //         currentLiveCity: true,
+        //         father: true,
+        //         mother: true,
+        //         user: {
+
+        //             select: {
+        //                 name: true,
+        //                 village: true,
+        //                 Father: true
+        //             }
+
+        //         }
+        //     }
+
+
+        // });
+
+
         if (!users) {
             return res.status(404).json({
                 message: "No Approval Pending Users Found"
