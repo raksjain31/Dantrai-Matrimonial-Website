@@ -213,6 +213,25 @@ export const getAllApprovePendingUsers = async (req, res) => {
 
                 }
             },
+            include: {
+                profiles: {
+                    select: {
+                        id: true,
+                        fullname: true,
+                        gender: true,
+                        dateOfBirth: true,
+                        age: true,
+                        height: true,
+                        currentLiveCity: true,
+                        phone: true,
+                        education: true,
+                        currentLiveCity: true,
+                        father: true,
+                        mother: true,
+                    }
+                }
+            }
+
         });
 
         // const users = await db.profile.findMany({
