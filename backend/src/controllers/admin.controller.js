@@ -46,14 +46,19 @@ export const approvedUserById = async (req, res) => {
             data: {
                 IsApproved: true,
                 ApprovedbyUserId: req.user.id,
-                ApprovedDate: new Date()
+                ApprovedDate: new Date(),
+                IsRejected: false,
             },
 
 
         });
         console.log('Profile Approved Successfully');
         //return Updateprofile; 
-        return res.status(201).json(UpdateUserApproved);
+        res.status(200).json({
+            sucess: true,
+            message: "User Approved Successfully",
+            UpdateUserApproved
+        });
 
     } catch (error) {
         console.log(error);
@@ -66,6 +71,41 @@ export const approvedUserById = async (req, res) => {
 
 }
 
+export const rejectUserById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        // const { IsApproved, ApprovedbyUserId, ApprovedDate } = req.body;
+        const UpdateUserRejected = await db.User.update({
+            where: {
+                id: id
+            },
+            data: {
+                IsApproved: false,
+                IsRejected: true,
+                RejectedbyUserId: req.user.id,
+                ApprovedDate: new Date()//saved as rejection date in same column
+            },
+
+
+        });
+        console.log('Biodata Rejected Successfully');
+        //return Updateprofile; 
+        res.status(200).json({
+            sucess: true,
+            message: "User Rejected Successfully",
+            UpdateUserRejected
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            error: "Error Updating Rejecting of User",
+        });
+
+    }
+
+
+}
 
 
 export const getAllCounts = async (req, res) => {
@@ -165,6 +205,7 @@ export const getAllApprovePendingUsers = async (req, res) => {
         const users = await db.user.findMany({
             where: {
                 IsApproved: false,
+                IsRejected: false,
                 profiles: {
                     some: {
 

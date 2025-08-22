@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 export const useActions = create((set) => ({
     isDeletingProfile: false,
     isUpdatingUser: false,
+    isUpdateRejectingUser: false,
 
     onDeleteProfile: async (id) => {
         try {
@@ -44,6 +45,27 @@ export const useActions = create((set) => ({
         }
         finally {
             set({ isUpdatingUser: false });
+        }
+
+
+    },
+
+
+    onUpdateRejectingUser: async (id) => {
+        try {
+
+            set({ isUpdateRejectingUser: true });
+            const res = await axiosInstance.put(`/admin/reject-user-by-id/${id}`);
+            toast.success(res.data.message);
+
+
+        } catch (error) {
+            console.log("Error Rejecting User", error);
+            toast.error("Error Rejecting User");
+
+        }
+        finally {
+            set({ isUpdateRejectingUser: false });
         }
 
 

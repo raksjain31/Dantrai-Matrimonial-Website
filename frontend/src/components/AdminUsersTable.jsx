@@ -1,7 +1,7 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { useAuthStore } from '../store/useAuthStore'
 import { Link } from "react-router-dom";
-import { Bookmark, PencilIcon, Trash, TrashIcon, X, CircleCheckBig } from "lucide-react";
+import { Bookmark, PencilIcon, Trash, TrashIcon, X, Check } from "lucide-react";
 import useAction from '../store/useAction'
 import { useNavigate } from "react-router-dom";
 
@@ -10,22 +10,41 @@ const AdminUsersTable = ({ approvedPending }) => {
     const [search, setSearch] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const { isUpdatingUser, onUpdateUser } = useAction();
+    const { isUpdateRejectingUser, onUpdateRejectingUser } = useAction();
     const [showHoverText, setShowHoverText] = useState(false);
+    const [users, setUsers] = useState(approvedPending || []);
 
     const navigation = useNavigate();
     const handleClick = () => {
         navigation('/add-profile');
     };
 
+
+
+    useEffect(() => {
+        setUsers(approvedPending || []);
+    }, [approvedPending]);
+
+
+    useEffect(() => {
+        console.log("Users changed:", users);
+    }, [users]);
+
     console.log("DATA:", approvedPending)
     // Filter problems based on search, difficulty, and tags
-    const filtereduser = useMemo(() => {
-        return (approvedPending || [])
-            .filter((userApprovePending) =>
-                userApprovePending.name.toLowerCase().includes(search.toLowerCase())
-            )
 
-    }, [approvedPending, search]);
+    // const filtereduser = useMemo(() => {
+    //     return (approvedPending || [])
+    //         .filter((userApprovePending) =>
+    //             userApprovePending.name.toLowerCase().includes(search.toLowerCase())
+    //         )
+
+    // }, [approvedPending, search]);
+    const filtereduser = useMemo(() => {
+        return users.filter((user) =>
+            user.name.toLowerCase().includes(search.toLowerCase())
+        );
+    }, [users, search]);
 
     function calculateAge(dateOfBirth) {
         const dob = new Date(dateOfBirth);
@@ -50,12 +69,39 @@ const AdminUsersTable = ({ approvedPending }) => {
             currentPage * itemsPerPage)//0*1 =
     }, [filtereduser, currentPage])
 
+
+
+
     console.log("paginatedUserApprovalPending", paginatedUserApprovalPending.length);
-    const handleUpdate = (id) => {
+    const handleUpdate = async (id) => {
         const isConfirmed = confirm("Are you sure you want to Approve this User ?")
         if (isConfirmed) {
-            onUpdateUser(id);
+            try {
+                await onUpdateUser(id); // call API
+            } catch (err) {
+                console.error("Reject API failed:", err);
+            } finally {
+                // ✅ always update local state so table re-renders
+                setUsers((prev) => prev.filter((u) => u.id !== id));
+            }
         }
+
+
+    };
+
+    const handleRejectionUpdate = async (id) => {
+        const isConfirmed = confirm("Are you sure you want to Reject this User ?")
+        if (isConfirmed) {
+            try {
+                await onUpdateRejectingUser(id); // call API
+            } catch (err) {
+                console.error("Reject API failed:", err);
+            } finally {
+                // ✅ always update local state so table re-renders
+                setUsers((prev) => prev.filter((u) => u.id !== id));
+            }
+        }
+
 
 
     };
@@ -160,14 +206,31 @@ const AdminUsersTable = ({ approvedPending }) => {
                                                                     isUpdatingUser ? (
                                                                         <span className="loading loading-spinner text-white" > </span>
                                                                     ) : (
-                                                                        <CircleCheckBig className="w-4 h-4 text-white" />
+                                                                        <Check className="w-4 h-4 text-white" />
                                                                     )
                                                                 }
                                                                 {showHoverText && <p>Approve User!</p>}
                                                             </button>
-                                                            < button className="btn btn-sm btn-error">
-                                                                <X className="w-4 h-4 text-white" />
+
+
+                                                            <button
+                                                                onClick={() => handleRejectionUpdate(user.id)}
+                                                                className="btn btn-sm btn-error"
+                                                                onMouseEnter={() => setShowHoverText(true)}
+                                                                onMouseLeave={() => setShowHoverText(false)}
+                                                            >
+
+                                                                {
+                                                                    isUpdateRejectingUser ? (
+                                                                        <span className="loading loading-spinner text-white" > </span>
+                                                                    ) : (
+                                                                        <X className="w-4 h-4 text-white" />
+                                                                    )
+                                                                }
+                                                                {showHoverText && <p>Reject User!</p>}
                                                             </button>
+
+
                                                         </div>
                                                     )}
 

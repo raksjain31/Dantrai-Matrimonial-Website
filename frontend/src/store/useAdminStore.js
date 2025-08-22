@@ -51,7 +51,7 @@ export const useAdminStore = create((set) => ({
 
             const res = await axiosInstance.get("/admin/get-users-pendingapproval");
 
-            console.log("backend data:", res.data.users);
+            //console.log("backend data:", res.data.users);
             set({ userApprovedPending: res.data.users });
 
 
