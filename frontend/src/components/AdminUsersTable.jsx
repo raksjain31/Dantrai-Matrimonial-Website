@@ -41,9 +41,15 @@ const AdminUsersTable = ({ approvedPending }) => {
 
     // }, [approvedPending, search]);
     const filtereduser = useMemo(() => {
-        return users.filter((user) =>
-            user.name.toLowerCase().includes(search.toLowerCase())
-        );
+        return users.filter((user) => {
+            const query = search.toLowerCase();
+
+            return (
+                (user.name && user.name.toLowerCase().includes(query)) ||
+                (user.email && user.email.toLowerCase().includes(query)) ||
+                (user.phone && user.phone.toLowerCase().includes(query))
+            );
+        });
     }, [users, search]);
 
     function calculateAge(dateOfBirth) {
@@ -270,12 +276,14 @@ const AdminUsersTable = ({ approvedPending }) => {
             <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
                 <input
                     type="text"
-                    placeholder="Search by Name"
+                    placeholder="Search by Name,Email and MobileNo"
                     className="input input-bordered w-full md:w-1/3 bg-base-200"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                 />
             </div>
+
+
 
             {/* ===== Desktop Table ===== */}
             <div className="overflow-x-auto rounded-xl shadow-md hidden md:block">
