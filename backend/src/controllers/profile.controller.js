@@ -163,7 +163,9 @@ export const getAllProfile = async (req, res) => {
                 user: {
                     select: {
                         village: true,
-                        Father: true
+                        Father: true,
+                        phone: true,
+
                     }
                 }
             }

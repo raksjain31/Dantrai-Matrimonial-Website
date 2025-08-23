@@ -346,7 +346,7 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
 
                             <a
 
-                                href={`tel:${profile.phone}`}
+                                href={`tel:${profile.user.phone}`}
 
                                 className="px-4  rounded-2xl mt-4 bg-green-500 text-white font-semibold shadow-md hover:bg-green-600 transition"
                             >
