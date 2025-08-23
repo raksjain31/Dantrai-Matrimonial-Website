@@ -18,6 +18,7 @@ import UserFamilyProfileView from "./components/UserFamilyProfileView";
 import LoginUserProfilePage from "./Page/LoginUserProfilePage";
 import ForgetPasswordPage from "./Page/ForgetPasswordPage";
 import ResetPasswordPage from "./Page/ResetPasswordPage";
+import ContactUs from "./components/ContactUs";
 
 
 
@@ -116,6 +117,11 @@ const App = () => {
         <Route path='/' element={<Layout />}>
           <Route path="/search-profiles"
             element={authUser ? <AllProfilesSearchPage /> : <Navigate to={"/"} />} />
+        </Route>
+
+        <Route path='/' element={<Layout />}>
+          <Route path="/contact-us"
+            element={authUser ? <ContactUs /> : <Navigate to={"/"} />} />
         </Route>
 
         <Route element={<AdminRoute />}>

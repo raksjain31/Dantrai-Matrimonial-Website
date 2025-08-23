@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from "react-router-dom";
 
 const Footerbar = () => {
     return (
@@ -7,16 +8,19 @@ const Footerbar = () => {
             <footer className="footer footer-horizontal footer-center bg-base-200 text-base-content rounded p-10">
                 <nav className="grid grid-flow-col gap-4">
                     <a className="link link-hover">About us</a>
-                    <a className="link link-hover">Contact</a>
+                    <Link to="/contact-us" className="link link-hover">
+                        Contact
+                    </Link>
                     <a className="link link-hover">Terms and Condition</a>
 
                 </nav>
 
-                <aside>
-                    <p>Copyright © {new Date().getFullYear()} - All right reserved by Abugoad Youth Connect Team</p>
-                </aside>
+
                 <aside>
                     <p>Developed and Design by Rakshit Rathod @Dapan Software Solution</p>
+                </aside>
+                <aside>
+                    <p>Copyright © {new Date().getFullYear()} - All right reserved by Abugoad Youth Connect Team</p>
                 </aside>
             </footer>
         </div>

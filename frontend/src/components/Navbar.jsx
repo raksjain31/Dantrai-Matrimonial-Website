@@ -1,5 +1,5 @@
 import React from "react"
-import { User, Code, LogOut, Search, FilePlus, LaptopMinimalCheck } from "lucide-react";
+import { User, Code, LogOut, Search, FilePlus, LaptopMinimalCheck, Phone } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
 
 import { Link } from "react-router-dom";
@@ -114,6 +114,15 @@ const Navbar = () => {
                                     </Link>
                                 </li>
                             )}
+                            <li>
+                                <Link
+                                    to="/contact-us"
+                                    className="hover:bg-primary hover:text-white text-base font-semibold"
+                                >
+                                    <Phone className="w-4 h-4 mr-2" />
+                                    Contact Us
+                                </Link>
+                            </li>
                             <li>
                                 <LogoutButton className="hover:bg-primary hover:text-white">
                                     <LogOut className="w-4 h-4 mr-2" />
