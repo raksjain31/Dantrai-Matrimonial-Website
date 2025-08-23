@@ -11,7 +11,7 @@ const AboutUs = () => {
                 <p className="text-lg leading-relaxed text-base-content">
                     Welcome to <span className="font-semibold">Abugoad Youth Connect</span>,
                     a community-driven platform created to bring together people from{" "}
-                    <span className="font-semibold">11 Villages of Abugoad Jain Samaj</span>.
+                    <span className="font-semibold">11 Villages of Abugoad Jain Community</span>.
                     Our main motive is simple yet powerful:{" "}
                     <span className="italic">“Apno ki Apno se Pehchan”</span>.
                 </p>
