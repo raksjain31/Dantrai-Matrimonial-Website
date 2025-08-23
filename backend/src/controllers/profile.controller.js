@@ -505,6 +505,29 @@ export const getProfilesByUserId = async (req, res) => {
         const profiles = await db.Profile.findMany({
             where: {
                 userId: req.user.id
+            },
+            select: {
+                id: true,
+                fullname: true,
+                gender: true,
+                dateOfBirth: true,
+                age: true,
+                height: true,
+                currentLiveCity: true,
+                phone: true,
+                education: true,
+                currentLiveCity: true,
+                father: true,
+                mother: true,
+                user: {
+                    select: {
+                        village: true,
+                        Father: true,
+                        IsApproved: true,
+                        IsRejected: true
+                    }
+                }
+
             }
         });
 

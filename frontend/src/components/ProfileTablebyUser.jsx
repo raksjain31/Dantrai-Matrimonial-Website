@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react'
 import { useAuthStore } from '../store/useAuthStore'
 import { Link } from "react-router-dom";
-import { Bookmark, PencilIcon, Trash, TrashIcon, Plus } from "lucide-react";
+import { Bookmark, PencilIcon, Trash, TrashIcon, Plus, Check, X, Clock } from "lucide-react";
 import useAction from '../store/useAction'
 import { useNavigate } from "react-router-dom";
 import ThemeSwitcher from './ThemeSwitcher';
@@ -88,6 +88,7 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
                                     <th className="px-4 py-3">DOB</th>
                                     <th className="px-4 py-3">Age</th>
                                     <th className="px-4 py-3">Education</th>
+                                    <th className="px-4 py-3">Status</th>
                                     <th className="px-4 py-3">Actions</th>
                                 </tr>
                             </thead>
@@ -112,6 +113,21 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
                                         </td>
                                         <td className="px-4 py-3">{calculateAge(profile.dateOfBirth)}</td>
                                         <td className="px-4 py-3">{profile.education}</td>
+                                        <td className="px-4 py-3">
+                                            {profile.user.IsApproved ? (
+                                                <span className="badge badge-success font-semibold text-xs text-white">
+                                                    <Check size={14} /> Approved
+                                                </span>
+                                            ) : profile.user.IsRejected ? (
+                                                <span className="badge badge-error font-semibold text-xs text-white">
+                                                    <X size={14} />  Rejected
+                                                </span>
+                                            ) : (
+                                                <span className="badge badge-warning font-semibold text-xs text-white">
+                                                    <Clock size={14} />  Pending
+                                                </span>
+                                            )}
+                                        </td>
                                         <td className="px-4 py-3">
                                             <div className="flex gap-2 flex-wrap">
                                                 <button
@@ -172,6 +188,25 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
                                     Age: {calculateAge(profile.dateOfBirth)}
                                 </p>
                                 <p className="text-sm  text-gray-600">Education: {profile.education}</p>
+
+                                {/* Status */}
+                                <div className="flex justify-between items-center mt-2">
+                                    <span className="font-xs">Status:</span>
+                                    {profile.user.IsApproved ? (
+                                        <span className="badge badge-success font-semibold text-xs text-white">
+                                            <Check size={14} /> Approved
+                                        </span>
+                                    ) : profile.user.IsRejected ? (
+                                        <span className="badge badge-error font-semibold text-xs text-white">
+                                            <X size={14} />  Rejected
+                                        </span>
+                                    ) : (
+                                        <span className="badge badge-warning font-semibold text-xs text-white">
+                                            <Clock size={14} />   Pending
+                                        </span>
+                                    )}
+                                </div>
+
 
                                 {/* Actions */}
                                 <div className="flex gap-2 mt-3">

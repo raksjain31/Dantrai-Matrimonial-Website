@@ -208,8 +208,10 @@ export const getAllApprovePendingUsers = async (req, res) => {
                 IsRejected: false,
                 profiles: {
                     some: {
+                        IsApprovedProfile: false,
+                        IsRejectedProfile: false
+                    },
 
-                    }
 
                 }
             },
