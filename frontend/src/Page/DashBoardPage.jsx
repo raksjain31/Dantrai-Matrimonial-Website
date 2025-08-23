@@ -61,11 +61,11 @@ const DashBoardPage = () => {
 
     const cards = [
         { title: "Total Users", value: counts.totaluserCount },
-        { title: "Total Profiles", value: counts.totalProfiles },
+        { title: "Total Biodata's", value: counts.totalProfiles },
         { title: "Approved Users", value: counts.totalApprovedUsers },
         { title: "Pending Approvals", value: counts.totalApprovalPendingUsers }, // fill from API if available
-        { title: "Female Profiles", value: counts.totalFemaleProfiles },
-        { title: "Male Profiles", value: counts.totalMaleProfiles },
+        { title: "Female Biodata's", value: counts.totalFemaleProfiles },
+        { title: "Male Biodata's", value: counts.totalMaleProfiles },
     ];
 
 
