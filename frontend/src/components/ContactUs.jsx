@@ -24,7 +24,7 @@ const contacts = [
         email: "",
     },
     {
-        name: "Rakshit Prakashchand Rathod",
+        name: "Rakshit Prakashchandji Rathod",
         City: "Surat",
         role: "Admin",
         phone: "+91 90335 05143",
