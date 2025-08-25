@@ -263,7 +263,7 @@ const AdminUsersApprovedTable = ({ approveduser }) => {
                                         onClick={() => handleUpdate(user.id)}
                                         className="btn btn-xs btn-success w-full h-9"
                                     >
-                                        {isUpdatingUserPending ? "..." : "Approve"}
+                                        {isUpdatingUserPending ? "..." : "Pending"}
                                     </button>
                                 </span>
                                 <span>
