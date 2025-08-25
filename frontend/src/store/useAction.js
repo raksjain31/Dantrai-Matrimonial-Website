@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 export const useActions = create((set) => ({
     isDeletingProfile: false,
     isUpdatingUser: false,
+    isUpdatingUserPending: false,
     isUpdateRejectingUser: false,
 
     onDeleteProfile: async (id) => {
@@ -45,6 +46,27 @@ export const useActions = create((set) => ({
         }
         finally {
             set({ isUpdatingUser: false });
+        }
+
+
+    },
+
+
+    onUpdatePendingUser: async (id) => {
+        try {
+
+            set({ isUpdatingUserPending: true });
+            const res = await axiosInstance.put(`/admin/pending-user-by-id/${id}`);
+            toast.success(res.data.message);
+
+
+        } catch (error) {
+            console.log("Error Updating Pending User", error);
+            toast.error("Error Updating Pending User");
+
+        }
+        finally {
+            set({ isUpdatingUserPending: false });
         }
 
 

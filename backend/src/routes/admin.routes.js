@@ -5,6 +5,7 @@ import {
     getAllMaleProfileCount, getAllProfilesCount, getAllUserCount, getAllUserDetails,
     getUserProfilebyId,
     getUserProfilesListbyUserId,
+    PendingUserById,
     rejectUserById
 } from "../controllers/admin.controller.js";
 
@@ -16,6 +17,8 @@ const adminRoutes = express.Router();
 adminRoutes.get("/get-alluser-details", authMiddleware, checkAdmin, getAllUserDetails);
 
 adminRoutes.put("/approved-user-by-id/:id", authMiddleware, checkAdmin, approvedUserById);
+
+adminRoutes.put("/pending-user-by-id/:id", authMiddleware, checkAdmin, PendingUserById);
 
 adminRoutes.put("/reject-user-by-id/:id", authMiddleware, checkAdmin, rejectUserById);
 

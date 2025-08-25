@@ -71,6 +71,42 @@ export const approvedUserById = async (req, res) => {
 
 }
 
+export const PendingUserById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        // const { IsApproved, ApprovedbyUserId, ApprovedDate } = req.body;
+        const UpdateUserPending = await db.User.update({
+            where: {
+                id: id
+            },
+            data: {
+                IsApproved: false,
+                ApprovedbyUserId: req.user.id,
+                ApprovedDate: new Date(),
+                IsRejected: false,
+            },
+
+
+        });
+        console.log('Profile Pending Successfully');
+        //return Updateprofile; 
+        res.status(200).json({
+            sucess: true,
+            message: "User Pending Successfully",
+            UpdateUserPending
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            error: "Error Updating Pending of User",
+        });
+
+    }
+
+
+}
+
 export const rejectUserById = async (req, res) => {
     try {
         const { id } = req.params;
