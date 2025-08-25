@@ -9,6 +9,7 @@ export const useAdminStore = create((set) => ({
     users: [],
     user: null,
     userApprovedPending: [],
+    userApproved: [],
     usercount: null,
     allProfilecount: null,
     userApprovedCount: null,
@@ -19,6 +20,7 @@ export const useAdminStore = create((set) => ({
 
     isUsersApprovalPendingLoading: false,
     isUserLoading: false,
+    isApprovedUsersLoading: false,
 
     getAllUsersDetails: async () => {
 
@@ -64,6 +66,32 @@ export const useAdminStore = create((set) => ({
 
         finally {
             set({ isUsersApprovalPendingLoading: false })
+        }
+
+    },
+
+
+    getAllApprovedUsers: async () => {
+
+        try {
+
+            set({ isApprovedUsersLoading: true })
+
+            const res = await axiosInstance.get("/admin/get-users-approved");
+
+            //console.log("backend data:", res.data.users);
+            set({ userApproved: res.data.users });
+
+
+
+        } catch (error) {
+            console.log("Error getting all Approval Pending Users", error);
+            toast.error("Error in Getting All Approval Pending Users")
+
+        }
+
+        finally {
+            set({ isApprovedUsersLoading: false })
         }
 
     },

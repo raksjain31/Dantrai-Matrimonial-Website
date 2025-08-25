@@ -20,6 +20,7 @@ import ForgetPasswordPage from "./Page/ForgetPasswordPage";
 import ResetPasswordPage from "./Page/ResetPasswordPage";
 import ContactUs from "./components/ContactUs";
 import AboutUs from "./components/AboutUs";
+import ApprovedBiodataPage from "./Page/ApprovedBiodataPage";
 
 
 
@@ -134,7 +135,10 @@ const App = () => {
             element={authUser ? <DashBoardPage /> : <Navigate to={"/"} />} />
         </Route>
 
-
+        <Route element={<AdminRoute />}>
+          <Route path="/approvedbiodata"
+            element={authUser ? <ApprovedBiodataPage /> : <Navigate to={"/"} />} />
+        </Route>
         <Route path='/' element={<Layout />}>
           <Route path="/admin/get-user-profiles-byUserId/:id"
             element={authUser ? <ProfileViewPage /> : <Navigate to={"/dashboard"} />}

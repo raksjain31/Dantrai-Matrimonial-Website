@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useAdminStore } from "../store/useAdminStore";
 import { axiosInstance } from "../lib/axios";
 import { toast } from "react-hot-toast";
-
+import { Link } from "react-router-dom";
 import {
     Users,
     UserCheck,
@@ -11,11 +11,11 @@ import {
     Clock,
     CircleUser,
     LogOut,
-    UsersRound
+    UsersRound, CircleCheck
 } from "lucide-react"
 import AdminUsersTable from "../components/AdminUsersTable";
 import LogoutButton from "../components/LogoutButton";
-
+import { useAuthStore } from '../store/useAuthStore';
 
 
 const iconMap = {
@@ -38,7 +38,7 @@ const DashBoardPage = () => {
         totalFemaleProfiles: 0
     });
 
-
+    const { authUser } = useAuthStore();
     const { getAllPendingApproval, userApprovedPending,
         isUsersApprovalPendingLoading } = useAdminStore();
 
@@ -160,6 +160,18 @@ const DashBoardPage = () => {
                         <li>
                             <a>Users</a>
                         </li>
+                        {authUser?.role === "ADMIN" && (
+                            <li>
+                                <Link
+                                    to="/approvedbiodata"
+                                    className="hover:bg-primary hover:text-white text-base font-semibold"
+                                >
+                                    <CircleCheck className="w-4 h-4 mr-1" />
+                                    Approved Biodata
+                                </Link>
+                            </li>
+                        )}
+
                         <li>
                             <a>Settings</a>
                         </li>

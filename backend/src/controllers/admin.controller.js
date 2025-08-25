@@ -315,6 +315,110 @@ export const getAllApprovePendingUsers = async (req, res) => {
 }
 
 
+
+export const getAllApprovedUsers = async (req, res) => {
+
+    try {
+
+        const users = await db.user.findMany({
+            where: {
+                IsApproved: true,
+                IsRejected: false,
+                profiles: {
+                    some: {
+                        IsApprovedProfile: false,
+                        IsRejectedProfile: false
+                    },
+
+
+                }
+            },
+            include: {
+                profiles: {
+                    select: {
+                        id: true,
+                        fullname: true,
+                        gender: true,
+                        dateOfBirth: true,
+                        age: true,
+                        height: true,
+                        currentLiveCity: true,
+                        phone: true,
+                        education: true,
+                        currentLiveCity: true,
+                        father: true,
+                        mother: true,
+                    }
+                }
+            }
+
+        });
+
+        // const users = await db.profile.findMany({
+        //     where: {
+        //         // IsApprovedProfile: false,
+        //         user: {
+        //             IsApproved: false,
+        //             profiles: {
+        //                 some: {
+
+        //                 }
+
+        //             }
+        //         },
+
+
+        //     },
+        //     select: {
+        //         id: true,
+        //         fullname: true,
+        //         gender: true,
+        //         dateOfBirth: true,
+        //         age: true,
+        //         height: true,
+        //         currentLiveCity: true,
+        //         phone: true,
+        //         education: true,
+        //         currentLiveCity: true,
+        //         father: true,
+        //         mother: true,
+        //         user: {
+
+        //             select: {
+        //                 name: true,
+        //                 village: true,
+        //                 Father: true
+        //             }
+
+        //         }
+        //     }
+
+
+        // });
+
+
+        if (!users) {
+            return res.status(404).json({
+                message: "No Approval Pending Users Found"
+            })
+        }
+
+        res.status(200).json({
+            sucess: true,
+            message: "Approval Pending Users Fetched Successfully",
+            users
+        });
+
+
+
+
+    } catch (error) {
+        console.error('Error fetching Approval Pending Users:', error);
+        res.status(500).json({ error: 'Failed to fetch Approval Pending Users' });
+
+    }
+}
+
 export const getAllMaleProfileCount = async (req, res) => {
     try {
 
