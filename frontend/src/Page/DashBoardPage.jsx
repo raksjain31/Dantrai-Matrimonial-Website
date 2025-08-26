@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useAdminStore } from "../store/useAdminStore";
 import { axiosInstance } from "../lib/axios";
 import { toast } from "react-hot-toast";
@@ -56,14 +56,31 @@ const DashBoardPage = () => {
             .catch(err => console.error("Failed to load counts", err));
     }, []);
 
+    const tableRef = useRef(null);
+    const handleCardClick = (card) => {
 
+        if (card.title === "Pending Approvals") {
+            // // 👇 scroll to table instead of navigating
+            // tableRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+            // close drawer in mobile
+            const drawerCheckbox = document.getElementById("sidebar-toggle");
+            if (drawerCheckbox) drawerCheckbox.checked = false;
 
+            // wait for drawer to close, then scroll
+            setTimeout(() => {
+                tableRef.current?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                });
+            }, 300); // matches drawer animation duration
+        }
+    };
 
     const cards = [
         { title: "Total Users", value: counts.totaluserCount, link: "/userlist", },
         { title: "Total Biodata's", value: counts.totalProfiles, link: "/search-profiles", },
         { title: "Approved Users", value: counts.totalApprovedUsers, link: "/approvedbiodata", },
-        { title: "Pending Approvals", value: counts.totalApprovalPendingUsers, link: "/pendingbiodata", }, // fill from API if available
+        { title: "Pending Approvals", value: counts.totalApprovalPendingUsers, link: null }, // fill from API if available
         { title: "Female Biodata's", value: counts.totalFemaleProfiles, link: "/biodata/FEMALE", },
         { title: "Male Biodata's", value: counts.totalMaleProfiles, link: "/biodata/MALE", },
     ];
@@ -87,28 +104,36 @@ const DashBoardPage = () => {
                     {cards.map((card, idx) => (
 
                         <div key={idx} className="card bg-base-100 shadow-xl border border-white">
-                            <Link
-                                to={card.link}//"/approvedbiodata"
-                                className="hover:bg-primary hover:text-white text-base font-semibold"
-                            >
-                                <div className="card-body">
+                            {card.link ? (
+                                <Link
+                                    to={card.link}//"/approvedbiodata"
+                                    className="hover:bg-primary hover:text-white text-base font-semibold"
+                                >
+                                    <div className="card-body">
 
-                                    <div className="flex items-center gap-2 mb-2">
-                                        <div className="text-primary">{iconMap[card.title]}</div>
-                                        <h2 className="card-title">{card.title}</h2>
-                                        {/* {authUser?.role === "ADMIN" && (
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <div className="text-primary">{iconMap[card.title]}</div>
+                                            <h2 className="card-title">{card.title}</h2>
 
-                                        
+                                        </div>
 
-
-                                       
-
-                                    )} */}
+                                        <p className="text-2xl font-semibold">{card.value}</p>
                                     </div>
-
-                                    <p className="text-2xl font-semibold">{card.value}</p>
-                                </div>
-                            </Link>
+                                </Link>
+                            ) : (
+                                <button
+                                    onClick={() => handleCardClick(card)}
+                                    className="w-full text-left hover:bg-primary hover:text-white text-base font-semibold"
+                                >
+                                    <div className="card-body">
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <div className="text-primary">{iconMap[card.title]}</div>
+                                            <h2 className="card-title">{card.title}</h2>
+                                        </div>
+                                        <p className="text-2xl font-semibold">{card.value}</p>
+                                    </div>
+                                </button>
+                            )}
                         </div>
                     ))}
                 </div>
@@ -122,7 +147,9 @@ const DashBoardPage = () => {
 
 
                     userApprovedPending.length > 0 ?
-                        <AdminUsersTable approvedPending={userApprovedPending} />
+                        <div ref={tableRef}>
+                            <AdminUsersTable approvedPending={userApprovedPending} />
+                        </div>
                         : (
                             <p className="mt-10 text-center text-lg font-semibold text-gray-500 dark:text-gray-400 z-10 border border-primary px-4 py-2 rounded-md border-dashed">
                                 No User Approval Pending user found !!
