@@ -529,7 +529,7 @@ export const getUserProfilesListbyUserId = async (req, res) => {
 
         if (!userProfilesList) {
             return res.status(400).json({
-                error: "Problem not found."
+                error: "Profiles not found."
             })
 
         }

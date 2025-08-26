@@ -42,7 +42,7 @@ export default function ProfileView() {
     console.log("length in table view", profiles.length);
     console.log("length in table view", profiles);
     if (profiles.length <= 0)
-        return <div className="text-center py-10">Loading...</div>;
+        return <div className="text-center py-10 font-bold">⚠️No Biodata Found</div>;
 
 
     //console.log("path saved:", { uri: profile.image ? `${import.meta.env.VITE_REACT_APP_API_URL}${profile.image}` : "/NO-Image_preview.png" })

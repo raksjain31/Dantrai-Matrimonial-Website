@@ -95,16 +95,22 @@ export const useProfileStore = create((set) => ({
             set({ isProfileLoading: true })
             const res = await axiosInstance(`/admin/get-user-profiles-byUserId/${id}`);
 
+            if (res.data.userProfilesList.length === 0) {
+                toast.error("No Biodata found \n Please Add Profiles ⚠️");
+                set({ isProfileLoading: false })
+            }
+            else {
+                console.log("Biodata Fetched for User Sucessfully", res.data);
+                toast.dismiss();
+                toast.success("Biodata Fetched for User Sucessfully");
+                set({ profilesByUserId: res.data.userProfilesList });
+            }
 
-            console.log("Profiles Fetched for User Sucessfully", res.data);
-            toast.dismiss();
-            toast.success("Profiles Fetched for User Sucessfully");
-            set({ profilesByUserId: res.data.userProfilesList });
 
         } catch (error) {
-            console.log("Error getting profiles by Users", error);
+            console.log("Error getting Biodata by Users", error);
             toast.dismiss();
-            toast.error("Error in Getting Profile by Users");
+            toast.error("Error in Getting Biodata by Users");
 
         }
         finally {
