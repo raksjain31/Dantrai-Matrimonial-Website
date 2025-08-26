@@ -255,7 +255,7 @@ const AdminUsersListTable = ({ userlist }) => {
                                     </ul>
                                 </div>
                             ) : (
-                                <p className="text-gray-500 text-sm">No profiles</p>
+                                <p className="text-gray-500 text-sm">No Biodata Added Yet.</p>
                             )}
 
                             <div className="flex gap-2 mt-3">
