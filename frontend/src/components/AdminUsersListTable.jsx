@@ -49,7 +49,8 @@ const AdminUsersListTable = ({ userlist }) => {
             return (
                 (user.name && user.name.toLowerCase().includes(query)) ||
                 (user.email && user.email.toLowerCase().includes(query)) ||
-                (user.phone && user.phone.toLowerCase().includes(query))
+                (user.phone && user.phone.toLowerCase().includes(query)) ||
+                (user.village && user.village.toLowerCase().includes(query))
             );
         });
     }, [users, search]);
@@ -135,7 +136,7 @@ const AdminUsersListTable = ({ userlist }) => {
             <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
                 <input
                     type="text"
-                    placeholder="Search by Name,Email and MobileNo"
+                    placeholder="Search by Name,Email,MobileNo and Village"
                     className="input input-bordered w-full md:w-1/3 bg-base-200"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
