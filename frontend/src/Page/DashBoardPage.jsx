@@ -11,7 +11,7 @@ import {
     Clock,
     CircleUser,
     LogOut,
-    UsersRound, CircleCheck
+    UsersRound, CircleCheck, FileSpreadsheet
 } from "lucide-react"
 import AdminUsersTable from "../components/AdminUsersTable";
 import LogoutButton from "../components/LogoutButton";
@@ -20,7 +20,7 @@ import { useAuthStore } from '../store/useAuthStore';
 
 const iconMap = {
     "Total Users": <Users className="w-8 h-8 text-primary" />,
-    "Total Profiles": <UserPlus className="w-8 h-8 text-primary" />,
+    "Total Biodata's": <UserPlus className="w-8 h-8 text-primary" />,
     "Approved Users": <UserCheck className="w-8 h-8 text-primary" />,
     "Pending Approvals": <Clock className="w-8 h-8 text-primary" />,
     "Female Profiles": <UsersRound className="w-8 h-8 text-primary" />,
@@ -42,7 +42,7 @@ const DashBoardPage = () => {
     const { getAllPendingApproval, userApprovedPending,
         isUsersApprovalPendingLoading } = useAdminStore();
 
-    console.log("approval data:", userApprovedPending);
+    //console.log("approval data:", userApprovedPending);
 
     useEffect(() => {
         getAllPendingApproval()
@@ -61,11 +61,11 @@ const DashBoardPage = () => {
 
     const cards = [
         { title: "Total Users", value: counts.totaluserCount, link: "/userlist", },
-        { title: "Total Biodata's", value: counts.totalProfiles, link: "/allbiodata", },
+        { title: "Total Biodata's", value: counts.totalProfiles, link: "/search-profiles", },
         { title: "Approved Users", value: counts.totalApprovedUsers, link: "/approvedbiodata", },
         { title: "Pending Approvals", value: counts.totalApprovalPendingUsers, link: "/pendingbiodata", }, // fill from API if available
-        { title: "Female Biodata's", value: counts.totalFemaleProfiles, link: "/femalebiodata", },
-        { title: "Male Biodata's", value: counts.totalMaleProfiles, link: "/malebiodata", },
+        { title: "Female Biodata's", value: counts.totalFemaleProfiles, link: "/biodata/FEMALE", },
+        { title: "Male Biodata's", value: counts.totalMaleProfiles, link: "/biodata/MALE", },
     ];
 
 
@@ -172,6 +172,7 @@ const DashBoardPage = () => {
                         <li>
                             <a className="active">Dashboard</a>
                         </li>
+
                         {authUser?.role === "ADMIN" && (
                             <li>
                                 <Link
@@ -194,7 +195,17 @@ const DashBoardPage = () => {
                                 </Link>
                             </li>
                         )}
-
+                        {authUser?.role === "ADMIN" && (
+                            <li>
+                                <Link
+                                    to="/search-profiles"
+                                    className="hover:bg-primary hover:text-white text-base font-semibold"
+                                >
+                                    <FileSpreadsheet className="w-4 h-4 mr-1" />
+                                    All Biodata
+                                </Link>
+                            </li>
+                        )}
                         <li>
                             <a>Settings</a>
                         </li>

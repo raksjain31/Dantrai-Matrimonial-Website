@@ -22,6 +22,7 @@ import ContactUs from "./components/ContactUs";
 import AboutUs from "./components/AboutUs";
 import ApprovedBiodataPage from "./Page/ApprovedBiodataPage";
 import UserListPage from "./Page/UserListPage";
+import GenderBasedProfilePage from "./Page/GenderBasedProfilePage";
 
 
 
@@ -140,6 +141,12 @@ const App = () => {
           <Route path="/approvedbiodata"
             element={authUser ? <ApprovedBiodataPage /> : <Navigate to={"/"} />} />
         </Route>
+
+        <Route element={<AdminRoute />}>
+          <Route path="/biodata/:gendertype"
+            element={authUser ? <GenderBasedProfilePage /> : <Navigate to={"/"} />} />
+        </Route>
+
         <Route element={<AdminRoute />}>
           <Route path="/userlist"
             element={authUser ? <UserListPage /> : <Navigate to={"/"} />} />
