@@ -60,12 +60,12 @@ const DashBoardPage = () => {
 
 
     const cards = [
-        { title: "Total Users", value: counts.totaluserCount },
-        { title: "Total Biodata's", value: counts.totalProfiles },
-        { title: "Approved Users", value: counts.totalApprovedUsers },
-        { title: "Pending Approvals", value: counts.totalApprovalPendingUsers }, // fill from API if available
-        { title: "Female Biodata's", value: counts.totalFemaleProfiles },
-        { title: "Male Biodata's", value: counts.totalMaleProfiles },
+        { title: "Total Users", value: counts.totaluserCount, link: "/userlist", },
+        { title: "Total Biodata's", value: counts.totalProfiles, link: "/allbiodata", },
+        { title: "Approved Users", value: counts.totalApprovedUsers, link: "/approvedbiodata", },
+        { title: "Pending Approvals", value: counts.totalApprovalPendingUsers, link: "/pendingbiodata", }, // fill from API if available
+        { title: "Female Biodata's", value: counts.totalFemaleProfiles, link: "/femalebiodata", },
+        { title: "Male Biodata's", value: counts.totalMaleProfiles, link: "/malebiodata", },
     ];
 
 
@@ -87,13 +87,28 @@ const DashBoardPage = () => {
                     {cards.map((card, idx) => (
 
                         <div key={idx} className="card bg-base-100 shadow-xl border border-white">
-                            <div className="card-body">
-                                <div className="flex items-center gap-2 mb-2">
-                                    <div className="text-primary">{iconMap[card.title]}</div>
-                                    <h2 className="card-title">{card.title}</h2>
+                            <Link
+                                to={card.link}//"/approvedbiodata"
+                                className="hover:bg-primary hover:text-white text-base font-semibold"
+                            >
+                                <div className="card-body">
+
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <div className="text-primary">{iconMap[card.title]}</div>
+                                        <h2 className="card-title">{card.title}</h2>
+                                        {/* {authUser?.role === "ADMIN" && (
+
+                                        
+
+
+                                       
+
+                                    )} */}
+                                    </div>
+
+                                    <p className="text-2xl font-semibold">{card.value}</p>
                                 </div>
-                                <p className="text-2xl font-semibold">{card.value}</p>
-                            </div>
+                            </Link>
                         </div>
                     ))}
                 </div>
@@ -157,9 +172,17 @@ const DashBoardPage = () => {
                         <li>
                             <a className="active">Dashboard</a>
                         </li>
-                        <li>
-                            <a>Users</a>
-                        </li>
+                        {authUser?.role === "ADMIN" && (
+                            <li>
+                                <Link
+                                    to="/userlist"
+                                    className="hover:bg-primary hover:text-white text-base font-semibold"
+                                >
+                                    <Users className="w-4 h-4 mr-1" />
+                                    User List
+                                </Link>
+                            </li>
+                        )}
                         {authUser?.role === "ADMIN" && (
                             <li>
                                 <Link

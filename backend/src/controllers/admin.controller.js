@@ -5,7 +5,13 @@ export const getAllUserDetails = async (req, res) => {
     try {
 
 
-        const users = await db.User.findMany();
+        const users = await db.User.findMany(
+            {
+                include: {
+                    profiles: true
+                }
+            }
+        );
 
         if (!users) {
 
