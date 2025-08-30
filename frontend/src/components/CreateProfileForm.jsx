@@ -51,7 +51,7 @@ const profileSchema = z.object({
     age: z.coerce.number().min(21, { message: "Age must be at least 21." })
         .positive("Age must be a positive number"),
     height: z.string(),
-    currentLiveCity: z.string().transform((str) => str.toUpperCase()),
+    currentLiveCity: z.string().min(3, "City  must be atleast 3 characters").transform((str) => str.toUpperCase()),
     phone: z.string().min(10, 'Phone number is required.').refine(value => /^\d{10}$/.test(value), 'Invalid Number!'),
     image: z
 
