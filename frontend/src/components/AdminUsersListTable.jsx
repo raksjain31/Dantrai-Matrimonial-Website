@@ -156,7 +156,7 @@ const AdminUsersListTable = ({ userlist }) => {
                             <th>Phone</th>
                             <th>Father</th>
                             <th>Village</th>
-                            <th>Actions</th>
+                            {/* <th>Actions</th> */}
                         </tr>
                     </thead>
                     <tbody>
@@ -176,7 +176,7 @@ const AdminUsersListTable = ({ userlist }) => {
                                     <td>{user.phone}</td>
                                     <td>{user.Father}</td>
                                     <td>{user.village}</td>
-                                    <td>
+                                    {/* <td>
                                         <div className="flex gap-2">
                                             <button
                                                 onClick={() => handleUpdate(user.id)}
@@ -199,7 +199,7 @@ const AdminUsersListTable = ({ userlist }) => {
                                                 )}
                                             </button>
                                         </div>
-                                    </td>
+                                    </td> */}
                                 </tr>
                             ))
                         ) : (
@@ -258,7 +258,7 @@ const AdminUsersListTable = ({ userlist }) => {
                                 <p className="text-gray-500 text-sm">❌No Biodata Added Yet.</p>
                             )}
 
-                            <div className="flex gap-2 mt-3">
+                            {/* <div className="flex gap-2 mt-3">
                                 <span>
                                     <button
                                         onClick={() => handleUpdate(user.id)}
@@ -275,7 +275,7 @@ const AdminUsersListTable = ({ userlist }) => {
                                         {isUpdateRejectingUser ? "..." : "Reject"}
                                     </button>
                                 </span>
-                            </div>
+                            </div> */}
                         </div>
                     ))
                 ) : (

@@ -156,7 +156,8 @@ export const getAllCounts = async (req, res) => {
 
         const totaluserCount = await db.user.count();
         const totalProfiles = await db.profile.count();
-        const totalApprovedUsers = await db.user.count({ where: { IsApproved: true } });
+        const totalApprovedUsers = await db.user.count({ where: { IsApproved: true, IsRejected: false } });
+        const totalRejectedUsers = await db.user.count({ where: { IsRejected: true, IsApproved: false } });
         const totalApprovalPendingUsers = await db.user.count({
             where: {
                 IsApproved: false,
@@ -181,7 +182,8 @@ export const getAllCounts = async (req, res) => {
             totalApprovedUsers,
             totalApprovalPendingUsers,
             totalMaleProfiles,
-            totalFemaleProfiles
+            totalFemaleProfiles,
+            totalRejectedUsers
         });
 
 

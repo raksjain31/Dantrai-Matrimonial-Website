@@ -11,7 +11,7 @@ import {
     Clock,
     CircleUser,
     LogOut,
-    UsersRound, CircleCheck, FileSpreadsheet
+    UsersRound, CircleCheck, FileSpreadsheet, X, Venus
 } from "lucide-react"
 import AdminUsersTable from "../components/AdminUsersTable";
 import LogoutButton from "../components/LogoutButton";
@@ -21,10 +21,11 @@ import { useAuthStore } from '../store/useAuthStore';
 const iconMap = {
     "Total Users": <Users className="w-8 h-8 text-primary" />,
     "Total Biodata's": <UserPlus className="w-8 h-8 text-primary" />,
-    "Approved Users": <UserCheck className="w-8 h-8 text-primary" />,
+    "Approved Biodata": <UserCheck className="w-8 h-8 text-primary" />,
+    "Rejected Biodata": <X className="w-8 h-8  text-red-500" />,
     "Pending Approvals": <Clock className="w-8 h-8 text-primary" />,
-    "Female Profiles": <UsersRound className="w-8 h-8 text-primary" />,
-    "Male Profiles": <CircleUser className="w-8 h-8 text-primary" />,
+    "Female Biodata's": <Venus className="w-8 h-8 text-pink-500" />,
+    "Male Biodata's": <CircleUser className="w-8 h-8 text-primary" />,
 };
 
 
@@ -35,7 +36,8 @@ const DashBoardPage = () => {
         totalApprovedUsers: 0,
         totalApprovalPendingUsers: 0,
         totalMaleProfiles: 0,
-        totalFemaleProfiles: 0
+        totalFemaleProfiles: 0,
+        totalRejectedUsers: 0
     });
 
     const { authUser } = useAuthStore();
@@ -79,7 +81,8 @@ const DashBoardPage = () => {
     const cards = [
         { title: "Total Users", value: counts.totaluserCount, link: "/userlist", },
         { title: "Total Biodata's", value: counts.totalProfiles, link: "/search-profiles", },
-        { title: "Approved Users", value: counts.totalApprovedUsers, link: "/approvedbiodata", },
+        { title: "Approved Biodata", value: counts.totalApprovedUsers, link: "/approvedbiodata", },
+        { title: "Rejected Biodata", value: counts.totalRejectedUsers, link: null },
         { title: "Pending Approvals", value: counts.totalApprovalPendingUsers, link: null }, // fill from API if available
         { title: "Female Biodata's", value: counts.totalFemaleProfiles, link: "/biodata/FEMALE", },
         { title: "Male Biodata's", value: counts.totalMaleProfiles, link: "/biodata/MALE", },
@@ -100,7 +103,7 @@ const DashBoardPage = () => {
                 <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
 
                 {/* Cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
                     {cards.map((card, idx) => (
 
                         <div key={idx} className="card bg-base-100 shadow-xl border border-white">
