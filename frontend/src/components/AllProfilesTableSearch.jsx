@@ -315,33 +315,43 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
                                 </Link>
                             </h3>
 
-                            <p className="text-sm text-gray-600">
-                                Father: {profile.father}
+                            <p><span className="font-medium">
+                                Father:</span> {profile.user.name}
                             </p>
-                            <p className="text-sm text-gray-600">
-                                Gender: {profile.gender}
+                            <p ><span className="font-medium">
+                                Grand Father: </span>{profile.user.Father}
                             </p>
-                            <p className="text-sm text-gray-600">
-                                DOB:{" "}
+
+                            <p ><span className="font-medium">
+                                Mother:  </span>{profile.mother}
+                            </p>
+                            <p ><span className="font-medium">
+                                Gotra:</span> {profile.gotra}
+                            </p>
+                            <p><span className="font-medium">
+                                Gender: </span>{profile.gender}
+                            </p>
+                            <p ><span className="font-medium">
+                                DOB:</span>{" "}
                                 {profile?.dateOfBirth &&
                                     !isNaN(new Date(profile.dateOfBirth))
                                     ? new Date(profile.dateOfBirth).toISOString().split("T")[0]
                                     : "N/A"}
                             </p>
-                            <p className="text-sm text-gray-600">
-                                Age: {calculateAge(profile.dateOfBirth)}
+                            <p ><span className="font-medium">
+                                Age: </span>{calculateAge(profile.dateOfBirth)}
                             </p>
-                            <p className="text-sm text-gray-600">
-                                Height: {profile.height}
+                            <p ><span className="font-medium">
+                                Height:</span> {profile.height}
                             </p>
-                            <p className="text-sm text-gray-600">
-                                Education: {profile.education}
+                            <p ><span className="font-medium">
+                                Education:</span> {profile.education}
                             </p>
-                            <p className="text-sm text-gray-600">
-                                Village: {profile.user.village}
+                            <p><span className="font-medium">
+                                Village:</span> {profile.user.village}
                             </p>
-                            <p className="text-sm text-gray-600">
-                                City: {profile.currentLiveCity}
+                            <p ><span className="font-medium">
+                                City: </span>{profile.currentLiveCity}
                             </p>
 
                             <a

@@ -207,7 +207,13 @@ export const getAllProfile = async (req, res) => {
 
         const profiles = await db.profile.findMany({
 
+            where: {
 
+                user: {
+                    IsApproved: true,
+                    IsRejected: false
+                }
+            },
             select: {
                 id: true,
                 fullname: true,
@@ -215,6 +221,7 @@ export const getAllProfile = async (req, res) => {
                 dateOfBirth: true,
                 age: true,
                 height: true,
+                gotra: true,
                 currentLiveCity: true,
                 phone: true,
                 education: true,
@@ -226,6 +233,8 @@ export const getAllProfile = async (req, res) => {
                         village: true,
                         Father: true,
                         phone: true,
+                        name: true,
+
 
                     }
                 }
