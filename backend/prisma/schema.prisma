@@ -78,7 +78,7 @@ gender Gender
 dateOfBirth DateTime @db.Date
 age Int?
 height String
-gotra String?
+gotra String   @default("Unknown")
 currentLiveCity String
 phone String?
 //annualIncome String
