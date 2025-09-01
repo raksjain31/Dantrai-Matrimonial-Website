@@ -10,11 +10,12 @@ export const useActions = create((set) => ({
     isUpdatingUser: false,
     isUpdatingUserPending: false,
     isUpdateRejectingUser: false,
+    isDeletingUser: false,
 
     onDeleteProfile: async (id) => {
         try {
 
-            set({ isDeletingProblem: true });
+            set({ isDeletingProfile: true });
             const res = await axiosInstance.delete(`/profile/delete-profile/${id}`);
             toast.success(res.data.message);
 
@@ -26,6 +27,25 @@ export const useActions = create((set) => ({
         }
         finally {
             set({ isDeletingProfile: false });
+        }
+
+
+    },
+    onDeleteUser: async (id) => {
+        try {
+
+            set({ isDeletingUser: true });
+            const res = await axiosInstance.delete(`/auth/delete-user/${id}`);
+            toast.success(res.data.message);
+
+
+        } catch (error) {
+            console.log("Error deleting user", error);
+            toast.error("Error deleting user");
+
+        }
+        finally {
+            set({ isDeletingUser: false });
         }
 
 

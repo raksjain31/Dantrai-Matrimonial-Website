@@ -42,7 +42,29 @@ const Navbar = () => {
                         <ThemeSwitcher />
                     </div>
                     <div>
-                        {authUser?.name}
+
+
+                        {/* 
+                        {authUser?.name.split(" ")[0]?.charAt(0).toUpperCase() +
+                            authUser?.name.split(" ")[0]?.slice(1).toLowerCase()} */}
+
+                        {(() => {
+                            if (!authUser?.name) return "";
+
+                            const parts = authUser.name.trim().split(" ");
+                            if (parts.length === 1) {
+                                return parts[0].charAt(0).toUpperCase() + parts[0].slice(1).toLowerCase();
+                            }
+
+                            const first =
+                                parts[0].charAt(0).toUpperCase() + parts[0].slice(1).toLowerCase();
+                            const last =
+                                parts[parts.length - 1].charAt(0).toUpperCase() +
+                                parts[parts.length - 1].slice(1).toLowerCase();
+
+                            return `${first} ${last}`;
+                        })()}
+
                     </div>
                     <div className="dropdown dropdown-end">
                         <label tabIndex={0} className="btn btn-ghost btn-circle avatar flex flex-row ">
@@ -83,15 +105,17 @@ const Navbar = () => {
                                     My Profile
                                 </Link>
                             </li>
-                            <li>
-                                <Link
-                                    to="/add-profile"
-                                    className="hover:bg-primary hover:text-white text-base font-semibold"
-                                >
-                                    <FilePlus className="w-4 h-4 mr-2" />
-                                    Biodata
-                                </Link>
-                            </li>
+                            {/* {authUser?.profiles?.length === 0 || authUser?.IsApproved === false && (
+                                <li>
+                                    <Link
+                                        to="/add-profile"
+                                        className="hover:bg-primary hover:text-white text-base font-semibold"
+                                    >
+                                        <FilePlus className="w-4 h-4 mr-2" />
+                                        Biodata
+                                    </Link>
+                                </li>
+                            )} */}
                             {authUser?.IsApproved === true && (
                                 <li>
                                     <Link

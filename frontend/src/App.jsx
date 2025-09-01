@@ -23,6 +23,7 @@ import AboutUs from "./components/AboutUs";
 import ApprovedBiodataPage from "./Page/ApprovedBiodataPage";
 import UserListPage from "./Page/UserListPage";
 import GenderBasedProfilePage from "./Page/GenderBasedProfilePage";
+import CreateProfileForm from "./components/CreateProfileForm";
 
 
 
@@ -73,7 +74,7 @@ const App = () => {
 
         <Route
           path='/signup'
-          element={!authUser ? <SignUpPage /> : <Navigate to={"/"} />}
+          element={!authUser ? <CreateProfileForm /> : <Navigate to={"/"} />}
         />
 
         <Route

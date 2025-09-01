@@ -285,6 +285,7 @@ export const getAllApprovePendingUsers = async (req, res) => {
                         currentLiveCity: true,
                         father: true,
                         mother: true,
+                        gotra: true,
                     }
                 }
             }

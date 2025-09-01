@@ -64,13 +64,13 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
                 {/* Header with Create Playlist Button //justify-between */}
                 <div className="flex flex-col sm:flex-row  items-start sm:items-center mb-6 gap-3">
                     <h2 className="text-xl sm:text-2xl font-bold">Biodata's of your family</h2>
-                    <button
+                    {/* <button
                         className="btn btn-sm sm:btn-md bg-purple-800 gap-2 w-full sm:w-auto"
                         onClick={handleClick}
                     >
                         <Plus className="w-4 h-4 text-white" />
                         <p className="text-sm text-white"> Create Biodata</p>
-                    </button>
+                    </button> */}
                 </div>
 
                 {/* Table wrapper for mobile scroll */}
@@ -166,7 +166,7 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
                         {paginatedProfiles.map((profile, index) => (
                             <div
                                 key={profile.id}
-                                className="border rounded-lg p-4 shadow-sm bg-white dark:bg-gray-800"
+                                className="border rounded-lg p-4 shadow-sm bg-white"
                             >
                                 {/* <h3 className="font-bold text-lg text-white">{profile.fullname}</h3> */}
                                 <h3 className="font-bold text-lg ">

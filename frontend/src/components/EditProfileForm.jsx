@@ -14,7 +14,7 @@ import {
     CheckCircle2,
     Download,
     Briefcase,
-    GraduationCap, House
+    GraduationCap, House, User2, Mail, PhoneCall, Eye, Lock
 } from "lucide-react";
 
 import { axiosInstance } from "../lib/axios"
@@ -54,7 +54,8 @@ const profileSchema = z.object({
     age: z.coerce.number().min(21, { message: "Age must be at least 21." })
         .positive("Age must be a positive number"),
     height: z.string(),
-    currentLiveCity: z.string(),
+    gotra: z.string().min(3, "Gotra  must be atleast 3 characters").transform((str) => str.toUpperCase()),
+    currentLiveCity: z.string().min(3, "City  must be atleast 3 characters").transform((str) => str.toUpperCase()),
     phone: z.string().min(10, 'Phone number is required.').refine(value => /^\d{10}$/.test(value), 'Invalid Number!'),
     image: z
 
@@ -132,7 +133,7 @@ const profileSchema = z.object({
     occupation: z.string().optional().transform((str) => str.toUpperCase()),//.min(3, "Occupation  must be atleast 3 characters")
     organisation: z.string().optional().transform((str) => str.toUpperCase()),//.min(3, "Organisation  must be atleast 3 characters")
     aboutmycareer: z.string().optional().transform((str) => str.toUpperCase()),//.max(250, "About My Career at most 250 characters")
-    father: z.string().optional().transform((str) => str.toUpperCase()),//.min(3, "Father Name must be atleast 3 characters")
+    //.min(3, "Father Name must be atleast 3 characters")
     mother: z.string().optional().transform((str) => str.toUpperCase()),//.min(3, "Mother Name must be atleast 3 characters")
     noOfBrothers: z.coerce.number().int("No of Brothers must be an integer"),
     // .positive("Number of Brothers must be a positive number"),
@@ -143,11 +144,11 @@ const profileSchema = z.object({
     noOfMarriedSisters: z.coerce.number().int("No of Sisters must be an integer"),
     //.positive("Number of Sisters must be a positive number")
     aboutmyfamily: z.string().optional().transform((str) => str.toUpperCase()),//.max(250, "About My Family at most 250 characters")
-    hobbies: z.string().optional()//.min(3, "Hobbies Name must be atleast 3 characters").transform((str) => str.toUpperCase())
-
-
-});
-
+    hobbies: z.string().optional(),//.min(3, "Hobbies Name must be atleast 3 characters").transform((str) => str.toUpperCase())
+    name: z.string().min(3, "Father Name must be atleast 3 characters").transform((str) => str.toUpperCase()),
+    Father: z.string().min(3, "GrandFather Name must be atleast 3 characters").transform((str) => str.toUpperCase()),
+    village: z.string()
+})
 
 
 
@@ -156,6 +157,7 @@ const EditProfileForm = () => {
     //const [sampleType, setSampleType] = useState("DP")
     const navigation = useNavigate();
     const { id } = useParams();
+    const [showPassword, setShowPassword] = useState(false);
     const { getProfileDataById, profile, isProfileLoading } = useProfileStore();
     const { authUser } = useAuthStore();
     const { register, control, handleSubmit, reset, watch, setValue, formState: { errors } } = useForm(
@@ -222,12 +224,16 @@ const EditProfileForm = () => {
         if (profile) {
 
             reset({
+                name: profile.user.name,
+                Father: profile.user.Father,
+                village: profile.user.village,
                 fullname: profile.fullname,
                 gender: profile.gender,
                 dateOfBirth: profile.dateOfBirth ? new Date(profile.dateOfBirth) : null,
                 age: calculateAge(profile.dateOfBirth),
                 height: profile.height,
-                phone: profile.phone,
+                gotra: profile.gotra,
+                phone: profile.user.phone,
                 aboutme: profile.aboutme,
                 currentLiveCity: profile.currentLiveCity,
                 image: profile.image,
@@ -284,12 +290,14 @@ const EditProfileForm = () => {
 
 
 
+
             formData.append('fullname', data.fullname);
             formData.append('gender', data.gender);
 
             formData.append("dateOfBirth", cleanDate.toISOString());
             formData.append('age', parseInt({ age }));
             formData.append('height', data.height);
+            formData.append('gotra', data.gotra);
             formData.append('currentLiveCity', data.currentLiveCity);
             formData.append('phone', data.phone);
             formData.append('imageFile', data.image);
@@ -305,7 +313,7 @@ const EditProfileForm = () => {
             formData.append('occupation', data.occupation);
             formData.append('organisation', data.organisation);
             formData.append('aboutmycareer', data.aboutmycareer);
-            formData.append('father', data.father);
+            //formData.append('father', data.father);
             formData.append('mother', data.mother);
 
 
@@ -317,6 +325,10 @@ const EditProfileForm = () => {
             formData.append('noOfMarriedSisters', parseInt(data.noOfMarriedSisters));
             formData.append('aboutmyfamily', data.aboutmyfamily);
             formData.append('hobbies', data.hobbies);
+
+            formData.append('name', data.name);
+            formData.append('Father', data.Father);
+            formData.append('village', data.village);
 
             console.log("Form data:", data);
             console.log('Selected image file:', data.image);         // should be a FileList
@@ -398,18 +410,21 @@ const EditProfileForm = () => {
                                 Basic Information
                             </h3>
 
+                            {/* <div className="card bg-base-200 p-4 md:p-7 shadow-md"> */}
+
+
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="form-control md:col-span-3">
                                     <label className="label">
-                                        <span className="label-text text-base md:text-lg font-semibold">
-                                            Full Name
+                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                            UnMarried Son/Daughter Full Name
                                         </span>
                                     </label>
                                     <input
                                         type="text"
                                         className="input input-bordered w-full text-base md:text-lg"
                                         {...register("fullname")}
-                                        placeholder="Name            Father/Gaurdian             Surname"
+                                        placeholder="Son/Daughter Full Name"
                                     />
                                     {errors.fullname && (
                                         <label className="label">
@@ -420,12 +435,229 @@ const EditProfileForm = () => {
                                     )}
                                 </div>
                             </div>
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">Father Name</span>
+                                </label>
+                                <div className="relative">
+                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <code className="h-5 w-5 text-base-content/40" />
+                                    </div>
+                                    <input
+                                        type="text"
+                                        {...register("name")}
+                                        className="input input-bordered w-full text-base md:text-lg"
+                                        placeholder="Father Name"
+                                    />
+                                </div>
+                                {errors.name && (
+                                    <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+                                )}
+                            </div>
+                            {/*  GrandFather */}
+                            <div className="form-control">
+                                <label className="label">
+                                    <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                        Grand Father</span>
+                                </label>
+                                <div className="relative">
+                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <User2 className="h-5 w-5 text-base-content/40" />
+                                    </div>
+                                    <input
+                                        type="text"
+                                        {...register("Father")}
+                                        className="input input-bordered w-full text-base md:text-lg"
+                                        placeholder="Grand Father Name"
+                                    />
+                                </div>
+                                {errors.name && (
+                                    <p className="text-red-500 text-sm mt-1">{errors.Father.message}</p>
+                                )}
+                            </div>
+                            <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-6 ">
+                                {/* <div className="form-control">
+                                    <label className="label">
+                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                            Father
+                                        </span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="input input-bordered w-full text-base md:text-lg"
+                                        {...register("father")}
+                                        placeholder="Father Full Name......."
+                                    />
+                                    {errors.father && (
+                                        <label className="label">
+                                            <span className="label-text-alt text-error">
+                                                {errors.father.message}
+                                            </span>
+                                        </label>
+                                    )}
+                                </div> */}
+
+                                <div className="form-control">
+                                    <label className="label">
+                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                            Mother
+                                        </span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="input input-bordered w-full text-base md:text-lg"
+                                        {...register("mother")}
+                                        placeholder="Mother Full Name......."
+                                    />
+                                    {errors.mother && (
+                                        <label className="label">
+                                            <span className="label-text-alt text-error">
+                                                {errors.mother.message}
+                                            </span>
+                                        </label>
+                                    )}
+                                </div>
+
+                                {/* Email */}
+                                {/* <div className="form-control">
+                                    <label className="label">
+                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                            Email</span>
+                                    </label>
+                                    <div className="relative">
+                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <Mail className="h-5 w-5 text-base-content/40" />
+                                        </div>
+                                        <input
+                                            type="email"
+                                            {...register("email")}
+                                            className={`input input-bordered w-full pl-10 ${errors.email ? "input-error" : ""
+                                                }`}
+                                            placeholder="you@example.com"
+                                        />
+                                    </div>
+                                    {errors.email && (
+                                        <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                                    )}
+                                </div> */}
+                                {/* Phone */}
+                                <div className="form-control">
+                                    <label className="label">
+                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                            Phone</span>
+                                    </label>
+                                    <div className="relative">
+                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <PhoneCall className="h-5 w-5 text-base-content/40" />
+                                        </div>
+                                        <input
+                                            type="phone"
+                                            {...register("phone")}
+                                            className={`input input-bordered w-full pl-10 ${errors.phone ? "input-error" : ""
+                                                }`}
+                                            placeholder="1234567890"
+                                        />
+                                    </div>
+                                    {errors.phone && (
+                                        <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>
+                                    )}
+                                </div>
+
+
+                                {/* Password */}
+                                {/* <div className="form-control">
+                                    <label className="label">
+                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                            Create Password</span>
+                                    </label>
+                                    <div className="relative">
+                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <Lock className="h-5 w-5 text-base-content/40" />
+                                        </div>
+                                        <input
+                                            type={showPassword ? "text" : "password"}
+                                            {...register("password")}
+                                            className={`input input-bordered w-full pl-10 ${errors.password ? "input-error" : ""
+                                                }`}
+                                            placeholder="••••••••"
+                                        />
+                                        <button
+                                            type="button"
+                                            className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                                            onClick={() => setShowPassword(!showPassword)}
+                                        >
+                                            {showPassword ? (
+                                                <EyeOff className="h-5 w-5 text-base-content/40" />
+                                            ) : (
+                                                <Eye className="h-5 w-5 text-base-content/40" />
+                                            )}
+                                        </button>
+                                    </div>
+                                    {errors.password && (
+                                        <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+                                    )}
+                                </div> */}
+
+                                {/* Village */}
+                                <div className="form-control">
+                                    <label className="label">
+                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                            Village
+                                        </span>
+                                    </label>
+                                    <select
+                                        className="select select-bordered w-full text-base "
+                                        {...register("village")}
+                                    >
+
+                                        <option value="DANTRAI">DANTRAI</option>
+                                        <option value="NIMBAJ">NIMBAJ</option>
+                                        <option value="MALGAON">MALGAON</option>
+                                        <option value="AMBLARI">AMBLARI</option>
+                                        <option value="ANADARA">ANADARA</option>
+                                        <option value="MAROL">MAROL</option>
+                                        <option value="PAMERA">PAMERA</option>
+                                        <option value="POSINDARA">POSINDARA</option>
+                                        <option value="DHAN">DHAN</option>
+                                        <option value="MADIYA">MADIYA</option>
+                                        <option value="MERMODAVARA">MERMODAVARA</option>
+
+                                    </select>
+                                    {errors.village && (
+                                        <label className="label">
+                                            <span className="label-text-alt text-error">
+                                                {errors.village.message}
+                                            </span>
+                                        </label>
+                                    )}
+                                </div>
+                                <div className="form-control">
+                                    <label className="label">
+                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                            Gotra
+                                        </span>
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="input input-bordered w-full text-base md:text-lg"
+                                        {...register("gotra")}
+                                        placeholder="Enter Your Gotra"
+                                    />
+                                    {errors.gotra && (
+                                        <label className="label">
+                                            <span className="label-text-alt text-error">
+                                                {errors.gotra.message}
+                                            </span>
+                                        </label>
+                                    )}
+                                </div>
+                            </div>
 
                             <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-6">
                                 <div className="form-control md:col-span-2"> </div>
                                 <div className="form-control">
                                     <label className="label" >
-                                        <span className="label-text text-base md:text-lg font-semibold ">
+                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
                                             Gender
                                         </span>
                                     </label>
@@ -448,7 +680,7 @@ const EditProfileForm = () => {
 
                                 <div className="form-control">
                                     <label className="label">
-                                        <span className="label-text text-base md:text-lg font-semibold">
+                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
                                             Date Of Birth
                                         </span>
                                     </label>
@@ -463,7 +695,7 @@ const EditProfileForm = () => {
                                                 className="select select-bordered text-base md:text-lg birthdate border-2  placeholder-gray-500 rounded-1xl w-full width-full    outline-none"
                                                 name="dateOfBirth"
                                                 placeholderText="1999-01-25"
-                                                // selected={dob}
+                                                //selected={dob}
                                                 selected={field.value}
                                                 dateFormat="yyyy-MM-dd"
                                                 onChange={(date) => {
@@ -505,13 +737,14 @@ const EditProfileForm = () => {
                                 </div>
                                 <div className="form-control">
                                     <label className="label">
-                                        <span className="label-text text-base md:text-lg font-semibold">
+                                        {/* <span className="label-text text-base md:text-lg font-semibold"> */}
+                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
                                             Age (Age will Display Auto)
                                         </span>
                                     </label>
                                     <input
-                                        type="number"
-
+                                        type="text"
+                                        value={age}
                                         className="input input-bordered w-full text-base md:text-lg"
 
                                         {...control.register('age')} // Register the age input
@@ -528,7 +761,7 @@ const EditProfileForm = () => {
                                 </div>
                                 <div className="form-control">
                                     <label className="label">
-                                        <span className="label-text text-base md:text-lg font-semibold">
+                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
                                             Height
                                         </span>
                                     </label>
@@ -549,7 +782,7 @@ const EditProfileForm = () => {
 
                                 <div className="form-control">
                                     <label className="label">
-                                        <span className="label-text text-base md:text-lg font-semibold">
+                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
                                             Current City Live In
                                         </span>
                                     </label>
@@ -570,10 +803,11 @@ const EditProfileForm = () => {
 
 
 
-                                <div className="form-control">
+                                {/* <div className="form-control">
                                     <label className="label">
-                                        <span className="label-text text-base md:text-lg font-semibold">
-                                            Phone Number
+                                        
+                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                            Phone No(Father's)
                                         </span>
                                     </label>
                                     <input
@@ -589,13 +823,13 @@ const EditProfileForm = () => {
                                             </span>
                                         </label>
                                     )}
-                                </div>
+                                </div> */}
 
 
 
                                 <div className="form-control">
                                     <label className="label">
-                                        <span className="label-text text-base md:text-lg font-semibold">
+                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
                                             Hobbies(Optional)
                                         </span>
                                     </label>
@@ -623,7 +857,7 @@ const EditProfileForm = () => {
 
                             <div className="form-control md:col-span-2">
                                 <label className="label">
-                                    <span className="label-text text-base md:text-lg font-semibold">
+                                    <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
                                         About YourSelf(Optional)
                                     </span>
                                 </label>
@@ -916,7 +1150,7 @@ const EditProfileForm = () => {
                                 Family Information
                             </h3>
                             <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-6 ">
-                                <div className="form-control">
+                                {/* <div className="form-control">
                                     <label className="label">
                                         <span className="label-text text-base md:text-lg font-semibold">
                                             Father
@@ -956,7 +1190,7 @@ const EditProfileForm = () => {
                                             </span>
                                         </label>
                                     )}
-                                </div>
+                                </div> */}
                                 <div className="form-control">
                                     <label className="label">
                                         <span className="label-text text-base md:text-lg font-semibold">
@@ -1074,7 +1308,7 @@ const EditProfileForm = () => {
                                 ) : (
                                     <>
                                         <CheckCircle2 className="w-5 h-5" />
-                                        Update Profile
+                                        Update Biodata
                                     </>
                                 )}
                             </button>

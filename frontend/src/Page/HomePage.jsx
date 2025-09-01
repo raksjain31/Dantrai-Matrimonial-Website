@@ -50,13 +50,13 @@ const HomePage = () => {
             ) : (
                 <p className="mt-8 sm:mt-10 text-center text-base sm:text-lg font-medium text-gray-500 dark:text-gray-400 z-10 border border-primary px-3 sm:px-4 py-2 rounded-md border-dashed max-w-sm">
                     No Biodata found. Please add your son/daughter’s Biodata  - Team Abugoad Youth Connect.
-                    <button
+                    {/* <button
                         className="btn btn-sm sm:btn-md bg-purple-800 gap-2 w-full sm:w-auto"
                         onClick={handleClick}
                     >
                         <Plus className="w-4 h-4 text-white" />
                         <p className="text-sm text-white"> Create Biodata</p>
-                    </button>
+                    </button> */}
                 </p>
             )}
         </div>

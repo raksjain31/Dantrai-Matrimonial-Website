@@ -13,7 +13,7 @@ import {
     CheckCircle2,
     Download,
     Briefcase,
-    GraduationCap, House
+    GraduationCap, House, Eye, EyeOff, Loader2, Lock, Mail, User2, PhoneCall
 } from "lucide-react";
 
 import { axiosInstance } from "../lib/axios"
@@ -52,6 +52,7 @@ const profileSchema = z.object({
         .positive("Age must be a positive number"),
     height: z.string(),
     currentLiveCity: z.string().min(3, "City  must be atleast 3 characters").transform((str) => str.toUpperCase()),
+    gotra: z.string().min(3, "Gotra  must be atleast 3 characters").transform((str) => str.toUpperCase()),
     phone: z.string().min(10, 'Phone number is required.').refine(value => /^\d{10}$/.test(value), 'Invalid Number!'),
     image: z
 
@@ -86,7 +87,7 @@ const profileSchema = z.object({
     occupation: z.string().optional().transform((str) => str.toUpperCase()),//.min(3, "Occupation  must be atleast 3 characters")
     organisation: z.string().optional().transform((str) => str.toUpperCase()),//.min(3, "Organisation  must be atleast 3 characters")
     aboutmycareer: z.string().optional().transform((str) => str.toUpperCase()),//.max(250, "About My Career at most 250 characters")
-    father: z.string().optional().transform((str) => str.toUpperCase()),//.min(3, "Father Name must be atleast 3 characters")
+    //father: z.string().optional().transform((str) => str.toUpperCase()),//.min(3, "Father Name must be atleast 3 characters")
     mother: z.string().optional().transform((str) => str.toUpperCase()),//.min(3, "Mother Name must be atleast 3 characters")
     noOfBrothers: z.coerce.number().int("No of Brothers must be an integer"),
     // .positive("Number of Brothers must be a positive number"),
@@ -97,7 +98,13 @@ const profileSchema = z.object({
     noOfMarriedSisters: z.coerce.number().int("No of Sisters must be an integer"),
     //.positive("Number of Sisters must be a positive number")
     aboutmyfamily: z.string().optional().transform((str) => str.toUpperCase()),//.max(250, "About My Family at most 250 characters")
-    hobbies: z.string().optional()//.min(3, "Hobbies Name must be atleast 3 characters").transform((str) => str.toUpperCase())
+    hobbies: z.string().optional(),//.min(3, "Hobbies Name must be atleast 3 characters").transform((str) => str.toUpperCase())
+    name: z.string().min(3, "Name must be at least 3 characters long").transform((str) => str.toUpperCase()),
+    email: z.string().email("Enter a valid email").transform((str) => str.toLowerCase()),
+    Father: z.string().min(3, "Name must be at least 3 characters long").transform((str) => str.toUpperCase()),
+    //phone: z.string().min(10, 'Phone number is required.').refine(value => /^\d{10}$/.test(value), 'Invalid Number!'),
+    password: z.string().min(8, "Password must be at least 8 characters long"),
+    village: z.string()
 
 
 });
@@ -116,7 +123,7 @@ const CreateProfileForm = () => {
     )
     // Watch for image file changes
     const imageFile = watch('image');
-
+    const [showPassword, setShowPassword] = useState(false);
     const [preview, setPreview] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [age, setAge] = useState(null);
@@ -167,6 +174,13 @@ const CreateProfileForm = () => {
             const formData = new FormData();
 
 
+            formData.append('name', data.name);
+            formData.append('email', data.email);
+            formData.append('password', data.password);
+            formData.append('Father', data.Father);
+            formData.append('village', data.village);
+            formData.append('phone', data.phone);
+
 
             formData.append('fullname', data.fullname);
             formData.append('gender', data.gender);
@@ -174,8 +188,9 @@ const CreateProfileForm = () => {
             formData.append("dateOfBirth", cleanDate.toISOString());
             formData.append('age', parseInt({ age }));
             formData.append('height', data.height);
+            formData.append('gotra', data.gotra);
             formData.append('currentLiveCity', data.currentLiveCity);
-            formData.append('phone', data.phone);
+            //formData.append('phone', data.phone);
             formData.append('imageFile', data.image);
 
 
@@ -257,536 +272,84 @@ const CreateProfileForm = () => {
                     </div>
 
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8" encType="multipart/form-data">
-                        {/* Basic Information */}
+                        {/* Signup Information */}
                         <div className="card bg-base-200 p-4 md:p-7 shadow-md">
                             <h3 className="text-lg md:text-xl font-semibold mb-6 flex items-center gap-2">
                                 <Lightbulb className="w-5 h-5 text-warning" />
                                 Basic Information
                             </h3>
+                            {/* name */}
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="form-control md:col-span-3">
-                                    <label className="label">
-                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
-                                            Full Name
-                                        </span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="input input-bordered w-full text-base md:text-lg"
-                                        {...register("fullname")}
-                                        placeholder="Name"
-                                    />
-                                    {errors.fullname && (
+                            {/* Basic Information */}
+                            <div className="card bg-base-200 p-4 md:p-7 shadow-md">
+
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="form-control md:col-span-3">
                                         <label className="label">
-                                            <span className="label-text-alt text-error">
-                                                {errors.fullname.message}
+                                            <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                                UnMarried Son/Daughter Full Name
                                             </span>
                                         </label>
-                                    )}
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-6">
-                                <div className="form-control md:col-span-2"> </div>
-                                <div className="form-control">
-                                    <label className="label" >
-                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
-                                            Gender
-                                        </span>
-                                    </label>
-                                    <select
-                                        className=" select select-bordered max-w-full text-base md:text-lg "
-                                        {...register("gender")}
-                                    >
-                                        <option value="MALE">Male</option>
-                                        <option value="FEMALE">Female</option>
-                                    </select>
-                                    {errors.gender && (
-                                        <label className="label">
-                                            <span className="label-text-alt text-error">
-                                                {errors.gender.message}
-                                            </span>
-                                        </label>
-                                    )}
-                                </div>
-
-
-                                <div className="form-control">
-                                    <label className="label">
-                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
-                                            Date Of Birth
-                                        </span>
-                                    </label>
-
-
-                                    <Controller
-                                        control={control}
-                                        name="dateOfBirth"
-                                        render={({ field }) => (
-
-                                            <DatePicker width="100%"
-                                                className="select select-bordered text-base md:text-lg birthdate border-2  placeholder-gray-500 rounded-1xl w-full width-full    outline-none"
-                                                name="dateOfBirth"
-                                                placeholderText="1999-01-25"
-                                                selected={dob}
-
-                                                dateFormat="yyyy-MM-dd"
-                                                onChange={(date) => {
-                                                    field.onChange(date);
-                                                    setValue("age", calculateAge(date));
-                                                    handleDateChange(date);
-                                                }}
-                                                showMonthDropdown
-                                                showYearDropdown
-                                                dropdownMode="select"
-                                                closeOnScroll={true}
-                                                disabledKeyboardNavigation
-                                            />
-                                        )}
-                                    />
-
-                                    {/* <DatePicker
-                                        className="select select-bordered text-base md:text-lg birthdate border-2  placeholder-gray-500 rounded-1xl w-full width-full    outline-none"
-
-                                        selected={dob}
-
-                                        name="dateOfBirth"
-                                        onChange={handleDateChange}
-                                        dateFormat="yyyy-MM-dd"
-                                        placeholderText="Select DOB"
-                                        showMonthDropdown
-                                        showYearDropdown
-                                        dropdownMode="select"
-                                        closeOnScroll={true}
-                                        disabledKeyboardNavigation
-                                    //className="input input-bordered w-full"
-                                    /> */}
-
-                                    {errors.dateOfBirth && (
-                                        <p className="text-red-600 text-sm cursor-default">
-                                            {errors.dateOfBirth.message}
-                                        </p>
-                                    )}
-                                </div>
-                                <div className="form-control">
-                                    <label className="label">
-                                        {/* <span className="label-text text-base md:text-lg font-semibold"> */}
-                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
-                                            Age (Age will Display Auto)
-                                        </span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={age}
-                                        className="input input-bordered w-full text-base md:text-lg"
-
-                                        {...control.register('age')} // Register the age input
-                                        placeholder="Age"
-
-                                    />
-                                    {errors.age && (
-                                        <label className="label">
-                                            <span className="label-text-alt text-error">
-                                                {errors.age.message}
-                                            </span>
-                                        </label>
-                                    )}
-                                </div>
-                                <div className="form-control">
-                                    <label className="label">
-                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
-                                            Height
-                                        </span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="input input-bordered w-full text-base md:text-lg"
-                                        {...register("height")}
-                                        placeholder="Ex - 5.0'"
-                                    />
-                                    {errors.height && (
-                                        <label className="label">
-                                            <span className="label-text-alt text-error">
-                                                {errors.height.message}
-                                            </span>
-                                        </label>
-                                    )}
-                                </div>
-
-                                <div className="form-control">
-                                    <label className="label">
-                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
-                                            Current City Live In
-                                        </span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="input input-bordered w-full text-base md:text-lg"
-                                        {...register("currentLiveCity")}
-                                        placeholder="Ex - Mumbai"
-                                    />
-                                    {errors.currentLiveCity && (
-                                        <label className="label">
-                                            <span className="label-text-alt text-error">
-                                                {errors.currentLiveCity.message}
-                                            </span>
-                                        </label>
-                                    )}
-                                </div>
-
-
-
-                                <div className="form-control">
-                                    <label className="label">
-                                        {/* <span className="label-text text-base md:text-lg font-semibold"> */}
-                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
-                                            Phone No(Father's)
-                                        </span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="input input-bordered w-full text-base md:text-lg"
-                                        {...register("phone")}
-                                        placeholder="10-Digit Mobile No"
-                                    />
-                                    {errors.phone && (
-                                        <label className="label">
-                                            <span className="label-text-alt text-error">
-                                                {errors.phone.message}
-                                            </span>
-                                        </label>
-                                    )}
-                                </div>
-
-
-
-                                <div className="form-control">
-                                    <label className="label">
-                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
-                                            Hobbies(Optional)
-                                        </span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="input input-bordered w-full text-base md:text-lg"
-                                        {...register("hobbies")}
-                                        placeholder="Hobbies"
-                                    />
-                                    {errors.hobbies && (
-                                        <label className="label">
-                                            <span className="label-text-alt text-error">
-                                                {errors.hobbies.message}
-                                            </span>
-                                        </label>
-                                    )}
-                                </div>
-
-
-
-
-                            </div>
-
-
-
-                            <div className="form-control md:col-span-2">
-                                <label className="label">
-                                    <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
-                                        About YourSelf(Optional)
-                                    </span>
-                                </label>
-                                <textarea
-                                    className="textarea textarea-bordered min-h-32 w-full text-base md:text-lg p-4 resize-y"
-                                    {...register("aboutme")}
-                                    placeholder="Tell About Yourself..."
-                                />
-
-                                {errors.aboutme && (
-                                    <label className="label">
-                                        <span className="label-text-alt text-error">
-                                            {errors.aboutme.message}
-                                        </span>
-                                    </label>
-                                )}
-                            </div>
-
-                        </div>
-
-
-                        {/* IMAGE */}
-                        <div className="card bg-base-200 p-4 md:p-6 shadow-md">
-                            <h3 className="text-lg md:text-xl font-semibold mb-6 flex items-center gap-2">
-                                <ImageUp className="w-5 h-5 text-warning" />
-                                Profile Photo Upload
-                            </h3>
-                            <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-6 ">
-
-                                <div className="form-control">
-                                    <label className="label">
-                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
-                                            Photo (Image)
-                                        </span>
-                                    </label>
-
-                                    <div id="file" style={{ display: "none" }}>
-                                        Choose File
-
-                                    </div>
-                                    <div className="mb-6">
-
-
-                                        <input type="file" {...register("image", {
-                                            onChange: (e) => {
-                                                const file = e.target.files?.[0];
-                                                if (file) {
-                                                    // use the file for preview
-                                                    setPreview(URL.createObjectURL(file));
-                                                }
-                                            },
-                                        })} accept="image/*" className="file-input file-input-primary" />
-                                        {errors.image && <p>{errors.image.message}</p>}
-
-                                        {/* {preview && <img src={preview} alt="preview" className="w-32 h-32 object-cover" />} */}
-                                        {/* <input type="file" {...register('image')} name="image" accept="image/*"
-                                            onChange={(e) => {
-                                                const fileList = e.target.files;
-                                                if (fileList && fileList.length > 0) {
-                                                    const file = fileList[0];
-                                                    setPreview(URL.createObjectURL(file));
-                                                    setValue("image", fileList, { shouldValidate: true }); // ✅ push file into form manually
-                                                }
-                                            }} className="w-full border border-gray-300 py-2 pl-3 rounded mt-0 outline-none" /> */}
-
-                                        {/* <input
-                                            type="file"
-                                            accept="image/*"
-                                            name="imageFile"
-                                            {...register("image")}
-                                            onChange={(e) => {
-                                                const fileList = e.target.files;
-                                                if (fileList && fileList.length > 0) {
-                                                    const file = fileList[0];
-                                                    setPreview(URL.createObjectURL(file));
-                                                    setValue("image", fileList, { shouldValidate: true }); // ✅ push file into form manually
-                                                }
-                                            }}
-                                        /> */}
-
-                                        {errors.image && (
+                                        <input
+                                            type="text"
+                                            className="input input-bordered w-full text-base md:text-lg"
+                                            {...register("fullname")}
+                                            placeholder="Son/Daughter Full Name"
+                                        />
+                                        {errors.fullname && (
                                             <label className="label">
                                                 <span className="label-text-alt text-error">
-                                                    {errors.image.message}
-
+                                                    {errors.fullname.message}
                                                 </span>
                                             </label>
                                         )}
                                     </div>
                                 </div>
-
-
-
-                                {/* 👁️ Image Preview */}
-                                {/* {preview && <img src={preview} alt="Preview" width={150} height={150} />} */}
-                                <div>
+                                <div className="form-control">
                                     <label className="label">
-                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
-                                            Preview
-                                        </span>
+                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">Father Name</span>
                                     </label>
-                                    {preview && (
-                                        <div style={{ marginTop: '10px' }}>
-
-                                            <img src={preview} alt="Preview" style={{ width: '100%', maxWidth: '200px', borderRadius: '8px' }} />
+                                    <div className="relative">
+                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <code className="h-5 w-5 text-base-content/40" />
                                         </div>
+                                        <input
+                                            type="text"
+                                            {...register("name")}
+                                            className={`input input-bordered w-full pl- ${errors.name ? "input-error" : ""
+                                                }`}
+                                            placeholder="Father Name"
+                                        />
+                                    </div>
+                                    {errors.name && (
+                                        <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
                                     )}
                                 </div>
-
-
-
-
-                            </div>
-                        </div>
-
-
-                        {/* Education */}
-                        <div className="card bg-base-200 p-4 md:p-6 shadow-md">
-                            <h3 className="text-lg md:text-xl font-semibold mb-6 flex items-center gap-2">
-                                <GraduationCap className="w-5 h-5 text-warning" />
-                                Education Information
-                            </h3>
-                            <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-6 ">
-                                <div className="form-control">
-                                    <label className="label">
-                                        {/* <span className="label-text text-base md:text-lg font-semibold"> */}
-                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
-                                            Education(Highest)
-                                        </span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="input input-bordered w-full text-base md:text-lg"
-                                        {...register("education")}
-                                        placeholder="Ex - B.Com, B.Tech,CA etc......."
-                                    />
-                                    {errors.education && (
-                                        <label className="label">
-                                            <span className="label-text-alt text-error">
-                                                {errors.education.message}
-                                            </span>
-                                        </label>
-                                    )}
-                                </div>
+                                {/*  GrandFather */}
                                 <div className="form-control">
                                     <label className="label">
                                         <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
-                                            School/College
-                                        </span>
+                                            Grand Father</span>
                                     </label>
-                                    <input
-                                        type="text"
-                                        className="input input-bordered w-full text-base md:text-lg"
-                                        {...register("college")}
-                                        placeholder="School/College Name......."
-                                    />
-                                    {errors.college && (
-                                        <label className="label">
-                                            <span className="label-text-alt text-error">
-                                                {errors.college.message}
-                                            </span>
-                                        </label>
+                                    <div className="relative">
+                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <User2 className="h-5 w-5 text-base-content/40" />
+                                        </div>
+                                        <input
+                                            type="text"
+                                            {...register("Father")}
+                                            className={`input input-bordered w-full pl-10 ${errors.Father ? "input-error" : ""
+                                                }`}
+                                            placeholder="Grand Father Name"
+                                        />
+                                    </div>
+                                    {errors.name && (
+                                        <p className="text-red-500 text-sm mt-1">{errors.Father.message}</p>
                                     )}
                                 </div>
-
-
-
-
-                            </div>
-                            <div className="form-control">
-                                <label className="label">
-                                    <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
-                                        About My Education(Optional)
-                                    </span>
-                                </label>
-                                <textarea
-                                    className="textarea textarea-bordered min-h-32 w-full text-base md:text-lg p-4 resize-y"
-                                    {...register("aboutmyeducation")}
-                                    placeholder="Tell About Your Education in 250 words..."
-                                />
-                                {errors.aboutmyeducation && (
-                                    <label className="label">
-                                        <span className="label-text-alt text-error">
-                                            {errors.aboutmyeducation.message}
-                                        </span>
-                                    </label>
-                                )}
-                            </div>
-                        </div>
-
-
-                        {/* Career */}
-                        <div className="card bg-base-200 p-4 md:p-6 shadow-md">
-                            <h3 className="text-lg md:text-xl font-semibold mb-6 flex items-center gap-2">
-                                <Briefcase className="w-5 h-5 text-warning" />
-                                Career Information
-                            </h3>
-
-                            <div className="grid grid-cols-2 md:grid-cols-1 gap-3 md:gap-6  ">
-                                <div className="form-control">
-                                    <label className="label">
-                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
-                                            Employed In
-                                        </span>
-                                    </label>
-                                    <select
-                                        className=" select select-bordered max-w-full text-base md:text-lg"
-                                        {...register("employedIn")}
-                                    >
-                                        <option value="PRIVATE">PRIVATE</option>
-                                        <option value="GOVT">GOVT</option>
-                                        <option value="BUSINESS">BUSINESS</option>
-                                    </select>
-                                    {errors.employedIn && (
-                                        <label className="label">
-                                            <span className="label-text-alt text-error">
-                                                {errors.employedIn.message}
-                                            </span>
-                                        </label>
-                                    )}
-                                </div>
-                                <div className="form-control">
-                                    <label className="label">
-                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
-                                            Occupation
-                                        </span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="input input-bordered w-full text-base md:text-lg"
-                                        {...register("occupation")}
-                                        placeholder="Artist, Broker,Engineer, Doctor, Teacher, etc......."
-                                    />
-                                    {errors.occupation && (
-                                        <label className="label">
-                                            <span className="label-text-alt text-error">
-                                                {errors.occupation.message}
-                                            </span>
-                                        </label>
-                                    )}
-                                </div>
-                                <div className="form-control">
-                                    <label className="label">
-                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
-                                            Organisation
-                                        </span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="input input-bordered w-full text-base md:text-lg"
-                                        {...register("organisation")}
-                                        placeholder="Company / Bussiness Firm Name......."
-                                    />
-                                    {errors.organisation && (
-                                        <label className="label">
-                                            <span className="label-text-alt text-error">
-                                                {errors.organisation.message}
-                                            </span>
-                                        </label>
-                                    )}
-                                </div>
-                                <div className="form-control">
-                                    <label className="label">
-                                        {/* <span className="label-text text-base md:text-lg font-semibold"> */}
-                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
-                                            About My Career(Optional)
-                                        </span>
-                                    </label>
-                                    <textarea
-                                        className="textarea textarea-bordered min-h-32 w-full text-base md:text-lg p-4 resize-y"
-                                        {...register("aboutmycareer")}
-                                        placeholder="Tell About Your Career in 250 words..."
-                                    />
-                                    {errors.aboutmycareer && (
-                                        <label className="label">
-                                            <span className="label-text-alt text-error">
-                                                {errors.aboutmycareer.message}
-                                            </span>
-                                        </label>
-                                    )}
-                                </div>
-
-
-
-                            </div>
-                        </div>
-
-                        {/*Family Information */}
-                        <div className="card bg-base-200 p-4 md:p-6 shadow-md">
-                            <h3 className="text-lg md:text-xl font-semibold mb-6 flex items-center gap-2">
-                                <House className="w-5 h-5 text-warning" />
-                                Family Information
-                            </h3>
-                            <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-6 ">
-                                <div className="form-control">
+                                <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-6 ">
+                                    {/* <div className="form-control">
                                     <label className="label">
                                         <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
                                             Father
@@ -805,28 +368,663 @@ const CreateProfileForm = () => {
                                             </span>
                                         </label>
                                     )}
+                                </div> */}
+
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                                Mother
+                                            </span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="input input-bordered w-full text-base md:text-lg"
+                                            {...register("mother")}
+                                            placeholder="Mother Full Name......."
+                                        />
+                                        {errors.mother && (
+                                            <label className="label">
+                                                <span className="label-text-alt text-error">
+                                                    {errors.mother.message}
+                                                </span>
+                                            </label>
+                                        )}
+                                    </div>
+
+                                    {/* Email */}
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                                Email</span>
+                                        </label>
+                                        <div className="relative">
+                                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                <Mail className="h-5 w-5 text-base-content/40" />
+                                            </div>
+                                            <input
+                                                type="email"
+                                                {...register("email")}
+                                                className={`input input-bordered w-full pl-10 ${errors.email ? "input-error" : ""
+                                                    }`}
+                                                placeholder="you@example.com"
+                                            />
+                                        </div>
+                                        {errors.email && (
+                                            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                                        )}
+                                    </div>
+                                    {/* Phone */}
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                                Phone</span>
+                                        </label>
+                                        <div className="relative">
+                                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                <PhoneCall className="h-5 w-5 text-base-content/40" />
+                                            </div>
+                                            <input
+                                                type="phone"
+                                                {...register("phone")}
+                                                className={`input input-bordered w-full pl-10 ${errors.phone ? "input-error" : ""
+                                                    }`}
+                                                placeholder="1234567890"
+                                            />
+                                        </div>
+                                        {errors.phone && (
+                                            <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>
+                                        )}
+                                    </div>
+
+
+                                    {/* Password */}
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                                Create Password</span>
+                                        </label>
+                                        <div className="relative">
+                                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                <Lock className="h-5 w-5 text-base-content/40" />
+                                            </div>
+                                            <input
+                                                type={showPassword ? "text" : "password"}
+                                                {...register("password")}
+                                                className={`input input-bordered w-full pl-10 ${errors.password ? "input-error" : ""
+                                                    }`}
+                                                placeholder="••••••••"
+                                            />
+                                            <button
+                                                type="button"
+                                                className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                                                onClick={() => setShowPassword(!showPassword)}
+                                            >
+                                                {showPassword ? (
+                                                    <EyeOff className="h-5 w-5 text-base-content/40" />
+                                                ) : (
+                                                    <Eye className="h-5 w-5 text-base-content/40" />
+                                                )}
+                                            </button>
+                                        </div>
+                                        {errors.password && (
+                                            <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+                                        )}
+                                    </div>
+
+                                    {/* Village */}
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                                Village
+                                            </span>
+                                        </label>
+                                        <select
+                                            className="select select-bordered w-full text-base "
+                                            {...register("village")}
+                                        >
+
+                                            <option value="DANTRAI">DANTRAI</option>
+                                            <option value="NIMBAJ">NIMBAJ</option>
+                                            <option value="MALGAON">MALGAON</option>
+                                            <option value="AMBLARI">AMBLARI</option>
+                                            <option value="ANADARA">ANADARA</option>
+                                            <option value="MAROL">MAROL</option>
+                                            <option value="PAMERA">PAMERA</option>
+                                            <option value="POSINDARA">POSINDARA</option>
+                                            <option value="DHAN">DHAN</option>
+                                            <option value="MADIYA">MADIYA</option>
+                                            <option value="MERMODAVARA">MERMODAVARA</option>
+
+                                        </select>
+                                        {errors.village && (
+                                            <label className="label">
+                                                <span className="label-text-alt text-error">
+                                                    {errors.village.message}
+                                                </span>
+                                            </label>
+                                        )}
+                                    </div>
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                                Gotra
+                                            </span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="input input-bordered w-full text-base md:text-lg"
+                                            {...register("gotra")}
+                                            placeholder="Enter Your Gotra"
+                                        />
+                                        {errors.gotra && (
+                                            <label className="label">
+                                                <span className="label-text-alt text-error">
+                                                    {errors.gotra.message}
+                                                </span>
+                                            </label>
+                                        )}
+                                    </div>
                                 </div>
 
-                                <div className="form-control">
+                                <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-6">
+                                    <div className="form-control md:col-span-2"> </div>
+                                    <div className="form-control">
+                                        <label className="label" >
+                                            <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                                Gender
+                                            </span>
+                                        </label>
+                                        <select
+                                            className=" select select-bordered max-w-full text-base md:text-lg "
+                                            {...register("gender")}
+                                        >
+                                            <option value="MALE">Male</option>
+                                            <option value="FEMALE">Female</option>
+                                        </select>
+                                        {errors.gender && (
+                                            <label className="label">
+                                                <span className="label-text-alt text-error">
+                                                    {errors.gender.message}
+                                                </span>
+                                            </label>
+                                        )}
+                                    </div>
+
+
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                                Date Of Birth
+                                            </span>
+                                        </label>
+
+
+                                        <Controller
+                                            control={control}
+                                            name="dateOfBirth"
+                                            render={({ field }) => (
+
+                                                <DatePicker width="100%"
+                                                    className="select select-bordered text-base md:text-lg birthdate border-2  placeholder-gray-500 rounded-1xl w-full width-full    outline-none"
+                                                    name="dateOfBirth"
+                                                    placeholderText="1999-01-25"
+                                                    selected={dob}
+
+                                                    dateFormat="yyyy-MM-dd"
+                                                    onChange={(date) => {
+                                                        field.onChange(date);
+                                                        setValue("age", calculateAge(date));
+                                                        handleDateChange(date);
+                                                    }}
+                                                    showMonthDropdown
+                                                    showYearDropdown
+                                                    dropdownMode="select"
+                                                    closeOnScroll={true}
+                                                    disabledKeyboardNavigation
+                                                />
+                                            )}
+                                        />
+
+                                        {/* <DatePicker
+                                        className="select select-bordered text-base md:text-lg birthdate border-2  placeholder-gray-500 rounded-1xl w-full width-full    outline-none"
+
+                                        selected={dob}
+
+                                        name="dateOfBirth"
+                                        onChange={handleDateChange}
+                                        dateFormat="yyyy-MM-dd"
+                                        placeholderText="Select DOB"
+                                        showMonthDropdown
+                                        showYearDropdown
+                                        dropdownMode="select"
+                                        closeOnScroll={true}
+                                        disabledKeyboardNavigation
+                                    //className="input input-bordered w-full"
+                                    /> */}
+
+                                        {errors.dateOfBirth && (
+                                            <p className="text-red-600 text-sm cursor-default">
+                                                {errors.dateOfBirth.message}
+                                            </p>
+                                        )}
+                                    </div>
+                                    <div className="form-control">
+                                        <label className="label">
+                                            {/* <span className="label-text text-base md:text-lg font-semibold"> */}
+                                            <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                                Age (Age will Display Auto)
+                                            </span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={age}
+                                            className="input input-bordered w-full text-base md:text-lg"
+
+                                            {...control.register('age')} // Register the age input
+                                            placeholder="Age"
+
+                                        />
+                                        {errors.age && (
+                                            <label className="label">
+                                                <span className="label-text-alt text-error">
+                                                    {errors.age.message}
+                                                </span>
+                                            </label>
+                                        )}
+                                    </div>
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                                Height
+                                            </span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="input input-bordered w-full text-base md:text-lg"
+                                            {...register("height")}
+                                            placeholder="Ex - 5.0'"
+                                        />
+                                        {errors.height && (
+                                            <label className="label">
+                                                <span className="label-text-alt text-error">
+                                                    {errors.height.message}
+                                                </span>
+                                            </label>
+                                        )}
+                                    </div>
+
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                                Current City Live In
+                                            </span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="input input-bordered w-full text-base md:text-lg"
+                                            {...register("currentLiveCity")}
+                                            placeholder="Ex - Mumbai"
+                                        />
+                                        {errors.currentLiveCity && (
+                                            <label className="label">
+                                                <span className="label-text-alt text-error">
+                                                    {errors.currentLiveCity.message}
+                                                </span>
+                                            </label>
+                                        )}
+                                    </div>
+
+
+
+                                    {/* <div className="form-control">
                                     <label className="label">
+                                        
                                         <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
-                                            Mother
+                                            Phone No(Father's)
                                         </span>
                                     </label>
                                     <input
                                         type="text"
                                         className="input input-bordered w-full text-base md:text-lg"
-                                        {...register("mother")}
-                                        placeholder="Mother Full Name......."
+                                        {...register("phone")}
+                                        placeholder="10-Digit Mobile No"
                                     />
-                                    {errors.mother && (
+                                    {errors.phone && (
                                         <label className="label">
                                             <span className="label-text-alt text-error">
-                                                {errors.mother.message}
+                                                {errors.phone.message}
+                                            </span>
+                                        </label>
+                                    )}
+                                </div> */}
+
+
+
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                                Hobbies(Optional)
+                                            </span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="input input-bordered w-full text-base md:text-lg"
+                                            {...register("hobbies")}
+                                            placeholder="Hobbies"
+                                        />
+                                        {errors.hobbies && (
+                                            <label className="label">
+                                                <span className="label-text-alt text-error">
+                                                    {errors.hobbies.message}
+                                                </span>
+                                            </label>
+                                        )}
+                                    </div>
+
+
+
+
+                                </div>
+
+
+
+                                <div className="form-control md:col-span-2">
+                                    <label className="label">
+                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                            About YourSelf(Optional)
+                                        </span>
+                                    </label>
+                                    <textarea
+                                        className="textarea textarea-bordered min-h-32 w-full text-base md:text-lg p-4 resize-y"
+                                        {...register("aboutme")}
+                                        placeholder="Tell About Yourself..."
+                                    />
+
+                                    {errors.aboutme && (
+                                        <label className="label">
+                                            <span className="label-text-alt text-error">
+                                                {errors.aboutme.message}
                                             </span>
                                         </label>
                                     )}
                                 </div>
+
+                            </div>
+
+
+                            {/* IMAGE */}
+                            <div className="card bg-base-200 p-4 md:p-6 shadow-md">
+                                <h3 className="text-lg md:text-xl font-semibold mb-6 flex items-center gap-2">
+                                    <ImageUp className="w-5 h-5 text-warning" />
+                                    Profile Photo Upload
+                                </h3>
+                                <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-6 ">
+
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                                Photo (Image)
+                                            </span>
+                                        </label>
+
+                                        <div id="file" style={{ display: "none" }}>
+                                            Choose File
+
+                                        </div>
+                                        <div className="mb-6">
+
+
+                                            <input type="file" {...register("image", {
+                                                onChange: (e) => {
+                                                    const file = e.target.files?.[0];
+                                                    if (file) {
+                                                        // use the file for preview
+                                                        setPreview(URL.createObjectURL(file));
+                                                    }
+                                                },
+                                            })} accept="image/*" className="file-input file-input-primary" />
+                                            {errors.image && <p>{errors.image.message}</p>}
+
+                                            {/* {preview && <img src={preview} alt="preview" className="w-32 h-32 object-cover" />} */}
+                                            {/* <input type="file" {...register('image')} name="image" accept="image/*"
+                                            onChange={(e) => {
+                                                const fileList = e.target.files;
+                                                if (fileList && fileList.length > 0) {
+                                                    const file = fileList[0];
+                                                    setPreview(URL.createObjectURL(file));
+                                                    setValue("image", fileList, { shouldValidate: true }); // ✅ push file into form manually
+                                                }
+                                            }} className="w-full border border-gray-300 py-2 pl-3 rounded mt-0 outline-none" /> */}
+
+                                            {/* <input
+                                            type="file"
+                                            accept="image/*"
+                                            name="imageFile"
+                                            {...register("image")}
+                                            onChange={(e) => {
+                                                const fileList = e.target.files;
+                                                if (fileList && fileList.length > 0) {
+                                                    const file = fileList[0];
+                                                    setPreview(URL.createObjectURL(file));
+                                                    setValue("image", fileList, { shouldValidate: true }); // ✅ push file into form manually
+                                                }
+                                            }}
+                                        /> */}
+
+                                            {errors.image && (
+                                                <label className="label">
+                                                    <span className="label-text-alt text-error">
+                                                        {errors.image.message}
+
+                                                    </span>
+                                                </label>
+                                            )}
+                                        </div>
+                                    </div>
+
+
+
+                                    {/* 👁️ Image Preview */}
+                                    {/* {preview && <img src={preview} alt="Preview" width={150} height={150} />} */}
+                                    <div>
+                                        <label className="label">
+                                            <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                                Preview
+                                            </span>
+                                        </label>
+                                        {preview && (
+                                            <div style={{ marginTop: '10px' }}>
+
+                                                <img src={preview} alt="Preview" style={{ width: '100%', maxWidth: '200px', borderRadius: '8px' }} />
+                                            </div>
+                                        )}
+                                    </div>
+
+
+
+
+                                </div>
+                            </div>
+
+
+                            {/* Education */}
+                            <div className="card bg-base-200 p-4 md:p-6 shadow-md">
+                                <h3 className="text-lg md:text-xl font-semibold mb-6 flex items-center gap-2">
+                                    <GraduationCap className="w-5 h-5 text-warning" />
+                                    Education Information
+                                </h3>
+                                <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-6 ">
+                                    <div className="form-control">
+                                        <label className="label">
+                                            {/* <span className="label-text text-base md:text-lg font-semibold"> */}
+                                            <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                                Education(Highest)
+                                            </span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="input input-bordered w-full text-base md:text-lg"
+                                            {...register("education")}
+                                            placeholder="Ex - B.Com, B.Tech,CA etc......."
+                                        />
+                                        {errors.education && (
+                                            <label className="label">
+                                                <span className="label-text-alt text-error">
+                                                    {errors.education.message}
+                                                </span>
+                                            </label>
+                                        )}
+                                    </div>
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                                School/College
+                                            </span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="input input-bordered w-full text-base md:text-lg"
+                                            {...register("college")}
+                                            placeholder="School/College Name......."
+                                        />
+                                        {errors.college && (
+                                            <label className="label">
+                                                <span className="label-text-alt text-error">
+                                                    {errors.college.message}
+                                                </span>
+                                            </label>
+                                        )}
+                                    </div>
+
+
+
+
+                                </div>
+                                <div className="form-control">
+                                    <label className="label">
+                                        <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                            About My Education(Optional)
+                                        </span>
+                                    </label>
+                                    <textarea
+                                        className="textarea textarea-bordered min-h-32 w-full text-base md:text-lg p-4 resize-y"
+                                        {...register("aboutmyeducation")}
+                                        placeholder="Tell About Your Education in 250 words..."
+                                    />
+                                    {errors.aboutmyeducation && (
+                                        <label className="label">
+                                            <span className="label-text-alt text-error">
+                                                {errors.aboutmyeducation.message}
+                                            </span>
+                                        </label>
+                                    )}
+                                </div>
+                            </div>
+
+
+                            {/* Career */}
+                            <div className="card bg-base-200 p-4 md:p-6 shadow-md">
+                                <h3 className="text-lg md:text-xl font-semibold mb-6 flex items-center gap-2">
+                                    <Briefcase className="w-5 h-5 text-warning" />
+                                    Career Information
+                                </h3>
+
+                                <div className="grid grid-cols-2 md:grid-cols-1 gap-3 md:gap-6  ">
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                                Employed In
+                                            </span>
+                                        </label>
+                                        <select
+                                            className=" select select-bordered max-w-full text-base md:text-lg"
+                                            {...register("employedIn")}
+                                        >
+                                            <option value="PRIVATE">PRIVATE</option>
+                                            <option value="GOVT">GOVT</option>
+                                            <option value="BUSINESS">BUSINESS</option>
+                                        </select>
+                                        {errors.employedIn && (
+                                            <label className="label">
+                                                <span className="label-text-alt text-error">
+                                                    {errors.employedIn.message}
+                                                </span>
+                                            </label>
+                                        )}
+                                    </div>
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                                Occupation
+                                            </span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="input input-bordered w-full text-base md:text-lg"
+                                            {...register("occupation")}
+                                            placeholder="Artist, Broker,Engineer, Doctor, Teacher, etc......."
+                                        />
+                                        {errors.occupation && (
+                                            <label className="label">
+                                                <span className="label-text-alt text-error">
+                                                    {errors.occupation.message}
+                                                </span>
+                                            </label>
+                                        )}
+                                    </div>
+                                    <div className="form-control">
+                                        <label className="label">
+                                            <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                                Organisation
+                                            </span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="input input-bordered w-full text-base md:text-lg"
+                                            {...register("organisation")}
+                                            placeholder="Company / Bussiness Firm Name......."
+                                        />
+                                        {errors.organisation && (
+                                            <label className="label">
+                                                <span className="label-text-alt text-error">
+                                                    {errors.organisation.message}
+                                                </span>
+                                            </label>
+                                        )}
+                                    </div>
+                                    <div className="form-control">
+                                        <label className="label">
+                                            {/* <span className="label-text text-base md:text-lg font-semibold"> */}
+                                            <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
+                                                About My Career(Optional)
+                                            </span>
+                                        </label>
+                                        <textarea
+                                            className="textarea textarea-bordered min-h-32 w-full text-base md:text-lg p-4 resize-y"
+                                            {...register("aboutmycareer")}
+                                            placeholder="Tell About Your Career in 250 words..."
+                                        />
+                                        {errors.aboutmycareer && (
+                                            <label className="label">
+                                                <span className="label-text-alt text-error">
+                                                    {errors.aboutmycareer.message}
+                                                </span>
+                                            </label>
+                                        )}
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+
+                            {/*Family Information */}
+                            <div className="card bg-base-200 p-4 md:p-6 shadow-md">
+                                <h3 className="text-lg md:text-xl font-semibold mb-6 flex items-center gap-2">
+                                    <House className="w-5 h-5 text-warning" />
+                                    Family Information
+                                </h3>
+
                                 <div className="form-control">
                                     <label className="label">
                                         <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">

@@ -10,7 +10,7 @@ import upload from "../middleware/multer.middleware.js";
 const profileRoutes = express.Router();
 
 
-profileRoutes.post("/create-profile", authMiddleware, upload.single('imageFile'), createProfile);// 
+profileRoutes.post("/create-profile", upload.single('imageFile'), createProfile);// authMiddleware
 
 
 

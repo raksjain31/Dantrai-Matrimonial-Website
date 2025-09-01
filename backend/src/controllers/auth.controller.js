@@ -246,6 +246,46 @@ export const updateUserbyId = async (req, res) => {
 
 }
 
+export const deleteUserbyId = async (req, res) => {
+    let result = null;
+    try {
+        const { id } = req.params;
+        //const file = req.file.path;
+
+
+
+
+        const DeleteUser = await db.User.delete({
+            where: {
+                id: id,
+
+            }
+        });
+
+        if (DeleteUser) {
+            res.clearCookie("jwt", {
+                httpOnly: true,
+                secure: process.env.NODE_ENV !== "development",
+                sameSite: "strict",
+            });
+        }
+
+
+
+        return res.status(201).json(DeleteUser);
+
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            error: "Error Deleting User",
+        });
+
+    }
+
+}
+
+
 export const forgetpassword = async (req, res) => {
     const { email } = req.body;//email,
     //console.log("🚀 VPSss is running THIS");

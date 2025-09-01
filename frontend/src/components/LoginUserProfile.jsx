@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from 'react-router-dom'
 import { z } from 'zod'
-import { User, Code, Code2, Eye, EyeOff, Loader2, Lock, CheckCircle2, Mail, User2, PhoneCall } from 'lucide-react'
+import { User, Code, Code2, Eye, EyeOff, Loader2, Lock, TrashIcon, CheckCircle2, Mail, User2, PhoneCall } from 'lucide-react'
 
 import { useAuthStore } from '../store/useAuthStore'
 import { useParams } from 'react-router-dom';
@@ -11,7 +11,7 @@ import { axiosInstance } from "../lib/axios"
 import toast from "react-hot-toast";
 import { useProfileStore } from '../store/useProfileStore'
 import { useNavigate } from "react-router-dom";
-
+import useAction from '../store/useAction'
 
 const phoneValidation = new RegExp(
     /^(?:(?:\+|00)?(55)\s?)?(?:\(?([1-9][0-9])\)?\s?)?(?:((?:9\d|[2-9])\d{3})\-?(\d{4}))$/
@@ -55,6 +55,9 @@ const LoginUserProfile = () => {
     const [image, setImage] = useState(null);
     const { UpdateUser, isUpdatingUser } = useAuthStore();
     const { getuserDataById, user } = useProfileStore();
+    const { isDeletingUser, onDeleteUser } = useAction();
+    const logout = useAuthStore((state) => state.logout);
+
     const {
         register,
         handleSubmit,
@@ -74,6 +77,26 @@ const LoginUserProfile = () => {
         }
     };
 
+
+    const handleDelete = async () => {
+        //if (!window.confirm("Are you sure you want to delete this user?")) return;
+
+        try {
+            const isConfirmed = confirm("Are you sure you want to delete this User ?")
+            if (isConfirmed) {
+                onDeleteUser(id);
+                logout();
+            }
+            else {
+                return;
+            }
+        } catch (error) {
+            console.error("Delete error:", error);
+            alert("Failed to delete user");
+        } finally {
+
+        }
+    };
 
     React.useEffect(() => {
         const fetchUser = async () => {
@@ -363,22 +386,39 @@ const LoginUserProfile = () => {
                                     </label>
                                 )}
                             </div>
+                            <div className="flex justify-between gap-4">
+                                {/* Submit Button */}
+                                <button
+                                    type="submit"
+                                    className="btn btn-primary w-50"
+                                    disabled={isUpdatingUser}
+                                >
+                                    {isLoading ? (
+                                        <span className="loading loading-spinner text-white"></span>
+                                    ) : (
+                                        <>
+                                            <CheckCircle2 className="w-5 h-5" />
+                                            Update
+                                        </>
+                                    )}
+                                </button>
 
-                            {/* Submit Button */}
-                            <button
-                                type="submit"
-                                className="btn btn-primary w-full"
-                                disabled={isUpdatingUser}
-                            >
-                                {isLoading ? (
-                                    <span className="loading loading-spinner text-white"></span>
-                                ) : (
-                                    <>
-                                        <CheckCircle2 className="w-5 h-5" />
-                                        Update
-                                    </>
-                                )}
-                            </button>
+
+                                <button
+                                    onClick={() => handleDelete()}
+                                    className="btn btn-error w-50 "
+                                >
+                                    {isDeletingUser ? (
+                                        <span className="loading loading-spinner text-white"></span>
+                                    ) : (
+                                        <>
+
+                                            <TrashIcon className="w-4 h-4 text-white" />
+                                            Delete User
+                                        </>
+                                    )}
+                                </button>
+                            </div>
                         </form>
 
 

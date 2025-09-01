@@ -1,5 +1,5 @@
 import express from "express";
-import { check, forgetpassword, login, logout, register, resetpassword, updateUserbyId } from "../controllers/auth.controller.js";
+import { check, deleteUserbyId, forgetpassword, login, logout, register, resetpassword, updateUserbyId } from "../controllers/auth.controller.js";
 import { authMiddleware, checkAdmin } from "../middleware/auth.middleware.js";
 
 const authRoutes = express.Router();
@@ -19,6 +19,7 @@ authRoutes.post("/reset-password/:email/:token", resetpassword)
 
 authRoutes.put("/update-user/:id", authMiddleware, updateUserbyId);
 
+authRoutes.delete("/delete-user/:id", authMiddleware, deleteUserbyId);
 
 //authRoutes.post("/reset-password", resetpassword)
 

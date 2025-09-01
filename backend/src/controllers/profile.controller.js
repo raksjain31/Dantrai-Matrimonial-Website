@@ -5,6 +5,11 @@ import dotenv from "dotenv";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import bcrypt from "bcryptjs";
+// import { UserRole } from "../generated/prisma/index.js";
+import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
+import crypto, { hash } from "crypto";
 
 import cloudinary from "../Utils/cloudinary.js";
 dotenv.config();
@@ -27,7 +32,7 @@ export const createProfile = async (req, res) => {
 
         // console.log("File from multer:", req.file);
         // console.log("File Path from multer:", req.file.path);
-        const { fullname, gender, dateOfBirth, age, height, currentLiveCity, phone, image, imagePublicID,
+        const { email, password, name, phone, village, Father, fullname, gender, dateOfBirth, age, height, gotra, currentLiveCity, image, imagePublicID,
             aboutme, education, college, aboutmyeducation, employedIn, occupation, organisation,
             aboutmycareer, father, mother, noOfBrothers, noOfsisters, noOfMarriedBrothers,
             noOfMarriedSisters, aboutmyfamily, hobbies } = req.body;
@@ -87,27 +92,83 @@ export const createProfile = async (req, res) => {
         // }
 
 
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-        //console.log("Backend Image Public ID:", result.public_id);
-        // // imagePublicID: ImagePublicId,
-        const newprofile = await db.Profile.create({
+        const newprofile = await db.user.create({
             data: {
-                fullname, gender, dateOfBirth, age: parseInt(age), height, currentLiveCity, phone,
-                image: biodataImagePath,
-                aboutme, education, college, aboutmyeducation, employedIn, occupation, organisation,
-                aboutmycareer, father, mother,
-                noOfBrothers: parseInt(noOfBrothers),
-                noOfsisters: parseInt(noOfsisters),
-                noOfMarriedBrothers: parseInt(noOfMarriedBrothers),
-                noOfMarriedSisters: parseInt(noOfMarriedSisters),
-                aboutmyfamily, hobbies, userId: req.user.id
-            }
-
-
+                email,
+                password: hashedPassword,
+                name,//father name
+                phone,
+                village,
+                Father,//grandfather name
+                role: "USER",
+                profiles: {
+                    create: {
+                        fullname,
+                        gender,
+                        dateOfBirth,
+                        age: parseInt(age),
+                        height,
+                        gotra,
+                        currentLiveCity,
+                        image: biodataImagePath,
+                        aboutme,
+                        education,
+                        college,
+                        aboutmyeducation,
+                        employedIn,
+                        occupation,
+                        organisation,
+                        aboutmycareer,
+                        father: name,
+                        mother,
+                        noOfBrothers: parseInt(noOfBrothers),
+                        noOfsisters: parseInt(noOfsisters),
+                        noOfMarriedBrothers: parseInt(noOfMarriedBrothers),
+                        noOfMarriedSisters: parseInt(noOfMarriedSisters),
+                        aboutmyfamily,
+                        hobbies
+                    }
+                }
+            },
+            include: { profiles: true } // so you can return profile with user
         });
 
 
 
+        // const newprofile = await db.Profile.create({
+        //     data: {
+        //         fullname, gender, dateOfBirth, age: parseInt(age), height, currentLiveCity, phone,
+        //         image: biodataImagePath,
+        //         aboutme, education, college, aboutmyeducation, employedIn, occupation, organisation,
+        //         aboutmycareer, father, mother,
+        //         noOfBrothers: parseInt(noOfBrothers),
+        //         noOfsisters: parseInt(noOfsisters),
+        //         noOfMarriedBrothers: parseInt(noOfMarriedBrothers),
+        //         noOfMarriedSisters: parseInt(noOfMarriedSisters),
+        //         aboutmyfamily, hobbies, userId: req.user.id
+        //     }
+
+
+        // });
+
+
+
+        const token = jwt.sign(
+            { id: newprofile.id },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "1d"
+
+            })
+
+        res.cookie("jwt", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV !== "development",
+            sameSite: "strict",
+            maxAge: 1000 * 60 * 60 * 24  //1days
+        })
 
 
         return res.status(201).json(newprofile);
@@ -212,7 +273,10 @@ export const getProfileById = async (req, res) => {
             {
                 where: {
                     id
-                }
+                },
+                include: {
+                    user: true, // 👈 brings the related user data
+                },
             });
 
 
@@ -249,10 +313,10 @@ export const updateProfilebyId = async (req, res) => {
         //const file = req.file.path;
 
 
-        const { fullname, gender, dateOfBirth, age, height, currentLiveCity, phone, image, imagePublicID,
+        const { fullname, gender, dateOfBirth, age, height, gotra, currentLiveCity, image, imagePublicID,
             aboutme, education, college, aboutmyeducation, employedIn, occupation, organisation,
-            aboutmycareer, father, mother, noOfBrothers, noOfsisters, noOfMarriedBrothers,
-            noOfMarriedSisters, aboutmyfamily, hobbies } = req.body;
+            aboutmycareer, mother, noOfBrothers, noOfsisters, noOfMarriedBrothers,
+            noOfMarriedSisters, aboutmyfamily, hobbies, name, Father, village, phone, } = req.body;
 
         // if (req.user.isApproved == false) {
         //     return res.status(403).json({
@@ -333,19 +397,29 @@ export const updateProfilebyId = async (req, res) => {
                 userId: req.user.id
             },
             data: {
-                fullname, gender, dateOfBirth, age: parseInt(age), height, currentLiveCity, phone,
+                fullname, gender, dateOfBirth, age: parseInt(age), height, gotra, currentLiveCity, phone,
                 image: biodataImagePath,
                 aboutme, education, college, aboutmyeducation, employedIn, occupation, organisation,
-                aboutmycareer, father, mother,
+                aboutmycareer, father: name, mother,
                 noOfBrothers: parseInt(noOfBrothers),
                 noOfsisters: parseInt(noOfsisters),
                 noOfMarriedBrothers: parseInt(noOfMarriedBrothers),
                 noOfMarriedSisters: parseInt(noOfMarriedSisters),
-                aboutmyfamily, hobbies
+                aboutmyfamily, hobbies,
+                user: {
+                    update: {
+                        name,
+                        Father,
+                        village,
+                        phone
+                    }
+                }
+
             },
 
 
         });
+
 
         // if (Updateprofile && oldimagePublicId != imagePublicID) {
 

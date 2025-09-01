@@ -45,9 +45,12 @@ const AdminUsersTable = ({ approvedPending }) => {
             const query = search.toLowerCase();
 
             return (
+                (user.profiles[0]?.fullname && user.profiles[0]?.fullname.toLowerCase().includes(query)) ||
                 (user.name && user.name.toLowerCase().includes(query)) ||
                 (user.email && user.email.toLowerCase().includes(query)) ||
-                (user.phone && user.phone.toLowerCase().includes(query))
+                (user.phone && user.phone.toLowerCase().includes(query)) ||
+                (user.village && user.village.toLowerCase().includes(query)) ||
+                (user.profiles[0]?.currentLiveCity && user.profiles[0]?.currentLiveCity.toLowerCase().includes(query))
             );
         });
     }, [users, search]);
@@ -273,10 +276,10 @@ const AdminUsersTable = ({ approvedPending }) => {
         <div className="w-full max-w-6xl mx-auto mt-10">
 
             {/* Filters */}
-            <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
+            <div className="flex flex-wrap justify-between w-full items-center mb-6 gap-4">
                 <input
                     type="text"
-                    placeholder="Search by Name,Email and MobileNo"
+                    placeholder="Search by Name,Father name,Email,MobileNo,City and Village "
                     className="input input-bordered w-full md:w-1/3 bg-base-200"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
@@ -364,39 +367,49 @@ const AdminUsersTable = ({ approvedPending }) => {
                             <p className="font-semibold text-lg">
 
                                 <Link to={`/admin/get-user-profiles-byUserId/${user.id}`} className="font-semibold hover:underline" >
-                                    {(currentPage - 1) * itemsPerPage + (index + 1)}. {user.name}
+                                    {(currentPage - 1) * itemsPerPage + (index + 1)}. {user.profiles[0]?.fullname}
                                 </Link>
 
 
                             </p>
-                            <p className="text-sm text-gray-600">{user.email}</p>
-                            <p className="text-sm">📞 {user.phone}</p>
-                            <p className="text-sm">👤 Father: {user.Father}</p>
-                            <p className="text-sm">🏡 Village: {user.village}</p>
+                            {/* <p><span className="font-medium">Son/Daughter's Name:</span> {user.profiles[0]?.fullname}</p> */}
+                            <p><span className="font-medium"> Father: </span>{user.name}</p>
+                            <p><span className="font-medium"> Grand Father:</span> {user.Father}</p>
+                            <p><span className="font-medium">Gotra:</span> {user.profiles[0]?.gotra}</p>
+                            <p><span className="font-medium">Gender:</span> {user.profiles[0]?.gender}</p>
+                            <p><span className="font-medium">DOB:</span> {new Date(user.profiles[0]?.dateOfBirth).toISOString().split("T")[0]}</p>
+                            <p><span className="font-medium">Age:</span> {calculateAge(user.profiles[0]?.dateOfBirth)} Yrs</p>
 
-                            {/* Profiles */}
+                            <p><span className="font-medium">City:</span> {user.profiles[0]?.currentLiveCity}</p>
+                            <p><span className="font-medium">Village: </span>{user.village}</p>
+
+
+                            <p><span className="font-medium">Education:</span> {user.profiles[0]?.education}</p>
+                            <p><span className="font-medium">Phone:</span> {user.phone}</p>
+
+                            <p><span className="font-medium">Email:</span> {user.email}</p>
+
+
+
+                            {/* <ul className="list-disc ml-4 text-sm">
+                                {user.profiles.map((p) => (
+                                    <li key={p.id}>
+
+
+                                    </li>
+
+                                ))}
+                            </ul> */}
+
+                            {/* Profiles
                             {user.profiles.length > 0 ? (
                                 <div className="mt-2">
                                     <p className="font-medium">Biodata:</p>
-                                    <ul className="list-disc ml-4 text-sm">
-                                        {user.profiles.map((p) => (
-                                            <li key={p.id}>
-                                                <p><span className="font-medium">Son/Daughter's Name:</span> {p.fullname}</p>
-                                                <p><span className="font-medium">Gender:</span> {p.gender}</p>
-                                                <p><span className="font-medium">DOB:</span> {new Date(p.dateOfBirth).toISOString().split("T")[0]}</p>
-                                                <p><span className="font-medium">Age:</span> {calculateAge(p.dateOfBirth)} Yrs</p>
-                                                <p><span className="font-medium">City:</span> {p.currentLiveCity}</p>
-                                                <p><span className="font-medium">Education:</span> {p.education}</p>
-                                                <p><span className="font-medium">Phone:</span> {p.phone}</p>
 
-                                            </li>
-
-                                        ))}
-                                    </ul>
                                 </div>
                             ) : (
                                 <p className="text-gray-500 text-sm">No profiles</p>
-                            )}
+                            )} */}
 
                             <div className="flex gap-2 mt-3">
                                 <span>
