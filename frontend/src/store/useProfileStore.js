@@ -27,8 +27,8 @@ export const useProfileStore = create((set) => ({
 
             set({ profiles: res.data.profiles });
         } catch (error) {
-            console.log("Error getting all Profiles", error);
-            toast.error("Error in Getting All Profiles")
+            console.log("Error getting all Biodata", error);
+            toast.error("Error in Getting All Biodata")
 
         }
 
@@ -38,6 +38,114 @@ export const useProfileStore = create((set) => ({
 
     },
 
+
+    getAllRejectedProfile: async () => {
+
+        try {
+
+            set({ isProfilesLoading: true })
+
+            const res = await axiosInstance.get("/profile/get-all-rejected-profiles");
+
+            set({ profiles: res.data.profiles });
+        } catch (error) {
+            console.log("Error getting Rejected Biodata", error);
+            toast.error("Error in Getting Rejected Biodata")
+
+        }
+
+        finally {
+            set({ isProfilesLoading: false })
+        }
+
+    },
+
+
+
+    getTotalProfile: async () => {
+
+        try {
+
+            set({ isProfilesLoading: true })
+
+            const res = await axiosInstance.get("/profile/get-total-profiles");
+
+            set({ profiles: res.data.profiles });
+        } catch (error) {
+            console.log("Error getting Total Biodata", error);
+            toast.error("Error in Getting Total Biodata")
+
+        }
+
+        finally {
+            set({ isProfilesLoading: false })
+        }
+
+    },
+
+    getFemaleProfile: async () => {
+
+        try {
+
+            set({ isProfilesLoading: true })
+
+            const res = await axiosInstance.get("/profile/get-female-profiles");
+
+            set({ profiles: res.data.profiles });
+        } catch (error) {
+            console.log("Error getting Female Biodata", error);
+            toast.error("Error in Getting Female Biodata")
+
+        }
+
+        finally {
+            set({ isProfilesLoading: false })
+        }
+
+    },
+
+
+    getMaleProfile: async () => {
+
+        try {
+
+            set({ isProfilesLoading: true })
+
+            const res = await axiosInstance.get("/profile/get-male-profiles");
+
+            set({ profiles: res.data.profiles });
+        } catch (error) {
+            console.log("Error getting Male Biodata", error);
+            toast.error("Error in Getting Male Biodata")
+
+        }
+
+        finally {
+            set({ isProfilesLoading: false })
+        }
+
+    },
+
+    getAllApprovedProfile: async () => {
+
+        try {
+
+            set({ isProfilesLoading: true })
+
+            const res = await axiosInstance.get("/profile/get-Approved-biodata");
+
+            set({ profiles: res.data.profiles });
+        } catch (error) {
+            console.log("Error getting Approved Biodata", error);
+            toast.error("Error in Getting Approved Biodata")
+
+        }
+
+        finally {
+            set({ isProfilesLoading: false })
+        }
+
+    },
     getProfileDataById: async (id) => {
         try {
             console.log(`ID:::${id}`);

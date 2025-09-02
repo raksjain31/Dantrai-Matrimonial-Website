@@ -368,14 +368,7 @@ export const getAllApprovedUsers = async (req, res) => {
             where: {
                 IsApproved: true,
                 IsRejected: false,
-                profiles: {
-                    some: {
-                        IsApprovedProfile: false,
-                        IsRejectedProfile: false
-                    },
 
-
-                }
             },
             include: {
                 profiles: {

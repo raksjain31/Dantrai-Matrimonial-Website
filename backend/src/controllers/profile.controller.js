@@ -273,6 +273,368 @@ export const getAllProfile = async (req, res) => {
 
 }
 
+export const getAllRejectedProfile = async (req, res) => {
+
+    try {
+
+
+        const profiles = await db.profile.findMany({
+
+            where: {
+
+                user: {
+                    IsApproved: false,
+                    IsRejected: true
+                }
+            },
+            select: {
+                id: true,
+                fullname: true,
+                gender: true,
+                dateOfBirth: true,
+                age: true,
+                height: true,
+                gotra: true,
+                currentLiveCity: true,
+                phone: true,
+                education: true,
+                currentLiveCity: true,
+                father: true,
+                mother: true,
+                user: {
+                    select: {
+                        village: true,
+                        Father: true,
+                        phone: true,
+                        name: true,
+
+
+                    }
+                }
+            }
+
+
+        });
+
+        if (!profiles) {
+
+            return res.status(404).json({
+                message: "No Profiles Found"
+            })
+
+        }
+
+        res.status(200).json({
+            sucess: true,
+            message: "Profiles Fetched Successfully",
+            profiles
+        });
+
+
+
+    } catch (error) {
+
+        console.log(error);
+        return res.status(500).json({
+            error: "Error while Fetching All Profiles",
+        });
+
+
+    }
+
+
+
+}
+
+
+export const getTotalProfile = async (req, res) => {
+
+    try {
+
+
+        const profiles = await db.profile.findMany({
+
+            // where: {
+
+            //     user: {
+            //         IsApproved: true,
+            //         IsRejected: false
+            //     }
+            // },
+            select: {
+                id: true,
+                fullname: true,
+                gender: true,
+                dateOfBirth: true,
+                age: true,
+                height: true,
+                gotra: true,
+                currentLiveCity: true,
+                phone: true,
+                education: true,
+                currentLiveCity: true,
+                father: true,
+                mother: true,
+                user: {
+                    select: {
+                        village: true,
+                        Father: true,
+                        phone: true,
+                        name: true,
+
+
+                    }
+                }
+            }
+
+
+        });
+
+        if (!profiles) {
+
+            return res.status(404).json({
+                message: "No Profiles Found"
+            })
+
+        }
+
+        res.status(200).json({
+            sucess: true,
+            message: "Profiles Fetched Successfully",
+            profiles
+        });
+
+
+
+    } catch (error) {
+
+        console.log(error);
+        return res.status(500).json({
+            error: "Error while Fetching Total Profiles",
+        });
+
+
+    }
+
+
+
+}
+
+export const getFemaleProfile = async (req, res) => {
+
+    try {
+
+
+        const profiles = await db.profile.findMany({
+
+            where: {
+
+                gender: "FEMALE"
+            },
+            select: {
+                id: true,
+                fullname: true,
+                gender: true,
+                dateOfBirth: true,
+                age: true,
+                height: true,
+                gotra: true,
+                currentLiveCity: true,
+                phone: true,
+                education: true,
+                currentLiveCity: true,
+                father: true,
+                mother: true,
+                user: {
+                    select: {
+                        village: true,
+                        Father: true,
+                        phone: true,
+                        name: true,
+
+
+                    }
+                }
+            }
+
+
+        });
+
+        if (!profiles) {
+
+            return res.status(404).json({
+                message: "No Profiles Found"
+            })
+
+        }
+
+        res.status(200).json({
+            sucess: true,
+            message: "Profiles Fetched Successfully",
+            profiles
+        });
+
+
+
+    } catch (error) {
+
+        console.log(error);
+        return res.status(500).json({
+            error: "Error while Fetching Female Profiles",
+        });
+
+
+    }
+
+
+
+}
+export const getMaleProfile = async (req, res) => {
+
+    try {
+
+
+        const profiles = await db.profile.findMany({
+
+            where: {
+
+
+                gender: "MALE",
+
+
+            },
+            select: {
+                id: true,
+                fullname: true,
+                gender: true,
+                dateOfBirth: true,
+                age: true,
+                height: true,
+                gotra: true,
+                currentLiveCity: true,
+                phone: true,
+                education: true,
+                currentLiveCity: true,
+                father: true,
+                mother: true,
+                user: {
+                    select: {
+                        village: true,
+                        Father: true,
+                        phone: true,
+                        name: true,
+
+
+                    }
+                }
+            }
+
+
+        });
+
+        if (!profiles) {
+
+            return res.status(404).json({
+                message: "No Profiles Found"
+            })
+
+        }
+
+        res.status(200).json({
+            sucess: true,
+            message: "Profiles Fetched Successfully",
+            profiles
+        });
+
+
+
+    } catch (error) {
+
+        console.log(error);
+        return res.status(500).json({
+            error: "Error while Fetching Male Profiles",
+        });
+
+
+    }
+
+
+
+}
+
+
+export const getAllApprovedProfile = async (req, res) => {
+
+    try {
+
+
+        const profiles = await db.profile.findMany({
+
+            where: {
+
+                user: {
+                    IsApproved: true,
+                    IsRejected: false
+                }
+            },
+            select: {
+                id: true,
+                fullname: true,
+                gender: true,
+                dateOfBirth: true,
+                age: true,
+                height: true,
+                gotra: true,
+                currentLiveCity: true,
+                phone: true,
+                education: true,
+                currentLiveCity: true,
+                father: true,
+                mother: true,
+                user: {
+                    select: {
+                        village: true,
+                        Father: true,
+                        phone: true,
+                        name: true,
+
+
+                    }
+                }
+            }
+
+
+        });
+
+        if (!profiles) {
+
+            return res.status(404).json({
+                message: "No Profiles Found"
+            })
+
+        }
+
+        res.status(200).json({
+            sucess: true,
+            message: "Profiles Fetched Successfully",
+            profiles
+        });
+
+
+
+    } catch (error) {
+
+        console.log(error);
+        return res.status(500).json({
+            error: "Error while Fetching Approved Profiles",
+        });
+
+
+    }
+
+
+
+}
 export const getProfileById = async (req, res) => {
     const { id } = req.params;
 

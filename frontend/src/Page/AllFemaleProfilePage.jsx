@@ -5,18 +5,20 @@ import { Loader } from "lucide-react";
 import ProfileTablebyUser from '../components/ProfileTablebyUser';
 import { useAuthStore } from '../store/useAuthStore';
 import AllProfilesTableSearch from '../components/AllProfilesTableSearch';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import GenderBasedProfilesList from '../components/GenderBasedProfilesList';
 
-const AllProfilesSearchPage = () => {
-    const { authUser } = useAuthStore();
+const AllFemaleProfilePage = () => {
+    const { authuser } = useAuthStore();
+    const { gendertype } = useParams();
 
-    const { getAllProfile, profiles, isProfileLoading } = useProfileStore();
+    const { getFemaleProfile, profiles, isProfileLoading } = useProfileStore();
 
     const navigation = useNavigate();
     useEffect(() => {
-        getAllProfile()
+        getFemaleProfile()
 
-    }, [getAllProfile])
+    }, [getFemaleProfile])
 
     if (isProfileLoading) {
         return (
@@ -30,19 +32,27 @@ const AllProfilesSearchPage = () => {
         <div className='min-h-screen flex flex-col items-center mt-14 px-4' >
             <div className="absolute top-16 left-0 w-1/3 h-1/3 bg-purple-800 opacity-30 blur-3xl rounded-md bottom-9"></div>
             <h1 className="text-4xl font-extrabold z-10 text-center">
-                Search  <span className="text-purple-800  ">Match Biodata</span>
+                {/* {gendertype == "FEMALE" ? (
+                    <>
+                        Search  <span className="text-purple-800  ">{gendertype} Biodata</span>
+                    </>
+                ) : (
+                    <>
+
+                    </>
+                )} */}
+                Search  <span className="text-purple-800  "> Female Biodata</span>
+
             </h1>
 
-            {authUser && (
-
+            {
 
                 profiles.length > 0 ? <AllProfilesTableSearch AllprofilesSearch={profiles} /> : (
                     <p className="mt-10 text-center text-lg font-semibold text-gray-500 dark:text-gray-400 z-10 border border-primary px-4 py-2 rounded-md border-dashed">
                         ❌❌No Biodata found!!
                     </p>
                 )
-
-            )}
+            }
         </div>
 
 
@@ -51,4 +61,4 @@ const AllProfilesSearchPage = () => {
     )
 }
 
-export default AllProfilesSearchPage
+export default AllFemaleProfilePage

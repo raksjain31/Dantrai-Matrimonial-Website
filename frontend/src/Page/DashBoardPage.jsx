@@ -80,9 +80,9 @@ const DashBoardPage = () => {
 
     const cards = [
         { title: "Total Users", value: counts.totaluserCount, link: "/userlist", },
-        { title: "Total Biodata's", value: counts.totalProfiles, link: "/search-profiles", },
+        { title: "Total Biodata's", value: counts.totalProfiles, link: "/total-biodata", },
         { title: "Approved Biodata", value: counts.totalApprovedUsers, link: "/approvedbiodata", },
-        { title: "Rejected Biodata", value: counts.totalRejectedUsers, link: null },
+        { title: "Rejected Biodata", value: counts.totalRejectedUsers, link: "/rejected-profiles" },
         { title: "Pending Approvals", value: counts.totalApprovalPendingUsers, link: null }, // fill from API if available
         { title: "Female Biodata's", value: counts.totalFemaleProfiles, link: "/biodata/FEMALE", },
         { title: "Male Biodata's", value: counts.totalMaleProfiles, link: "/biodata/MALE", },

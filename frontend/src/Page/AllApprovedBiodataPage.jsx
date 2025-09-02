@@ -1,34 +1,24 @@
 import React, { useEffect } from 'react'
-import { useAdminStore } from "../store/useAdminStore";
+
 import { useProfileStore } from '../store/useProfileStore'
 import { Loader } from "lucide-react";
 import ProfileTablebyUser from '../components/ProfileTablebyUser';
 import { useAuthStore } from '../store/useAuthStore';
 import AllProfilesTableSearch from '../components/AllProfilesTableSearch';
 import { useNavigate } from 'react-router-dom';
-import AdminUsersTable from '../components/AdminUsersTable';
-import AdminUsersApprovedTable from '../components/AdminUsersApprovedTable';
 
-const ApprovedBiodataPage = () => {
+const AllApprovedBiodataPage = () => {
     const { authUser } = useAuthStore();
 
-    const { getAllApprovedUsers, userApproved,
-        isApprovedUsersLoading } = useAdminStore();
+    const { getAllApprovedProfile, profiles, isProfileLoading } = useProfileStore();
 
-    useEffect(() => {
-        getAllApprovedUsers()
-
-    }, [getAllApprovedUsers])
-
-
-    console.log("Approved::", userApproved)
     const navigation = useNavigate();
-    // useEffect(() => {
-    //     getAllProfile()
+    useEffect(() => {
+        getAllApprovedProfile()
 
-    // }, [getAllProfile])
+    }, [getAllApprovedProfile])
 
-    if (isApprovedUsersLoading) {
+    if (isProfileLoading) {
         return (
             <div className='min-h-screen flex items-center justify-center'>
                 <Loader className='size-10 animate-spin justify-center' />
@@ -43,19 +33,16 @@ const ApprovedBiodataPage = () => {
                 Search  <span className="text-purple-800  ">Approved Biodata</span>
             </h1>
 
-            {
+            {authUser && (
 
 
+                profiles.length > 0 ? <AllProfilesTableSearch AllprofilesSearch={profiles} /> : (
+                    <p className="mt-10 text-center text-lg font-semibold text-gray-500 dark:text-gray-400 z-10 border border-primary px-4 py-2 rounded-md border-dashed">
+                        ❌❌No Biodata found!!
+                    </p>
+                )
 
-
-                userApproved.length > 0 ?
-                    <AdminUsersApprovedTable approveduser={userApproved} />
-                    : (
-                        <p className="mt-10 text-center text-lg font-semibold text-gray-500 dark:text-gray-400 z-10 border border-primary px-4 py-2 rounded-md border-dashed">
-                            No User Approved user found !!
-                        </p>
-                    )
-            }
+            )}
         </div>
 
 
@@ -64,4 +51,4 @@ const ApprovedBiodataPage = () => {
     )
 }
 
-export default ApprovedBiodataPage
+export default AllApprovedBiodataPage

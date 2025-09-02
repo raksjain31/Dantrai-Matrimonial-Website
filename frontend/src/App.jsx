@@ -20,10 +20,15 @@ import ForgetPasswordPage from "./Page/ForgetPasswordPage";
 import ResetPasswordPage from "./Page/ResetPasswordPage";
 import ContactUs from "./components/ContactUs";
 import AboutUs from "./components/AboutUs";
-import ApprovedBiodataPage from "./Page/ApprovedBiodataPage";
+import AllApprovedBiodataPage from "./Page/AllApprovedBiodataPage";
 import UserListPage from "./Page/UserListPage";
-import GenderBasedProfilePage from "./Page/GenderBasedProfilePage";
+import GenderBasedProfilePage from "./Page/AllFemaleProfilePage";
 import CreateProfileForm from "./components/CreateProfileForm";
+import AllRejecedProfileSearchPage from "./Page/AllRejectedProfileSearchPage";
+
+import AllTotalBiodataSearchPage from "./Page/AllTotalBiodataSearchPage";
+import AllFemaleProfilePage from "./Page/AllFemaleProfilePage";
+import AllMaleProfilePage from "./Page/AllMaleProfilePage";
 
 
 
@@ -125,6 +130,16 @@ const App = () => {
         </Route>
 
         <Route path='/' element={<Layout />}>
+          <Route path="/rejected-profiles"
+            element={authUser ? <AllRejecedProfileSearchPage /> : <Navigate to={"/"} />} />
+        </Route>
+
+        <Route path='/' element={<Layout />}>
+          <Route path="/total-biodata"
+            element={authUser ? <AllTotalBiodataSearchPage /> : <Navigate to={"/"} />} />
+        </Route>
+
+        <Route path='/' element={<Layout />}>
           <Route path="/contact-us"
             element={authUser ? <ContactUs /> : <Navigate to={"/"} />} />
         </Route>
@@ -140,12 +155,17 @@ const App = () => {
 
         <Route element={<AdminRoute />}>
           <Route path="/approvedbiodata"
-            element={authUser ? <ApprovedBiodataPage /> : <Navigate to={"/"} />} />
+            element={authUser ? <AllApprovedBiodataPage /> : <Navigate to={"/"} />} />
         </Route>
 
         <Route element={<AdminRoute />}>
-          <Route path="/biodata/:gendertype"
-            element={authUser ? <GenderBasedProfilePage /> : <Navigate to={"/"} />} />
+          <Route path="/biodata/Female"
+            element={authUser ? <AllFemaleProfilePage /> : <Navigate to={"/"} />} />
+        </Route>
+
+        <Route element={<AdminRoute />}>
+          <Route path="/biodata/Male"
+            element={authUser ? <AllMaleProfilePage /> : <Navigate to={"/"} />} />
         </Route>
 
         <Route element={<AdminRoute />}>

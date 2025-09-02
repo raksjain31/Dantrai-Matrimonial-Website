@@ -1,8 +1,8 @@
 import express from "express";
-import { authMiddleware, checkUserApproved } from "../middleware/auth.middleware.js";
+import { authMiddleware, checkAdmin, checkUserApproved } from "../middleware/auth.middleware.js";
 import {
-    createProfile, deleteProfileById, getAllProfile, getProfileById,
-    getProfilesByUserId, getUserData, updateProfilebyId,
+    createProfile, deleteProfileById, getAllApprovedProfile, getAllProfile, getAllRejectedProfile, getFemaleProfile, getMaleProfile, getProfileById,
+    getProfilesByUserId, getTotalProfile, getUserData, updateProfilebyId,
     UpdateUserByUserId
 } from "../controllers/profile.controller.js";
 import upload from "../middleware/multer.middleware.js";
@@ -16,6 +16,14 @@ profileRoutes.post("/create-profile", upload.single('imageFile'), createProfile)
 
 profileRoutes.get("/get-all-profiles", authMiddleware, checkUserApproved, getAllProfile);
 
+profileRoutes.get("/get-all-rejected-profiles", authMiddleware, checkAdmin, getAllRejectedProfile);
+
+profileRoutes.get("/get-total-profiles", authMiddleware, checkAdmin, getTotalProfile);
+
+profileRoutes.get("/get-female-profiles", authMiddleware, checkAdmin, getFemaleProfile);
+profileRoutes.get("/get-male-profiles", authMiddleware, checkAdmin, getMaleProfile);
+
+profileRoutes.get("/get-Approved-biodata", authMiddleware, checkAdmin, getAllApprovedProfile);
 
 profileRoutes.get("/get-profile/:id", authMiddleware, getProfileById);//checkUserApproved,
 

@@ -7,16 +7,16 @@ import { useAuthStore } from '../store/useAuthStore';
 import AllProfilesTableSearch from '../components/AllProfilesTableSearch';
 import { useNavigate } from 'react-router-dom';
 
-const AllProfilesSearchPage = () => {
+const AllRejecedProfileSearchPage = () => {
     const { authUser } = useAuthStore();
 
-    const { getAllProfile, profiles, isProfileLoading } = useProfileStore();
+    const { getAllRejectedProfile, profiles, isProfileLoading } = useProfileStore();
 
     const navigation = useNavigate();
     useEffect(() => {
-        getAllProfile()
+        getAllRejectedProfile()
 
-    }, [getAllProfile])
+    }, [getAllRejectedProfile])
 
     if (isProfileLoading) {
         return (
@@ -30,7 +30,7 @@ const AllProfilesSearchPage = () => {
         <div className='min-h-screen flex flex-col items-center mt-14 px-4' >
             <div className="absolute top-16 left-0 w-1/3 h-1/3 bg-purple-800 opacity-30 blur-3xl rounded-md bottom-9"></div>
             <h1 className="text-4xl font-extrabold z-10 text-center">
-                Search  <span className="text-purple-800  ">Match Biodata</span>
+                Search  <span className="text-purple-800  ">Rejected Biodata</span>
             </h1>
 
             {authUser && (
@@ -51,4 +51,4 @@ const AllProfilesSearchPage = () => {
     )
 }
 
-export default AllProfilesSearchPage
+export default AllRejecedProfileSearchPage
