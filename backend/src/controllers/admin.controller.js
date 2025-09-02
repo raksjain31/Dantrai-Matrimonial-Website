@@ -367,6 +367,7 @@ export const deleteUsersWithoutProfiles = async (req, res) => {
                 profiles: {
                     none: {} // ✅ delete users who have no profiles[]
                 },
+                role: { not: "ADMIN" },
             },
         });
 
@@ -387,6 +388,7 @@ export const deleteUsersWithoutProfilesCount = async (req, res) => {
         const count = await db.user.count({
             where: {
                 profiles: { none: {} }, // user has zero profiles
+                role: { not: "ADMIN" },
             },
         });
         res.json({ count });
