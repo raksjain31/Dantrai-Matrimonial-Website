@@ -1,7 +1,7 @@
 import express from "express"
 import { authMiddleware, checkAdmin } from "../middleware/auth.middleware.js";
 import {
-    approvedUserById, getAllApprovedUserCount, getAllApprovedUsers, getAllApprovePendingUserCount, getAllApprovePendingUsers, getAllCounts, getAllfemaleProfileCount,
+    approvedUserById, deleteUsersWithoutProfiles, deleteUsersWithoutProfilesCount, getAllApprovedUserCount, getAllApprovedUsers, getAllApprovePendingUserCount, getAllApprovePendingUsers, getAllCounts, getAllfemaleProfileCount,
     getAllMaleProfileCount, getAllProfilesCount, getAllUserCount, getAllUserDetails,
     getUserProfilebyId,
     getUserProfilesListbyUserId,
@@ -45,7 +45,8 @@ adminRoutes.get("/get-user-profiles-byUserId/:id", authMiddleware, checkAdmin, g
 
 adminRoutes.get("/get-user-profile-by-id/:id", authMiddleware, checkAdmin, getUserProfilebyId);
 
+adminRoutes.delete("/delete-users-without-profiles", deleteUsersWithoutProfiles);
 
-
+adminRoutes.get("/users-without-profiles-count", deleteUsersWithoutProfilesCount);
 
 export default adminRoutes;

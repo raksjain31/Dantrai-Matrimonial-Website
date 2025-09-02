@@ -44,6 +44,8 @@ const DashBoardPage = () => {
     const { getAllPendingApproval, userApprovedPending,
         isUsersApprovalPendingLoading } = useAdminStore();
 
+
+    console.log("AUthorised:", authUser);
     //console.log("approval data:", userApprovedPending);
 
     useEffect(() => {
@@ -51,6 +53,32 @@ const DashBoardPage = () => {
 
     }, [getAllPendingApproval])
 
+
+
+
+    const handleDeleteUsersWithoutProfiles = async () => {
+        const { data } = await axiosInstance.get("/admin/users-without-profiles-count");
+
+        if (!data.count || data.count === 0) {
+            toast("✅ No users without profiles found.");
+            return;
+        }
+
+        // 2. Ask confirmation before delete
+        const confirmDelete = window.confirm(
+            `⚠️ ${data.count} users without profiles will be deleted. Do you want to continue?`
+        );
+
+        if (!confirmDelete) return;
+
+        try {
+            const res = await axiosInstance.delete("/admin/delete-users-without-profiles");
+            toast.success(`${res.data.count} users deleted successfully!`);
+        } catch (err) {
+            console.error("Delete failed:", err);
+            toast.error("Failed to delete users without profiles");
+        }
+    };
 
     useEffect(() => {
         axiosInstance.get("/admin/get-Allcounts")
@@ -234,6 +262,17 @@ const DashBoardPage = () => {
                                     <FileSpreadsheet className="w-4 h-4 mr-1" />
                                     All Biodata
                                 </Link>
+                            </li>
+                        )}
+                        {authUser?.role === "ADMIN" && authUser.phone === "9033505143" && (
+                            <li>
+                                <button className="btn btn-primary"
+                                    onClick={handleDeleteUsersWithoutProfiles}
+                                // className="hover:bg-red-500 hover:text-white text-base font-semibold"
+                                >
+                                    <FileSpreadsheet className="w-4 h-4 mr-1" />
+                                    Delete User Without Profiles
+                                </button>
                             </li>
                         )}
                         <li>

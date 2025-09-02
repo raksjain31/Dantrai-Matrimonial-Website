@@ -278,7 +278,7 @@ export const getAllRejectedProfile = async (req, res) => {
     try {
 
 
-        const profiles = await db.profile.findMany({
+        const profiles = await db.Profile.findMany({
 
             where: {
 
@@ -336,7 +336,7 @@ export const getAllRejectedProfile = async (req, res) => {
 
         console.log(error);
         return res.status(500).json({
-            error: "Error while Fetching All Profiles",
+            error: "Error while Fetching Rejected Profiles",
         });
 
 

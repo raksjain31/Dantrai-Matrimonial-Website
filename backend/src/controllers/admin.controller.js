@@ -360,6 +360,44 @@ export const getAllApprovePendingUsers = async (req, res) => {
 
 
 
+export const deleteUsersWithoutProfiles = async (req, res) => {
+    try {
+        const deletedUsers = await db.user.deleteMany({
+            where: {
+                profiles: {
+                    none: {} // ✅ delete users who have no profiles[]
+                },
+            },
+        });
+
+        res.json({
+            message: "Users without profiles deleted successfully",
+            count: deletedUsers.count,
+        });
+    } catch (error) {
+        console.error("Error deleting users without profiles:", error);
+        res.status(500).json({ error: "Failed to delete users without profiles" });
+    }
+};
+
+
+
+export const deleteUsersWithoutProfilesCount = async (req, res) => {
+    try {
+        const count = await db.user.count({
+            where: {
+                profiles: { none: {} }, // user has zero profiles
+            },
+        });
+        res.json({ count });
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch User without profiles count" });
+    }
+};
+
+
+
+
 export const getAllApprovedUsers = async (req, res) => {
 
     try {
