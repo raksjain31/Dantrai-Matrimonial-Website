@@ -11,7 +11,8 @@ import {
     Clock,
     CircleUser,
     LogOut,
-    UsersRound, CircleCheck, FileSpreadsheet, X, Venus
+    UsersRound, CircleCheck, FileSpreadsheet, X, Venus,
+    Trash
 } from "lucide-react"
 import AdminUsersTable from "../components/AdminUsersTable";
 import LogoutButton from "../components/LogoutButton";
@@ -270,7 +271,7 @@ const DashBoardPage = () => {
                                     onClick={handleDeleteUsersWithoutProfiles}
                                 // className="hover:bg-red-500 hover:text-white text-base font-semibold"
                                 >
-                                    <FileSpreadsheet className="w-4 h-4 mr-1" />
+                                    <Trash className="w-4 h-4 mr-1" />
                                     Delete User Without Profiles
                                 </button>
                             </li>
