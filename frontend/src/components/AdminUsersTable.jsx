@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo, useEffect, useRef } from 'react'
 import { useAuthStore } from '../store/useAuthStore'
 import { Link } from "react-router-dom";
 import { Bookmark, PencilIcon, Trash, TrashIcon, X, Check } from "lucide-react";
@@ -16,7 +16,7 @@ const AdminUsersTable = ({ approvedPending, listKey = "default" }) => {
     const { isUpdateRejectingUser, onUpdateRejectingUser } = useAction();
     const [showHoverText, setShowHoverText] = useState(false);
     const [users, setUsers] = useState(approvedPending || []);
-
+    const tableRef = useRef(null);
 
     const navigation = useNavigate();
     const handleClick = () => {
@@ -37,6 +37,9 @@ const AdminUsersTable = ({ approvedPending, listKey = "default" }) => {
 
     useEffect(() => {
         localStorage.setItem(storageKey, currentPage);
+        if (tableRef.current) {
+            tableRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
     }, [currentPage, storageKey]);
 
 
@@ -367,7 +370,7 @@ const AdminUsersTable = ({ approvedPending, listKey = "default" }) => {
             </div>
 
             {/* ===== Mobile Cards ===== */}
-            <div className="md:hidden space-y-4">
+            <div ref={tableRef} className="md:hidden space-y-4">
                 {paginatedUserApprovalPending.length > 0 ? (
                     paginatedUserApprovalPending.map((user, index) => (
                         <div
