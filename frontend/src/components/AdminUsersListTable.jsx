@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo, useEffect, useRef } from 'react'
 import { useAuthStore } from '../store/useAuthStore'
 import { Link } from "react-router-dom";
 import { Bookmark, PencilIcon, Trash, TrashIcon, X, ClockArrowUp } from "lucide-react";
@@ -12,6 +12,7 @@ const AdminUsersListTable = ({ userlist, listKey = "default" }) => {
     const [currentPage, setCurrentPage] = useState(() => {
         return parseInt(localStorage.getItem(storageKey)) || 1;
     });
+
     const { isUpdatingUserPending, onUpdatePendingUser } = useAction();
     const { isUpdateRejectingUser, onUpdateRejectingUser } = useAction();
     const [showHoverText, setShowHoverText] = useState(false);
@@ -30,6 +31,9 @@ const AdminUsersListTable = ({ userlist, listKey = "default" }) => {
 
     useEffect(() => {
         localStorage.setItem(storageKey, currentPage);
+        if (tableRef.current) {
+            tableRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
     }, [currentPage, storageKey]);
 
     useEffect(() => {
@@ -220,7 +224,7 @@ const AdminUsersListTable = ({ userlist, listKey = "default" }) => {
             </div>
 
             {/* ===== Mobile Cards ===== */}
-            <div className="md:hidden space-y-4">
+            <div ref={tableRef} className="md:hidden space-y-4">
                 {paginatedUserApprovalPending.length > 0 ? (
                     paginatedUserApprovalPending.map((user, index) => (
                         <div

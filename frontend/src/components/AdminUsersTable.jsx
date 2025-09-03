@@ -12,6 +12,7 @@ const AdminUsersTable = ({ approvedPending, listKey = "default" }) => {
     const [currentPage, setCurrentPage] = useState(() => {
         return parseInt(localStorage.getItem(storageKey)) || 1;
     });
+
     const { isUpdatingUser, onUpdateUser } = useAction();
     const { isUpdateRejectingUser, onUpdateRejectingUser } = useAction();
     const [showHoverText, setShowHoverText] = useState(false);
