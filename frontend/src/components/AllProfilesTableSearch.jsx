@@ -87,6 +87,9 @@ const AllProfilesTableSearch = ({ AllprofilesSearch, listKey = "default" }) => {
 
     useEffect(() => {
         localStorage.setItem(storageKey, currentPage);
+        if (tableRef.current) {
+            tableRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
     }, [currentPage, storageKey]);
 
 
@@ -309,7 +312,7 @@ const AllProfilesTableSearch = ({ AllprofilesSearch, listKey = "default" }) => {
             </div>
 
             {/* Mobile Card View */}
-            <div className="sm:hidden space-y-4">
+            <div ref={tableRef} className="sm:hidden space-y-4">
                 {paginatedProfiles.length > 0 ? (
                     paginatedProfiles.map((profile, index) => (
                         <div
