@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 const AdminUsersTable = ({ approvedPending, listKey = "default" }) => {
     const { authUser } = useAuthStore();
     const [search, setSearch] = useState("");
+    const storageKey = `profilePage_${listKey}`;
     const [currentPage, setCurrentPage] = useState(() => {
         return parseInt(localStorage.getItem(storageKey)) || 1;
     });
@@ -16,7 +17,7 @@ const AdminUsersTable = ({ approvedPending, listKey = "default" }) => {
     const [showHoverText, setShowHoverText] = useState(false);
     const [users, setUsers] = useState(approvedPending || []);
 
-    const storageKey = `profilePage_${listKey}`;
+
     const navigation = useNavigate();
     const handleClick = () => {
         navigation('/add-profile');
