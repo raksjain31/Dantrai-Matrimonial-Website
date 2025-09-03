@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo, useEffect, useRef } from 'react'
 import { useAuthStore } from '../store/useAuthStore'
 import { Link } from "react-router-dom";
 import { Bookmark, PencilIcon, Trash, PhoneCall, TrashIcon, Plus } from "lucide-react";
@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 const AllProfilesTableSearch = ({ AllprofilesSearch, listKey = "default" }) => {
     const { authUser } = useAuthStore();
-
+    const tableRef = useRef(null);
     // ✅ Use unique key for each page
     const storageKey = `profilePage_${listKey}`;
 
