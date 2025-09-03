@@ -7,13 +7,18 @@ import { useNavigate } from "react-router-dom";
 
 const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
     const { authUser } = useAuthStore();
+
+
+
     const [search, setSearch] = useState("");
     const [village, setVillageSearch] = useState("ALL");
 
     const [searchcurrentLiveCity, setCurrentLiveCitySearch] = useState(""); // Add state for searchcurrentLiveCity
     const [minAge, setMinAge] = useState("");
     const [maxAge, setMaxAge] = useState("");
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(() => {
+        return parseInt(localStorage.getItem("profilePage")) || 1;
+    });
     const { isDeletingProfile, onDeleteProfile } = useAction();
     const [gender, setGender] = useState("ALL");
 
