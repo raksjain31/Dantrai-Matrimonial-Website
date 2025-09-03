@@ -82,6 +82,13 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
 
         return age;
     }
+
+
+    useEffect(() => {
+        localStorage.setItem("profilePage", currentPage);
+    }, [currentPage]);
+
+
     const itemsPerPage = 5;
     const totalPages = Math.ceil(filteredAllProfilesSearch.length / itemsPerPage);
     const paginatedProfiles = useMemo(() => {
