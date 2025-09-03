@@ -8,7 +8,9 @@ import { useNavigate } from "react-router-dom";
 const AdminUsersApprovedTable = ({ approveduser }) => {
     const { authUser } = useAuthStore();
     const [search, setSearch] = useState("");
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(() => {
+        return parseInt(localStorage.getItem("profilePage")) || 1;
+    });
     const { isUpdatingUserPending, onUpdatePendingUser } = useAction();
     const { isUpdateRejectingUser, onUpdateRejectingUser } = useAction();
     const [showHoverText, setShowHoverText] = useState(false);
@@ -20,6 +22,9 @@ const AdminUsersApprovedTable = ({ approveduser }) => {
     };
 
 
+    useEffect(() => {
+        localStorage.setItem("profilePage", currentPage);
+    }, [currentPage]);
 
     useEffect(() => {
         setUsers(approveduser || []);
