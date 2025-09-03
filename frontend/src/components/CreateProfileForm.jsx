@@ -88,7 +88,7 @@ const profileSchema = z.object({
     organisation: z.string().optional().transform((str) => str.toUpperCase()),//.min(3, "Organisation  must be atleast 3 characters")
     aboutmycareer: z.string().optional().transform((str) => str.toUpperCase()),//.max(250, "About My Career at most 250 characters")
     //father: z.string().optional().transform((str) => str.toUpperCase()),//.min(3, "Father Name must be atleast 3 characters")
-    mother: z.string().optional().transform((str) => str.toUpperCase()),//.min(3, "Mother Name must be atleast 3 characters")
+    mother: z.string().min(3, "Mother Name must be atleast 3 characters").transform((str) => str.toUpperCase()),//.min(3, "Mother Name must be atleast 3 characters")
     noOfBrothers: z.coerce.number().int("No of Brothers must be an integer"),
     // .positive("Number of Brothers must be a positive number"),
     noOfMarriedBrothers: z.coerce.number().int("No of Brothers must be an integer"),
