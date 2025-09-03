@@ -180,15 +180,35 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
                                         </div>
                                     </Link>
                                 </h3>
-                                <p className="text-sm text-gray-600">Gender: {profile.gender}</p>
-                                <p className="text-sm text-gray-600">
-                                    DOB: {new Date(profile.dateOfBirth).toISOString().split("T")[0]}
+                                <p  ><span className="font-medium">
+                                    Father: </span>{profile.user.name}
                                 </p>
-                                <p className="text-sm  text-gray-600">
-                                    Age: {calculateAge(profile.dateOfBirth)}
+                                <p  ><span className="font-medium">
+                                    Grand Father:</span> {profile.user.Father}
                                 </p>
-                                <p className="text-sm  text-gray-600">Education: {profile.education}</p>
+                                <p  ><span className="font-medium">
+                                    Mother: </span>{profile.mother}
+                                </p>
+                                <p ><span className="font-medium">
+                                    Gotra: </span>{profile.gotra}
+                                </p>
+                                <p> <span className="font-medium">
+                                    Gender:</span> {profile.gender}</p>
+                                <p><span className="font-medium">
+                                    DOB: </span>{new Date(profile.dateOfBirth).toISOString().split("T")[0]}
+                                </p>
+                                <p ><span className="font-medium">
+                                    Age: </span>{calculateAge(profile.dateOfBirth)}
+                                </p>
 
+                                <p ><span className="font-medium">
+                                    Phone:</span> {profile.user.phone}</p>
+                                <p ><span className="font-medium">
+                                    City:</span> {profile.currentLiveCity}</p>
+                                <p ><span className="font-medium">
+                                    Village:</span> {profile.user.village}</p>
+                                <p ><span className="font-medium">
+                                    Education:</span> {profile.education}</p>
                                 {/* Status */}
                                 <div className="flex justify-between items-center mt-2">
                                     <span className="font-xs">Status:</span>

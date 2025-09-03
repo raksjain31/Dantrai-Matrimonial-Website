@@ -966,9 +966,12 @@ export const getProfilesByUserId = async (req, res) => {
                 currentLiveCity: true,
                 father: true,
                 mother: true,
+                gotra: true,
                 user: {
                     select: {
+                        name: true,
                         village: true,
+                        phone: true,
                         Father: true,
                         IsApproved: true,
                         IsRejected: true
