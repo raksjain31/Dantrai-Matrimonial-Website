@@ -467,11 +467,12 @@ const EditProfileForm = () => {
                                     <input
                                         type="text"
                                         {...register("Father")}
-                                        className="input input-bordered w-full text-base md:text-lg"
+                                        className={`input input-bordered w-full pl-  ${errors.Father ? "input-error" : ""
+                                            }`}
                                         placeholder="Grand Father Name"
                                     />
                                 </div>
-                                {errors.name && (
+                                {errors.Father && (
                                     <p className="text-red-500 text-sm mt-1">{errors.Father.message}</p>
                                 )}
                             </div>

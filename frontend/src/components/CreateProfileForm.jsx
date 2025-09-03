@@ -339,12 +339,12 @@ const CreateProfileForm = () => {
                                         <input
                                             type="text"
                                             {...register("Father")}
-                                            className={`input input-bordered w-full pl-10 ${errors.Father ? "input-error" : ""
+                                            className={`input input-bordered w-full pl-  ${errors.Father ? "input-error" : ""
                                                 }`}
                                             placeholder="Grand Father Name"
                                         />
                                     </div>
-                                    {errors.name && (
+                                    {errors.Father && (
                                         <p className="text-red-500 text-sm mt-1">{errors.Father.message}</p>
                                     )}
                                 </div>
