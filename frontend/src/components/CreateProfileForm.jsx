@@ -348,7 +348,7 @@ const CreateProfileForm = () => {
                                         <p className="text-red-500 text-sm mt-1">{errors.Father.message}</p>
                                     )}
                                 </div>
-                                <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-6 ">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6 ">
                                     {/* <div className="form-control">
                                     <label className="label">
                                         <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
@@ -404,8 +404,10 @@ const CreateProfileForm = () => {
                                             <input
                                                 type="email"
                                                 {...register("email")}
-                                                className={`input input-bordered w-full pl-10 ${errors.email ? "input-error" : ""
-                                                    }`}
+                                                // className={`input input-bordered w-full pl-10 ${errors.email ? "input-error" : ""
+                                                //     }`}
+                                                className={`input input-bordered w-full text-base md:text-lg ${errors.email ? "input-error" : ""}`}
+
                                                 placeholder="you@example.com"
                                             />
                                         </div>
@@ -426,7 +428,7 @@ const CreateProfileForm = () => {
                                             <input
                                                 type="phone"
                                                 {...register("phone")}
-                                                className={`input input-bordered w-full pl-10 ${errors.phone ? "input-error" : ""
+                                                className={`input input-bordered w-full text-base md:text-lg ${errors.phone ? "input-error" : ""
                                                     }`}
                                                 placeholder="1234567890"
                                             />
@@ -450,7 +452,7 @@ const CreateProfileForm = () => {
                                             <input
                                                 type={showPassword ? "text" : "password"}
                                                 {...register("password")}
-                                                className={`input input-bordered w-full pl-10 ${errors.password ? "input-error" : ""
+                                                className={`input input-bordered w-full text-base md:text-lg ${errors.password ? "input-error" : ""
                                                     }`}
                                                 placeholder="••••••••"
                                             />
@@ -526,7 +528,7 @@ const CreateProfileForm = () => {
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6">
                                     <div className="form-control md:col-span-2"> </div>
                                     <div className="form-control">
                                         <label className="label" >
@@ -853,7 +855,7 @@ const CreateProfileForm = () => {
                                     <GraduationCap className="w-5 h-5 text-warning" />
                                     Education Information
                                 </h3>
-                                <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-6 ">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6 ">
                                     <div className="form-control">
                                         <label className="label">
                                             {/* <span className="label-text text-base md:text-lg font-semibold"> */}
@@ -929,7 +931,7 @@ const CreateProfileForm = () => {
                                     Career Information
                                 </h3>
 
-                                <div className="grid grid-cols-2 md:grid-cols-1 gap-3 md:gap-6  ">
+                                <div className="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-6  ">
                                     <div className="form-control">
                                         <label className="label">
                                             <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">

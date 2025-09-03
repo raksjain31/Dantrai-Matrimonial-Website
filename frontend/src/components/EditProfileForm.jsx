@@ -475,7 +475,7 @@ const EditProfileForm = () => {
                                     <p className="text-red-500 text-sm mt-1">{errors.Father.message}</p>
                                 )}
                             </div>
-                            <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-6 ">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6 ">
                                 {/* <div className="form-control">
                                     <label className="label">
                                         <span className="label-text text-sm sm:text-base md:text-lg font-semibold break-words leading-tight">
@@ -553,7 +553,7 @@ const EditProfileForm = () => {
                                         <input
                                             type="phone"
                                             {...register("phone")}
-                                            className={`input input-bordered w-full pl-10 ${errors.phone ? "input-error" : ""
+                                            className={`input input-bordered w-full text-base md:text-lg ${errors.phone ? "input-error" : ""
                                                 }`}
                                             placeholder="1234567890"
                                         />
@@ -653,7 +653,7 @@ const EditProfileForm = () => {
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6">
                                 <div className="form-control md:col-span-2"> </div>
                                 <div className="form-control">
                                     <label className="label" >
@@ -885,7 +885,7 @@ const EditProfileForm = () => {
                                 <ImageUp className="w-5 h-5 text-warning" />
                                 Profile Photo Upload
                             </h3>
-                            <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-6 ">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6 ">
 
                                 <div className="form-control">
                                     <label className="label">
@@ -980,7 +980,7 @@ const EditProfileForm = () => {
                                 <GraduationCap className="w-5 h-5 text-warning" />
                                 Education Information
                             </h3>
-                            <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-6 ">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6 ">
                                 <div className="form-control">
                                     <label className="label">
                                         <span className="label-text text-base md:text-lg font-semibold">
@@ -1055,7 +1055,7 @@ const EditProfileForm = () => {
                                 Career Information
                             </h3>
 
-                            <div className="grid grid-cols-2 md:grid-cols-1 gap-3 md:gap-6  ">
+                            <div className="grid grid-cols-1 md:grid-cols-1 gap-3 md:gap-6  ">
                                 <div className="form-control">
                                     <label className="label">
                                         <span className="label-text text-base md:text-lg font-semibold">
@@ -1149,7 +1149,7 @@ const EditProfileForm = () => {
                                 <House className="w-5 h-5 text-warning" />
                                 Family Information
                             </h3>
-                            <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-6 ">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6 ">
                                 {/* <div className="form-control">
                                     <label className="label">
                                         <span className="label-text text-base md:text-lg font-semibold">
