@@ -5,11 +5,12 @@ import { Bookmark, PencilIcon, Trash, TrashIcon, X, ClockArrowUp } from "lucide-
 import useAction from '../store/useAction'
 import { useNavigate } from "react-router-dom";
 
-const AdminUsersListTable = ({ userlist }) => {
+const AdminUsersListTable = ({ userlist, listKey = "default" }) => {
     const { authUser } = useAuthStore();
     const [search, setSearch] = useState("");
+    const storageKey = `profilePage_${listKey}`;
     const [currentPage, setCurrentPage] = useState(() => {
-        return parseInt(localStorage.getItem("profilePage")) || 1;
+        return parseInt(localStorage.getItem(storageKey)) || 1;
     });
     const { isUpdatingUserPending, onUpdatePendingUser } = useAction();
     const { isUpdateRejectingUser, onUpdateRejectingUser } = useAction();
@@ -28,8 +29,8 @@ const AdminUsersListTable = ({ userlist }) => {
     }, [userlist]);
 
     useEffect(() => {
-        localStorage.setItem("profilePage", currentPage);
-    }, [currentPage]);
+        localStorage.setItem(storageKey, currentPage);
+    }, [currentPage, storageKey]);
 
     useEffect(() => {
         console.log("Users changed:", users);
