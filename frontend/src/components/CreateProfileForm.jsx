@@ -99,9 +99,9 @@ const profileSchema = z.object({
     //.positive("Number of Sisters must be a positive number")
     aboutmyfamily: z.string().optional().transform((str) => str.toUpperCase()),//.max(250, "About My Family at most 250 characters")
     hobbies: z.string().optional(),//.min(3, "Hobbies Name must be atleast 3 characters").transform((str) => str.toUpperCase())
-    name: z.string().min(3, "Name must be at least 3 characters long").transform((str) => str.toUpperCase()),
+    name: z.string().min(3, "Father Name must be at least 3 characters long").transform((str) => str.toUpperCase()),
     email: z.string().email("Enter a valid email").transform((str) => str.toLowerCase()),
-    Father: z.string().min(3, "Name must be at least 3 characters long").transform((str) => str.toUpperCase()),
+    Father: z.string().min(3, "Grand Father Name must be at least 3 characters long").transform((str) => str.toUpperCase()),
     //phone: z.string().min(10, 'Phone number is required.').refine(value => /^\d{10}$/.test(value), 'Invalid Number!'),
     password: z.string().min(8, "Password must be at least 8 characters long"),
     village: z.string()
