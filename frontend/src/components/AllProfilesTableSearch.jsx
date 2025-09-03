@@ -5,10 +5,11 @@ import { Bookmark, PencilIcon, Trash, PhoneCall, TrashIcon, Plus } from "lucide-
 import useAction from '../store/useAction'
 import { useNavigate } from "react-router-dom";
 
-const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
+const AllProfilesTableSearch = ({ AllprofilesSearch, listKey = "default" }) => {
     const { authUser } = useAuthStore();
 
-
+    // ✅ Use unique key for each page
+    const storageKey = `profilePage_${listKey}`;
 
     const [search, setSearch] = useState("");
     const [village, setVillageSearch] = useState("ALL");
@@ -17,7 +18,7 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
     const [minAge, setMinAge] = useState("");
     const [maxAge, setMaxAge] = useState("");
     const [currentPage, setCurrentPage] = useState(() => {
-        return parseInt(localStorage.getItem("profilePage")) || 1;
+        return parseInt(localStorage.getItem(storageKey)) || 1;
     });
     const { isDeletingProfile, onDeleteProfile } = useAction();
     const [gender, setGender] = useState("ALL");
@@ -85,8 +86,8 @@ const AllProfilesTableSearch = ({ AllprofilesSearch }) => {
 
 
     useEffect(() => {
-        localStorage.setItem("profilePage", currentPage);
-    }, [currentPage]);
+        localStorage.setItem(storageKey, currentPage);
+    }, [currentPage, storageKey]);
 
 
     const itemsPerPage = 5;
