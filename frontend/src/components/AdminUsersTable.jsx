@@ -5,15 +5,18 @@ import { Bookmark, PencilIcon, Trash, TrashIcon, X, Check } from "lucide-react";
 import useAction from '../store/useAction'
 import { useNavigate } from "react-router-dom";
 
-const AdminUsersTable = ({ approvedPending }) => {
+const AdminUsersTable = ({ approvedPending, listKey = "default" }) => {
     const { authUser } = useAuthStore();
     const [search, setSearch] = useState("");
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(() => {
+        return parseInt(localStorage.getItem(storageKey)) || 1;
+    });
     const { isUpdatingUser, onUpdateUser } = useAction();
     const { isUpdateRejectingUser, onUpdateRejectingUser } = useAction();
     const [showHoverText, setShowHoverText] = useState(false);
     const [users, setUsers] = useState(approvedPending || []);
 
+    const storageKey = `profilePage_${listKey}`;
     const navigation = useNavigate();
     const handleClick = () => {
         navigation('/add-profile');
@@ -29,6 +32,12 @@ const AdminUsersTable = ({ approvedPending }) => {
     useEffect(() => {
         console.log("Users changed:", users);
     }, [users]);
+
+
+    useEffect(() => {
+        localStorage.setItem(storageKey, currentPage);
+    }, [currentPage, storageKey]);
+
 
     console.log("DATA:", approvedPending)
     // Filter problems based on search, difficulty, and tags
