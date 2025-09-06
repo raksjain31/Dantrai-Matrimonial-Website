@@ -17,7 +17,7 @@ const AdminUsersListTable = ({ userlist, listKey = "default" }) => {
     const { isUpdateRejectingUser, onUpdateRejectingUser } = useAction();
     const [showHoverText, setShowHoverText] = useState(false);
     const [users, setUsers] = useState(userlist || []);
-
+    const tableRef = useRef(null);
     const navigation = useNavigate();
     const handleClick = () => {
         navigation('/add-profile');
