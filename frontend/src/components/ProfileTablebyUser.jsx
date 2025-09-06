@@ -55,6 +55,8 @@ const ProfileTablebyUser = ({ profilesByUser }) => {
             onDeleteProfile(id);
         }
 
+        window.location.reload();
+
 
     };
 
